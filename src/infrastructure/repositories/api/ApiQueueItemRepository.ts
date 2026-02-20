@@ -9,15 +9,16 @@
 'use client';
 
 import {
-    IQueueItemRepository,
-    PaginatedResult,
+  IQueueItemRepository,
+  PaginatedResult,
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
-    CreateQueueItemData,
-    QueueItem,
-    QueueStats,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  QueueItem,
+  QueueStats,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
+import { v4 as uuidv4 } from 'uuid';
 
 export class ApiQueueItemRepository implements IQueueItemRepository {
   private baseUrl = '/api/queue-items';
@@ -58,10 +59,15 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
   }
 
   async create(data: CreateQueueItemData): Promise<QueueItem> {
+    const payload = {
+      ...data,
+      id: data.id || uuidv4(),
+    };
+
     const res = await fetch(this.baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
 
     if (!res.ok) {

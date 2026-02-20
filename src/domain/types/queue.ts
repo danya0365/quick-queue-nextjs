@@ -95,6 +95,7 @@ export interface QueueStats {
 
 // ─── DTOs ───
 export interface CreateQueueItemData {
+  id?: string;
   customerName: string;
   serviceType: ServiceType;
   note?: string;

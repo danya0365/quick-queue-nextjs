@@ -5,19 +5,20 @@
  */
 
 import {
-    IQueueItemRepository,
-    PaginatedResult,
+  IQueueItemRepository,
+  PaginatedResult,
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
-    CreateQueueItemData,
-    QueueItem,
-    QueueStats,
-    QueueStatus,
-    ServiceType,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  QueueItem,
+  QueueStats,
+  QueueStatus,
+  ServiceType,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { getTursoDatabase } from '@/src/infrastructure/database/turso';
 import { Row } from '@libsql/client';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Maps a raw libsql Row → QueueItem domain object
@@ -98,7 +99,7 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
   }
 
   async create(data: CreateQueueItemData): Promise<QueueItem> {
-    const id = `q-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const id = data.id || uuidv4();
     const nextNumber = await this.getNextQueueNumber();
     const now = new Date().toISOString();
 

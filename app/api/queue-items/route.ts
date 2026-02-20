@@ -55,6 +55,7 @@ export async function POST(request: NextRequest) {
     }
 
     const item = await repository.create({
+      id: body.id,
       customerName: body.customerName,
       serviceType: body.serviceType,
       note: body.note,
