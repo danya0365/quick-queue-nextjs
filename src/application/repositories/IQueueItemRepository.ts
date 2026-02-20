@@ -63,4 +63,9 @@ export interface IQueueItemRepository {
    * Get the current serving queue number (minimum queue_number with status = 'in_progress')
    */
   getCurrentServingNumber(): Promise<number>;
+
+  /**
+   * Delete all queue items (Clear all queues)
+   */
+  deleteAll(): Promise<boolean>;
 }

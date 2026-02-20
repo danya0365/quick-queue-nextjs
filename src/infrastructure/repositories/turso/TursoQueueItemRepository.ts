@@ -163,6 +163,11 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
     return result.rowsAffected > 0;
   }
 
+  async deleteAll(): Promise<boolean> {
+    const result = await this.db.execute('DELETE FROM queue_items');
+    return result.rowsAffected >= 0;
+  }
+
   async getStats(): Promise<QueueStats> {
     const result = await this.db.execute(`
       SELECT

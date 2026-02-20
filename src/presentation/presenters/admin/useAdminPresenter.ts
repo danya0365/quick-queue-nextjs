@@ -12,6 +12,7 @@ export interface AdminPresenterState {
   isCreateModalOpen: boolean;
   isEditModalOpen: boolean;
   isDeleteModalOpen: boolean;
+  isClearAllModalOpen: boolean;
   selectedItemId: string | null;
   // Pagination
   currentPage: number;
@@ -23,6 +24,7 @@ export interface AdminPresenterActions {
   createQueueItem: (data: CreateQueueItemData) => Promise<void>;
   updateQueueItem: (id: string, data: UpdateQueueItemData) => Promise<void>;
   deleteQueueItem: (id: string) => Promise<void>;
+  clearAllQueues: () => Promise<void>;
   markInProgress: (id: string) => Promise<void>;
   markCompleted: (id: string) => Promise<void>;
   markCancelled: (id: string) => Promise<void>;
@@ -32,6 +34,8 @@ export interface AdminPresenterActions {
   closeEditModal: () => void;
   openDeleteModal: (itemId: string) => void;
   closeDeleteModal: () => void;
+  openClearAllModal: () => void;
+  closeClearAllModal: () => void;
   setError: (error: string | null) => void;
   // Pagination
   goToPage: (page: number) => void;
@@ -64,6 +68,7 @@ export function useAdminPresenter(
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isClearAllModalOpen, setIsClearAllModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   // Use refs to avoid stale closures
@@ -154,6 +159,21 @@ export function useAdminPresenter(
     }
   }, [loadData, presenter]);
 
+  const clearAllQueues = useCallback(async () => {
+    setError(null);
+    try {
+      await presenter.clearAllQueues();
+      if (isMountedRef.current) {
+        setIsClearAllModalOpen(false);
+      }
+      await loadData();
+    } catch (err) {
+      if (isMountedRef.current) {
+        setError(err instanceof Error ? err.message : 'Error clearing all queues');
+      }
+    }
+  }, [loadData, presenter]);
+
   const markInProgress = useCallback(async (id: string) => {
     setError(null);
     try {
@@ -219,6 +239,14 @@ export function useAdminPresenter(
     setSelectedItemId(null);
     setError(null);
   }, []);
+  const openClearAllModal = useCallback(() => {
+    setIsClearAllModalOpen(true);
+    setError(null);
+  }, []);
+  const closeClearAllModal = useCallback(() => {
+    setIsClearAllModalOpen(false);
+    setError(null);
+  }, []);
 
   // Initial load
   useEffect(() => {
@@ -243,6 +271,7 @@ export function useAdminPresenter(
       isCreateModalOpen,
       isEditModalOpen,
       isDeleteModalOpen,
+      isClearAllModalOpen,
       selectedItemId,
       currentPage,
       statusFilter,
@@ -252,6 +281,7 @@ export function useAdminPresenter(
       createQueueItem,
       updateQueueItem,
       deleteQueueItem,
+      clearAllQueues,
       markInProgress,
       markCompleted,
       markCancelled,
@@ -261,6 +291,8 @@ export function useAdminPresenter(
       closeEditModal,
       openDeleteModal,
       closeDeleteModal,
+      openClearAllModal,
+      closeClearAllModal,
       setError,
       goToPage,
       setStatusFilter,

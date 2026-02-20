@@ -6,11 +6,11 @@
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
 import {
-    CreateQueueItemData,
-    QueueItem,
-    QueueStats,
-    QueueStatus,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  QueueItem,
+  QueueStats,
+  QueueStatus,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -87,6 +87,13 @@ export class AdminPresenter {
    */
   async deleteQueueItem(id: string): Promise<boolean> {
     return await this.repository.delete(id);
+  }
+
+  /**
+   * Delete all queue items (Clear all queues)
+   */
+  async clearAllQueues(): Promise<boolean> {
+    return await this.repository.deleteAll();
   }
 
   /**

@@ -167,6 +167,12 @@ export class MockQueueItemRepository implements IQueueItemRepository {
     return true;
   }
 
+  async deleteAll(): Promise<boolean> {
+    await this.delay(200);
+    this.items = [];
+    return true;
+  }
+
   async getStats(): Promise<QueueStats> {
     await this.delay(100);
 

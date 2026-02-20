@@ -106,6 +106,19 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
     return true;
   }
 
+  async deleteAll(): Promise<boolean> {
+    const res = await fetch(this.baseUrl, {
+      method: 'DELETE',
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถล้างคิวได้');
+    }
+
+    return true;
+  }
+
   async getStats(): Promise<QueueStats> {
     const res = await fetch(`${this.baseUrl}/stats`);
     if (!res.ok) {

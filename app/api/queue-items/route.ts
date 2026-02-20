@@ -70,3 +70,20 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { errorResponse } = await requireAuth(request);
+    if (errorResponse) return errorResponse;
+
+    await repository.deleteAll();
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error('DELETE /api/queue-items error:', error);
+    return NextResponse.json(
+      { error: 'ไม่สามารถล้างคิวได้' },
+      { status: 500 }
+    );
+  }
+}

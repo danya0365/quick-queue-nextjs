@@ -1,12 +1,13 @@
 'use client';
 
 import {
-    QUEUE_STATUS_CONFIG,
-    QueueItem,
-    QueueStatus,
-    SERVICE_TYPE_CONFIG,
+  QUEUE_STATUS_CONFIG,
+  QueueItem,
+  QueueStatus,
+  SERVICE_TYPE_CONFIG,
 } from '@/src/domain/types/queue';
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
+import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
@@ -153,6 +154,13 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
             >
               เพิ่มคิว
             </AnimatedButton>
+            <button
+              onClick={actions.openClearAllModal}
+              title="ล้างคิวทั้งหมด"
+              className="px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-sm font-medium transition-all duration-200"
+            >
+              ล้างคิว
+            </button>
             <AnimatedButton
               variant="ghost"
               size="sm"
@@ -436,6 +444,14 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
         }}
         customerName={selectedItem?.customerName || ''}
         queueNumber={selectedItem?.queueNumber || 0}
+      />
+
+      <ClearConfirmModal
+        isOpen={state.isClearAllModalOpen}
+        onClose={actions.closeClearAllModal}
+        onConfirm={async () => {
+          await actions.clearAllQueues();
+        }}
       />
     </div>
   );
