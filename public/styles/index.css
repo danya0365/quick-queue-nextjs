@@ -1,0 +1,11 @@
+/* ============================================
+   index.css — Main Entry Point
+   
+   All styles are organized into separate modules:
+   
+   1. theme.css      → @theme tokens, :root, .dark overrides
+   2. will implement later
+   ============================================ */
+
+@import "tailwindcss";
+@import "./theme.css";
