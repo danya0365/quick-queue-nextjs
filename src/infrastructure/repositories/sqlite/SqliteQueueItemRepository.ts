@@ -217,4 +217,12 @@ export class SqliteQueueItemRepository implements IQueueItemRepository {
 
     return (result.maxNum || 0) + 1;
   }
+
+  async getCurrentServingNumber(): Promise<number> {
+    const result = this.db
+      .prepare('SELECT MIN(queue_number) as minNum FROM queue_items WHERE status = ?')
+      .get('in_progress') as { minNum: number | null };
+
+    return result.minNum || 0;
+  }
 }

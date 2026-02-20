@@ -58,4 +58,9 @@ export interface IQueueItemRepository {
    * Get the next queue number
    */
   getNextQueueNumber(): Promise<number>;
+
+  /**
+   * Get the current serving queue number (minimum queue_number with status = 'in_progress')
+   */
+  getCurrentServingNumber(): Promise<number>;
 }

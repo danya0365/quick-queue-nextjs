@@ -186,9 +186,14 @@ export class MockQueueItemRepository implements IQueueItemRepository {
   }
 
   async getNextQueueNumber(): Promise<number> {
-    if (this.items.length === 0) return 1;
-    const maxNumber = Math.max(...this.items.map((i) => i.queueNumber));
+    const maxNumber = Math.max(...this.items.map((i) => i.queueNumber), 0);
     return maxNumber + 1;
+  }
+
+  async getCurrentServingNumber(): Promise<number> {
+    const inProgressItems = this.items.filter((i) => i.status === QueueStatus.IN_PROGRESS);
+    if (inProgressItems.length === 0) return 0;
+    return Math.min(...inProgressItems.map((i) => i.queueNumber));
   }
 
   private delay(ms: number): Promise<void> {

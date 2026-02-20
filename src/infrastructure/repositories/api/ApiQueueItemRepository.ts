@@ -120,4 +120,15 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
     const data = await res.json();
     return data.nextNumber;
   }
+
+  async getCurrentServingNumber(): Promise<number> {
+    const res = await fetch(`${this.baseUrl}/current-serving`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดคิวปัจจุบันได้');
+    }
+
+    const data = await res.json();
+    return data.currentServingNumber;
+  }
 }

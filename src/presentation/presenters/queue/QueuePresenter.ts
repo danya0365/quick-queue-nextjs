@@ -27,22 +27,18 @@ export class QueuePresenter {
   async getViewModel(): Promise<QueueViewModel> {
     try {
       const LIMIT = 20;
-      const [waitingResult, inProgressResult, completedResult, stats] = await Promise.all([
+      const [waitingResult, inProgressResult, completedResult, stats, currentServingNumber] = await Promise.all([
         this.repository.getPaginated(1, LIMIT, 'waiting'),
         this.repository.getPaginated(1, LIMIT, 'in_progress'),
         this.repository.getPaginated(1, LIMIT, 'completed'),
         this.repository.getStats(),
+        this.repository.getCurrentServingNumber(),
       ]);
 
       const waitingItems = waitingResult.data;
       const inProgressItems = inProgressResult.data;
       const completedItems = completedResult.data;
       const allItems = [...inProgressItems, ...waitingItems, ...completedItems];
-
-      // Current serving = minimum queue number among in-progress items
-      const currentServingNumber = inProgressItems.length > 0
-        ? Math.min(...inProgressItems.map((i) => i.queueNumber))
-        : 0;
 
       // Estimate: ~10 min per waiting item
       const estimatedWaitMinutes = stats.waitingItems * 10;
