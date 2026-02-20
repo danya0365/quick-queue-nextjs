@@ -10,7 +10,7 @@ import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/sha
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
 import { QRCodeSVG } from 'qrcode.react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
 interface HomeViewProps {
@@ -54,6 +54,58 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     transform: showQR ? 'scale(1)' : 'scale(0.9)',
     config: { tension: 300, friction: 25 },
   });
+
+  // Sound Alert Logic
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const prevQRef = useRef<number | null>(null);
+
+  const playAlert = useCallback((qNum: number) => {
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      
+      const ctx = new AudioContextClass();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.setValueAtTime(1108.73, ctx.currentTime + 0.3);
+      
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
+      
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1);
+      
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(`ขอเชิญคิวหมายเลข ${qNum} ค่ะ`);
+        utterance.lang = 'th-TH';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }, 700);
+    } catch (e) {
+      console.error('Audio alert failed', e);
+    }
+  }, []);
+
+  useEffect(() => {
+    const currentQ = viewModel?.currentQueueNumber || 0;
+    if (prevQRef.current === null) {
+      prevQRef.current = currentQ; // Initialize
+      return;
+    }
+    
+    if (currentQ > 0 && currentQ !== prevQRef.current) {
+      if (soundEnabled) {
+        playAlert(currentQ);
+      }
+      prevQRef.current = currentQ;
+    }
+  }, [viewModel?.currentQueueNumber, soundEnabled, playAlert]);
 
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
@@ -150,13 +202,27 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
                   <span className="mr-1.5">🕐</span>
                   {currentTime}
                 </div>
+                {/* Sound Toggle */}
+                <button
+                  onClick={() => setSoundEnabled((prev) => !prev)}
+                  className={`border border-white/20 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm shadow-lg transition-all active:scale-95 flex items-center ${
+                    soundEnabled
+                      ? 'bg-blue-500/80 hover:bg-blue-600 border-blue-400 text-white'
+                      : 'bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white/50 hover:text-white'
+                  }`}
+                  title={soundEnabled ? 'ปิดเสียงประกาศ' : 'เปิดเสียงประกาศ'}
+                >
+                  <span className="mr-1.5">{soundEnabled ? '🔊' : '🔇'}</span>
+                  <span className="hidden sm:inline">{soundEnabled ? 'เสียงเปิด' : 'เสียงปิด'}</span>
+                </button>
                 {/* QR Code Trigger Button */}
                 <button
                   onClick={() => setShowQR(true)}
-                  className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95"
+                  className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center"
                 >
                   <span className="mr-1.5">📱</span>
-                  สแกนคิว
+                  <span className="hidden sm:inline">สแกนคิว</span>
+                  <span className="sm:hidden">คิว</span>
                 </button>
               </div>
             </div>

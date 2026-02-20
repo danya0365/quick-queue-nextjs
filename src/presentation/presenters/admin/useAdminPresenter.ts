@@ -20,7 +20,7 @@ export interface AdminPresenterState {
 }
 
 export interface AdminPresenterActions {
-  loadData: () => Promise<void>;
+  loadData: (page?: number, status?: string, isBackground?: boolean) => Promise<void>;
   createQueueItem: (data: CreateQueueItemData) => Promise<void>;
   updateQueueItem: (id: string, data: UpdateQueueItemData) => Promise<void>;
   deleteQueueItem: (id: string) => Promise<void>;
@@ -77,11 +77,11 @@ export function useAdminPresenter(
   currentPageRef.current = currentPage;
   statusFilterRef.current = statusFilter;
 
-  const loadData = useCallback(async (page?: number, status?: string) => {
+  const loadData = useCallback(async (page?: number, status?: string, isBackground: boolean = false) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
 
-    setLoading(true);
+    if (!isBackground) setLoading(true);
     setError(null);
 
     const p = page ?? currentPageRef.current;
@@ -99,7 +99,7 @@ export function useAdminPresenter(
         setError(errorMessage);
       }
     } finally {
-      if (isMountedRef.current) setLoading(false);
+      if (isMountedRef.current && !isBackground) setLoading(false);
     }
   }, [presenter]);
 
@@ -250,9 +250,17 @@ export function useAdminPresenter(
 
   // Initial load
   useEffect(() => {
-    if (!initialViewModel) loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    loadData(1, 'all', false);
+  }, [loadData]);
+
+  // Real-time polling
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Auto refresh in background every 5 seconds
+      loadData(undefined, undefined, true);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [loadData]);
 
   // Cleanup
   useEffect(() => {

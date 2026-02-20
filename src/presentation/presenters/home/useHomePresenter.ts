@@ -11,7 +11,7 @@ export interface HomePresenterState {
 }
 
 export interface HomePresenterActions {
-  loadData: () => Promise<void>;
+  loadData: (isBackground?: boolean) => Promise<void>;
   setError: (error: string | null) => void;
 }
 
@@ -37,11 +37,13 @@ export function useHomePresenter(
   const [loading, setLoading] = useState(!initialViewModel);
   const [error, setError] = useState<string | null>(null);
 
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (isBackground: boolean = false) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
 
-    setLoading(true);
+    if (!isBackground) {
+      setLoading(true);
+    }
     setError(null);
 
     try {
@@ -66,9 +68,17 @@ export function useHomePresenter(
 
   useEffect(() => {
     if (!initialViewModel) {
-      loadData();
+      loadData(false);
     }
   }, [loadData, initialViewModel]);
+
+  // Real-time polling
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadData(true);
+    }, 5000); // Poll every 5 seconds
+    return () => clearInterval(interval);
+  }, [loadData]);
 
   useEffect(() => {
     isMountedRef.current = true;
