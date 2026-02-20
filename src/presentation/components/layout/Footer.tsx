@@ -29,17 +29,21 @@ export function Footer() {
         <span className="hidden sm:inline">Powered by Next.js</span>
       </div>
 
-      <div
-        className="flex items-center gap-1 text-xs text-muted cursor-default"
+      <a
+        href="https://cleancode1986-portfolio.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1 text-xs text-muted hover:text-primary transition-colors cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <span>Made with</span>
         <animated.span style={heartSpring} className="inline-block">
-          💜
+          ❤️
         </animated.span>
-        <span className="hidden sm:inline">in Thailand</span>
-      </div>
+        <span className="font-semibold ml-0.5 hidden sm:inline">by Clean Code 1986</span>
+        <span className="font-semibold ml-0.5 sm:hidden">Clean Code 1986</span>
+      </a>
     </footer>
   );
 }
