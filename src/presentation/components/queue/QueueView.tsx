@@ -6,6 +6,7 @@ import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCo
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
+import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
 import { useEffect, useState } from 'react';
@@ -53,6 +54,9 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
     loop: { reverse: true },
   });
 
+  const currentQ = viewModel?.currentServingNumber || 0;
+  const { soundEnabled, setSoundEnabled } = useQueueSoundAlert(currentQ);
+
   if (state.loading && !viewModel) {
     return <QueueSkeleton />;
   }
@@ -76,7 +80,6 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
   }
 
   const stats = viewModel?.stats;
-  const currentQ = viewModel?.currentServingNumber || 0;
   const waitTime = viewModel?.estimatedWaitMinutes || 0;
   const waitingItems = viewModel?.waitingItems || [];
   const inProgressItems = viewModel?.inProgressItems || [];
@@ -93,7 +96,20 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
           <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
             📋 สถานะคิว
           </h1>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Sound Toggle */}
+            <button
+              onClick={() => setSoundEnabled((prev) => !prev)}
+              className={`border border-border/40 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm transition-all active:scale-95 flex items-center ${
+                soundEnabled
+                  ? 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 border-blue-500/30'
+                  : 'bg-surface-alt hover:bg-surface text-muted hover:text-foreground'
+              }`}
+              title={soundEnabled ? 'ปิดเสียงประกาศ' : 'เปิดเสียงประกาศ'}
+            >
+              <span className="mr-1">{soundEnabled ? '🔊' : '🔇'}</span>
+              <span className="hidden sm:inline">{soundEnabled ? 'เสียงเปิด' : 'เสียงปิด'}</span>
+            </button>
             <span className="text-muted text-xs hidden sm:inline">
               อัพเดทอัตโนมัติใน {refreshCountdown}s
             </span>

@@ -7,10 +7,11 @@ import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCo
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
+import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
 import { QRCodeSVG } from 'qrcode.react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
 interface HomeViewProps {
@@ -55,64 +56,16 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     config: { tension: 300, friction: 25 },
   });
 
-  // Sound Alert Logic
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const prevQRef = useRef<number | null>(null);
-
-  const playAlert = useCallback((qNum: number) => {
-    try {
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioContextClass) return;
-      
-      const ctx = new AudioContextClass();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
-      osc.frequency.setValueAtTime(1108.73, ctx.currentTime + 0.3);
-      
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
-      
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 1);
-      
-      setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(`ขอเชิญคิวหมายเลข ${qNum} ค่ะ`);
-        utterance.lang = 'th-TH';
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
-      }, 700);
-    } catch (e) {
-      console.error('Audio alert failed', e);
-    }
-  }, []);
-
-  useEffect(() => {
-    const currentQ = viewModel?.currentQueueNumber || 0;
-    if (prevQRef.current === null) {
-      prevQRef.current = currentQ; // Initialize
-      return;
-    }
-    
-    if (currentQ > 0 && currentQ !== prevQRef.current) {
-      if (soundEnabled) {
-        playAlert(currentQ);
-      }
-      prevQRef.current = currentQ;
-    }
-  }, [viewModel?.currentQueueNumber, soundEnabled, playAlert]);
-
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
   useEffect(() => {
     // Only set URL on client to avoid hydration mismatch
     setCurrentUrl(window.location.origin);
   }, []);
+
+  // Sound Alert Hook
+  const currentQ = viewModel?.currentQueueNumber || 0;
+  const { soundEnabled, setSoundEnabled } = useQueueSoundAlert(currentQ);
 
   // Big queue number spring
   const bigNumberSpring = useSpring({
@@ -139,7 +92,6 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   }
 
   const stats = viewModel?.stats;
-  const currentQ = viewModel?.currentQueueNumber || 0;
   const waitTime = viewModel?.estimatedWaitMinutes || 0;
   const recentItems = viewModel?.items
     .filter((i) => i.status !== QueueStatus.CANCELLED) || [];
