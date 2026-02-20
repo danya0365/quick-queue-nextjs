@@ -1,12 +1,15 @@
 'use client';
 
-import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
+import { DEFAULT_SHOP_CONFIG, NAV_ITEMS } from '@/src/domain/types/queue';
 import { ThemeToggle } from '@/src/presentation/components/shared/ThemeToggle';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
 export function Header() {
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const pathname = usePathname();
 
   // Logo pulse animation on hover
   const logoSpring = useSpring({
@@ -34,29 +37,60 @@ export function Header() {
       id="main-header"
     >
       {/* Logo Section */}
-      <animated.div
-        style={{ ...logoSpring, ...logoGlowSpring }}
-        onMouseEnter={() => setIsLogoHovered(true)}
-        onMouseLeave={() => setIsLogoHovered(false)}
-        className="flex items-center gap-3 cursor-pointer select-none"
-      >
-        <div className="
-          w-9 h-9 rounded-lg
-          bg-gradient-to-br from-primary to-accent
-          flex items-center justify-center
-          shadow-md
-        ">
-          <span className="text-white font-bold text-sm">QQ</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-foreground font-bold text-lg leading-tight tracking-tight">
-            {DEFAULT_SHOP_CONFIG.shopName}
-          </span>
-          <span className="text-muted text-[10px] leading-none tracking-wide uppercase">
-            ระบบจัดการคิวอัจฉริยะ
-          </span>
-        </div>
-      </animated.div>
+      <div className="flex items-center gap-6">
+        <Link href="/">
+          <animated.div
+            style={{ ...logoSpring, ...logoGlowSpring }}
+            onMouseEnter={() => setIsLogoHovered(true)}
+            onMouseLeave={() => setIsLogoHovered(false)}
+            className="flex items-center gap-3 cursor-pointer select-none"
+          >
+            <div className="
+              w-9 h-9 rounded-lg
+              bg-gradient-to-br from-primary to-accent
+              flex items-center justify-center
+              shadow-md
+            ">
+              <span className="text-white font-bold text-sm">QQ</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-foreground font-bold text-lg leading-tight tracking-tight">
+                {DEFAULT_SHOP_CONFIG.shopName}
+              </span>
+              <span className="text-muted text-[10px] leading-none tracking-wide uppercase hidden sm:block">
+                ระบบจัดการคิวอัจฉริยะ
+              </span>
+            </div>
+          </animated.div>
+        </Link>
+
+        {/* Navigation */}
+        <nav className="hidden sm:flex items-center gap-1">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`
+                  flex items-center gap-1.5
+                  px-3 py-1.5 rounded-lg
+                  text-sm font-medium
+                  transition-all duration-200
+                  ${
+                    isActive
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted hover:text-foreground hover:bg-surface-alt'
+                  }
+                `}
+              >
+                <span className="text-xs">{item.icon}</span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
       {/* Right Section */}
       <div className="flex items-center gap-3">
