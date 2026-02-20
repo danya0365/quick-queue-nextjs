@@ -9,6 +9,7 @@ import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
+import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
@@ -44,6 +45,21 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // QR Code Modal
+  const [showQR, setShowQR] = useState(false);
+  const qrSpring = useSpring({
+    opacity: showQR ? 1 : 0,
+    transform: showQR ? 'scale(1)' : 'scale(0.9)',
+    config: { tension: 300, friction: 25 },
+  });
+
+  // Get current URL for QR Code
+  const [currentUrl, setCurrentUrl] = useState('');
+  useEffect(() => {
+    // Only set URL on client to avoid hydration mismatch
+    setCurrentUrl(window.location.origin);
   }, []);
 
   // Big queue number spring
@@ -134,6 +150,14 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
                   <span className="mr-1.5">🕐</span>
                   {currentTime}
                 </div>
+                {/* QR Code Trigger Button */}
+                <button
+                  onClick={() => setShowQR(true)}
+                  className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95"
+                >
+                  <span className="mr-1.5">📱</span>
+                  สแกนคิว
+                </button>
               </div>
             </div>
           </div>
@@ -275,6 +299,47 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
           </div>
         </GlassCard>
       </FadeInSection>
+
+      {/* ─── QR Code Modal ─── */}
+      {showQR && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowQR(false)}
+        >
+          <animated.div
+            style={qrSpring}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center max-w-sm w-full relative"
+          >
+            <button
+              onClick={() => setShowQR(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-xl"
+            >
+              ✕
+            </button>
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">
+              📱
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-1">สแกนเพื่อรับคิว</h3>
+            <p className="text-sm text-gray-500 mb-6 text-center">
+              ใช้กล้องมือถือสแกน QR Code เพื่อเช็คคิวของคุณแบบเรียลไทม์
+            </p>
+            <div className="bg-white p-4 rounded-xl border-2 border-gray-100 shadow-inner">
+              <QRCodeSVG
+                value={currentUrl}
+                size={200}
+                bgColor={"#ffffff"}
+                fgColor={"#000000"}
+                level={"H"}
+                includeMargin={false}
+              />
+            </div>
+            <p className="mt-6 text-xs text-gray-400 font-mono bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+              {currentUrl}
+            </p>
+          </animated.div>
+        </div>
+      )}
     </div>
   );
 }
