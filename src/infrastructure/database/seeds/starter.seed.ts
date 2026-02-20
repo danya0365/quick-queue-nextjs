@@ -7,6 +7,7 @@
 
 import { Client } from '@libsql/client';
 import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password).digest('hex');
@@ -27,7 +28,7 @@ export async function seedStarter(db: Client): Promise<void> {
     await db.execute({
       sql: `INSERT INTO admin_users (id, username, password_hash, display_name)
             VALUES (?, ?, ?, ?)`,
-      args: ['admin-001', 'admin', hashPassword('admin'), 'เจ้าของร้าน']
+      args: [uuidv4(), 'admin', hashPassword('admin'), 'เจ้าของร้าน']
     });
     console.log('  ✅ Admin user created (admin / admin)');
   } else {
