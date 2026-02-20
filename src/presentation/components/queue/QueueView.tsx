@@ -88,6 +88,9 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
   const inProgressItems = viewModel?.inProgressItems || [];
   const completedItems = viewModel?.completedItems || [];
 
+  // Mobile tab state
+  const [mobileTab, setMobileTab] = useState<'in_progress' | 'waiting' | 'completed'>('in_progress');
+
   return (
     <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-4 overflow-y-auto" id="queue-view">
       {/* ─── Top Bar: Live Status ─── */}
@@ -176,11 +179,79 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
       {/* ─── Queue Sections ─── */}
       <FadeInSection delay={300} direction="up" className="flex-1 min-h-0">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 h-full">
+
+        {/* ── Mobile: Tab Switcher ── */}
+        <div className="lg:hidden flex flex-col h-full">
+          {/* Tab Buttons */}
+          <div className="flex gap-1 mb-3">
+            {([
+              { key: 'in_progress' as const, label: 'กำลังบริการ', count: inProgressItems.length, color: 'blue' },
+              { key: 'waiting' as const, label: 'รอคิว', count: waitingItems.length, color: 'amber' },
+              { key: 'completed' as const, label: 'เสร็จแล้ว', count: completedItems.length, color: 'emerald' },
+            ] as const).map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setMobileTab(tab.key)}
+                className={`
+                  flex-1 flex items-center justify-center gap-1.5
+                  py-2 rounded-lg text-xs font-semibold
+                  border transition-all duration-200
+                  ${mobileTab === tab.key
+                    ? tab.color === 'blue'
+                      ? 'bg-blue-500/15 border-blue-500/40 text-blue-400'
+                      : tab.color === 'amber'
+                        ? 'bg-amber-500/15 border-amber-500/40 text-amber-400'
+                        : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
+                    : 'bg-surface-alt border-border text-muted'
+                  }
+                `}
+              >
+                {tab.label}
+                <span className={`
+                  px-1.5 py-0.5 rounded-full text-[10px]
+                  ${mobileTab === tab.key
+                    ? tab.color === 'blue'
+                      ? 'bg-blue-500/20'
+                      : tab.color === 'amber'
+                        ? 'bg-amber-500/20'
+                        : 'bg-emerald-500/20'
+                    : 'bg-surface'
+                  }
+                `}>
+                  {tab.count}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <GlassCard className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto p-2 space-y-2">
+              {mobileTab === 'in_progress' && (
+                inProgressItems.length === 0
+                  ? <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่กำลังให้บริการ</div>
+                  : inProgressItems.map((item) => <QueueItemRow key={item.id} item={item} highlight />)
+              )}
+              {mobileTab === 'waiting' && (
+                waitingItems.length === 0
+                  ? <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่รออยู่</div>
+                  : waitingItems.map((item) => <QueueItemRow key={item.id} item={item} />)
+              )}
+              {mobileTab === 'completed' && (
+                completedItems.length === 0
+                  ? <div className="text-center text-muted text-xs py-8">ยังไม่มีคิวที่เสร็จ</div>
+                  : completedItems.map((item) => <QueueItemRow key={item.id} item={item} />)
+              )}
+            </div>
+          </GlassCard>
+        </div>
+
+        {/* ── Desktop: 3-Column Grid (unchanged) ── */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-4 h-full">
 
           {/* In Progress */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(59, 130, 246, 0.1)">
-            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
+            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
@@ -203,7 +274,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
           {/* Waiting */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(245, 158, 11, 0.1)">
-            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
+            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
               <span>⏳</span>
               <h3 className="text-foreground font-semibold text-sm">รอคิว</h3>
               <span className="ml-auto text-xs bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full font-medium">
@@ -223,7 +294,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
           {/* Completed */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(16, 185, 129, 0.1)">
-            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
+            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
               <span>✅</span>
               <h3 className="text-foreground font-semibold text-sm">เสร็จแล้ว</h3>
               <span className="ml-auto text-xs bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-medium">
