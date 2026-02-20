@@ -5,7 +5,7 @@
  */
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
-import { QueueItem, QueueStats, QueueStatus } from '@/src/domain/types/queue';
+import { QueueItem, QueueStats } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
 export interface QueueViewModel {
@@ -26,14 +26,18 @@ export class QueuePresenter {
    */
   async getViewModel(): Promise<QueueViewModel> {
     try {
-      const [allItems, stats] = await Promise.all([
-        this.repository.getAll(),
+      const LIMIT = 20;
+      const [waitingResult, inProgressResult, completedResult, stats] = await Promise.all([
+        this.repository.getPaginated(1, LIMIT, 'waiting'),
+        this.repository.getPaginated(1, LIMIT, 'in_progress'),
+        this.repository.getPaginated(1, LIMIT, 'completed'),
         this.repository.getStats(),
       ]);
 
-      const waitingItems = allItems.filter((i) => i.status === QueueStatus.WAITING);
-      const inProgressItems = allItems.filter((i) => i.status === QueueStatus.IN_PROGRESS);
-      const completedItems = allItems.filter((i) => i.status === QueueStatus.COMPLETED);
+      const waitingItems = waitingResult.data;
+      const inProgressItems = inProgressResult.data;
+      const completedItems = completedResult.data;
+      const allItems = [...inProgressItems, ...waitingItems, ...completedItems];
 
       // Current serving = minimum queue number among in-progress items
       const currentServingNumber = inProgressItems.length > 0
@@ -41,7 +45,7 @@ export class QueuePresenter {
         : 0;
 
       // Estimate: ~10 min per waiting item
-      const estimatedWaitMinutes = waitingItems.length * 10;
+      const estimatedWaitMinutes = stats.waitingItems * 10;
 
       return {
         allItems,

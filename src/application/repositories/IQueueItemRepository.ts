@@ -32,7 +32,7 @@ export interface IQueueItemRepository {
   /**
    * Get paginated queue items
    */
-  getPaginated(page: number, perPage: number): Promise<PaginatedResult<QueueItem>>;
+  getPaginated(page: number, perPage: number, status?: string): Promise<PaginatedResult<QueueItem>>;
 
   /**
    * Create a new queue item

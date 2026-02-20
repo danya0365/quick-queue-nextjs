@@ -80,8 +80,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   const currentQ = viewModel?.currentQueueNumber || 0;
   const waitTime = viewModel?.estimatedWaitMinutes || 0;
   const recentItems = viewModel?.items
-    .filter((i) => i.status !== QueueStatus.CANCELLED)
-    .slice(0, 5) || [];
+    .filter((i) => i.status !== QueueStatus.CANCELLED) || [];
 
   return (
     <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-5 overflow-y-auto" id="home-view">

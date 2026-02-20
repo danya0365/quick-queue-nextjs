@@ -44,8 +44,11 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
     return res.json();
   }
 
-  async getPaginated(page: number, perPage: number): Promise<PaginatedResult<QueueItem>> {
-    const res = await fetch(`${this.baseUrl}?page=${page}&perPage=${perPage}`);
+  async getPaginated(page: number, perPage: number, status?: string): Promise<PaginatedResult<QueueItem>> {
+    let url = `${this.baseUrl}?page=${page}&perPage=${perPage}`;
+    if (status) url += `&status=${status}`;
+
+    const res = await fetch(url);
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'ไม่สามารถโหลดข้อมูลได้');

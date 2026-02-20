@@ -22,12 +22,40 @@ interface AdminViewProps {
   initialViewModel?: AdminViewModel;
 }
 
+/**
+ * Generate page numbers with ellipsis for pagination
+ * Example: [1, 2, '...', 48, 49, 50] or [1, '...', 5, 6, 7, '...', 50]
+ */
+function generatePageNumbers(current: number, total: number): (number | '...')[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const pages: (number | '...')[] = [];
+
+  // Always show first page
+  pages.push(1);
+
+  if (current > 3) pages.push('...');
+
+  // Show pages around current
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
+
+  for (let i = start; i <= end; i++) pages.push(i);
+
+  if (current < total - 2) pages.push('...');
+
+  // Always show last page
+  if (total > 1) pages.push(total);
+
+  return pages;
+}
+
 export function AdminView({ initialViewModel }: AdminViewProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authChecking, setAuthChecking] = useState(true);
   const [state, actions] = useAdminPresenter(initialViewModel);
   const viewModel = state.viewModel;
-  const [filter, setFilter] = useState<'all' | QueueStatus>('all');
+  const filter = state.statusFilter;
 
   // ─── Check existing session on mount ───
   useEffect(() => {
@@ -83,11 +111,9 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
   const stats = viewModel?.stats;
   const items = viewModel?.items || [];
   const nextQ = viewModel?.nextQueueNumber || 1;
-
-  // Filter items
-  const filteredItems = filter === 'all'
-    ? items
-    : items.filter((i) => i.status === filter);
+  const totalPages = viewModel?.totalPages || 1;
+  const currentPage = viewModel?.currentPage || 1;
+  const totalItems = viewModel?.totalItems || 0;
 
   // Find selected item for delete modal
   const selectedItem = state.selectedItemId
@@ -170,7 +196,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
       <FadeInSection delay={200} direction="up">
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
           {[
-            { key: 'all' as const, label: 'ทั้งหมด', count: items.length },
+            { key: 'all', label: 'ทั้งหมด', count: stats?.totalItems || 0 },
             { key: QueueStatus.WAITING, label: '⏳ รอคิว', count: stats?.waitingItems || 0 },
             { key: QueueStatus.IN_PROGRESS, label: '🔄 กำลังบริการ', count: stats?.inProgressItems || 0 },
             { key: QueueStatus.COMPLETED, label: '✅ เสร็จ', count: stats?.completedItems || 0 },
@@ -178,7 +204,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
           ].map((tab) => (
             <button
               key={tab.key}
-              onClick={() => setFilter(tab.key)}
+              onClick={() => actions.setStatusFilter(tab.key)}
               className={`
                 flex items-center gap-1
                 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium
@@ -206,18 +232,62 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
       {/* ─── Queue Table ─── */}
       <FadeInSection delay={300} direction="up" className="flex-1 min-h-0">
         <GlassCard className="h-full flex flex-col overflow-hidden">
+          {/* Pagination Header */}
+          <div className="flex items-center justify-between px-3 sm:px-5 py-2 border-b border-border">
+            <span className="text-xs text-muted">
+              แสดง {items.length} จาก {totalItems} รายการ (หน้า {currentPage}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => actions.goToPage(currentPage - 1)}
+                  disabled={currentPage <= 1}
+                  className="px-2 py-1 text-xs rounded-md border border-border disabled:opacity-30 hover:bg-surface-alt transition-colors"
+                >
+                  ‹ ก่อน
+                </button>
+                {generatePageNumbers(currentPage, totalPages).map((p, i) =>
+                  p === '...' ? (
+                    <span key={`dots-${i}`} className="px-1 text-xs text-muted">…</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => actions.goToPage(p as number)}
+                      className={`
+                        w-7 h-7 text-xs rounded-md border transition-colors
+                        ${currentPage === p
+                          ? 'bg-primary/15 border-primary text-primary font-semibold'
+                          : 'border-border hover:bg-surface-alt text-muted'
+                        }
+                      `}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => actions.goToPage(currentPage + 1)}
+                  disabled={currentPage >= totalPages}
+                  className="px-2 py-1 text-xs rounded-md border border-border disabled:opacity-30 hover:bg-surface-alt transition-colors"
+                >
+                  ถัดไป ›
+                </button>
+              </div>
+            )}
+          </div>
           <div className="flex-1 overflow-y-auto">
-            {filteredItems.length === 0 ? (
+            {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center py-12">
                 <div className="text-5xl mb-3">📋</div>
                 <p className="text-muted font-medium">ไม่มีรายการ</p>
                 <p className="text-muted-light text-sm mt-1">
                   {filter === 'all' ? 'เริ่มต้นด้วยการเพิ่มคิวใหม่' : 'ไม่มีรายการในหมวดนี้'}
-                </p>
-              </div>
+              </p>
+            </div>
             ) : (
+            <>
               <div className="divide-y divide-border">
-                {filteredItems.map((item, index) => {
+                {items.map((item, index) => {
                   const statusConfig = QUEUE_STATUS_CONFIG[item.status];
                   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
                   const statusActions = getStatusActions(item);
@@ -314,6 +384,30 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
                   );
                 })}
               </div>
+
+              {/* Bottom Pagination (mobile-friendly) */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-1 py-3 border-t border-border">
+                  <button
+                    onClick={() => actions.goToPage(currentPage - 1)}
+                    disabled={currentPage <= 1}
+                    className="px-3 py-1.5 text-xs rounded-lg border border-border disabled:opacity-30 hover:bg-surface-alt transition-colors"
+                  >
+                    ‹ ก่อน
+                  </button>
+                  <span className="text-xs text-muted px-2">
+                    {currentPage} / {totalPages}
+                  </span>
+                  <button
+                    onClick={() => actions.goToPage(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                    className="px-3 py-1.5 text-xs rounded-lg border border-border disabled:opacity-30 hover:bg-surface-alt transition-colors"
+                  >
+                    ถัดไป ›
+                  </button>
+                </div>
+              )}
+            </>
             )}
           </div>
         </GlassCard>

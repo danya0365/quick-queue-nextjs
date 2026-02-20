@@ -18,23 +18,40 @@ export interface AdminViewModel {
   items: QueueItem[];
   stats: QueueStats;
   nextQueueNumber: number;
+  // Pagination info
+  totalItems: number;
+  currentPage: number;
+  perPage: number;
+  totalPages: number;
 }
 
 export class AdminPresenter {
   constructor(private readonly repository: IQueueItemRepository) {}
 
   /**
-   * Get admin view model
+   * Get admin view model (paginated)
    */
-  async getViewModel(): Promise<AdminViewModel> {
+  async getViewModel(
+    page: number = 1,
+    perPage: number = 20,
+    status?: string
+  ): Promise<AdminViewModel> {
     try {
-      const [items, stats, nextQueueNumber] = await Promise.all([
-        this.repository.getAll(),
+      const [paginated, stats, nextQueueNumber] = await Promise.all([
+        this.repository.getPaginated(page, perPage, status),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
       ]);
 
-      return { items, stats, nextQueueNumber };
+      return {
+        items: paginated.data,
+        stats,
+        nextQueueNumber,
+        totalItems: paginated.total,
+        currentPage: paginated.page,
+        perPage: paginated.perPage,
+        totalPages: Math.ceil(paginated.total / paginated.perPage),
+      };
     } catch (error) {
       console.error('Error getting admin view model:', error);
       throw error;

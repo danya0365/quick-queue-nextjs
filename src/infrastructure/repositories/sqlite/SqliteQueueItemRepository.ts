@@ -5,16 +5,16 @@
  */
 
 import {
-    IQueueItemRepository,
-    PaginatedResult,
+  IQueueItemRepository,
+  PaginatedResult,
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
-    CreateQueueItemData,
-    QueueItem,
-    QueueStats,
-    QueueStatus,
-    ServiceType,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  QueueItem,
+  QueueStats,
+  QueueStatus,
+  ServiceType,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { getDatabase } from '@/src/infrastructure/database/database';
 
@@ -69,17 +69,33 @@ export class SqliteQueueItemRepository implements IQueueItemRepository {
 
   async getPaginated(
     page: number,
-    perPage: number
+    perPage: number,
+    status?: string
   ): Promise<PaginatedResult<QueueItem>> {
     const offset = (page - 1) * perPage;
 
+    let dataQuery = 'SELECT * FROM queue_items';
+    let countQuery = 'SELECT COUNT(*) as count FROM queue_items';
+    const params: (string | number)[] = [];
+    const countParams: string[] = [];
+
+    if (status && status !== 'all') {
+      dataQuery += ' WHERE status = ?';
+      countQuery += ' WHERE status = ?';
+      params.push(status);
+      countParams.push(status);
+    }
+
+    dataQuery += ' ORDER BY queue_number DESC LIMIT ? OFFSET ?';
+    params.push(perPage, offset);
+
     const rows = this.db
-      .prepare('SELECT * FROM queue_items ORDER BY queue_number ASC LIMIT ? OFFSET ?')
-      .all(perPage, offset) as QueueItemRow[];
+      .prepare(dataQuery)
+      .all(...params) as QueueItemRow[];
 
     const countResult = this.db
-      .prepare('SELECT COUNT(*) as count FROM queue_items')
-      .get() as { count: number };
+      .prepare(countQuery)
+      .get(...countParams) as { count: number };
 
     return {
       data: rows.map(mapRowToQueueItem),
@@ -87,6 +103,17 @@ export class SqliteQueueItemRepository implements IQueueItemRepository {
       page,
       perPage,
     };
+  }
+
+  /**
+   * Get limited items per status (for Queue/Home pages)
+   */
+  async getByStatusLimited(status: string, limit: number): Promise<QueueItem[]> {
+    const rows = this.db
+      .prepare('SELECT * FROM queue_items WHERE status = ? ORDER BY queue_number ASC LIMIT ?')
+      .all(status, limit) as QueueItemRow[];
+
+    return rows.map(mapRowToQueueItem);
   }
 
   async create(data: CreateQueueItemData): Promise<QueueItem> {

@@ -11,8 +11,24 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const repository = new SqliteQueueItemRepository();
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get('page');
+    const perPage = searchParams.get('perPage');
+    const status = searchParams.get('status') || undefined;
+
+    // If page/perPage provided → paginated response
+    if (page && perPage) {
+      const result = await repository.getPaginated(
+        parseInt(page, 10),
+        parseInt(perPage, 10),
+        status
+      );
+      return NextResponse.json(result);
+    }
+
+    // Otherwise → return all items (backward compatible)
     const items = await repository.getAll();
     return NextResponse.json(items);
   } catch (error) {

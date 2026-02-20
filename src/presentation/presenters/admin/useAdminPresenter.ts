@@ -13,6 +13,9 @@ export interface AdminPresenterState {
   isEditModalOpen: boolean;
   isDeleteModalOpen: boolean;
   selectedItemId: string | null;
+  // Pagination
+  currentPage: number;
+  statusFilter: string;
 }
 
 export interface AdminPresenterActions {
@@ -30,7 +33,12 @@ export interface AdminPresenterActions {
   openDeleteModal: (itemId: string) => void;
   closeDeleteModal: () => void;
   setError: (error: string | null) => void;
+  // Pagination
+  goToPage: (page: number) => void;
+  setStatusFilter: (status: string) => void;
 }
+
+const PER_PAGE = 20;
 
 export function useAdminPresenter(
   initialViewModel?: AdminViewModel,
@@ -49,6 +57,8 @@ export function useAdminPresenter(
   );
   const [loading, setLoading] = useState(!initialViewModel);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilterState] = useState<string>('all');
 
   // Modal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -56,15 +66,24 @@ export function useAdminPresenter(
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  const loadData = useCallback(async () => {
+  // Use refs to avoid stale closures
+  const currentPageRef = useRef(currentPage);
+  const statusFilterRef = useRef(statusFilter);
+  currentPageRef.current = currentPage;
+  statusFilterRef.current = statusFilter;
+
+  const loadData = useCallback(async (page?: number, status?: string) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
 
     setLoading(true);
     setError(null);
 
+    const p = page ?? currentPageRef.current;
+    const s = status ?? statusFilterRef.current;
+
     try {
-      const newViewModel = await presenter.getViewModel();
+      const newViewModel = await presenter.getViewModel(p, PER_PAGE, s === 'all' ? undefined : s);
       if (isMountedRef.current) {
         setViewModel(newViewModel);
       }
@@ -78,6 +97,17 @@ export function useAdminPresenter(
       if (isMountedRef.current) setLoading(false);
     }
   }, [presenter]);
+
+  const goToPage = useCallback((page: number) => {
+    setCurrentPage(page);
+    loadData(page, statusFilterRef.current);
+  }, [loadData]);
+
+  const setStatusFilter = useCallback((status: string) => {
+    setStatusFilterState(status);
+    setCurrentPage(1); // Reset to page 1 on filter change
+    loadData(1, status);
+  }, [loadData]);
 
   const createQueueItem = useCallback(async (data: CreateQueueItemData) => {
     setError(null);
@@ -214,6 +244,8 @@ export function useAdminPresenter(
       isEditModalOpen,
       isDeleteModalOpen,
       selectedItemId,
+      currentPage,
+      statusFilter,
     },
     {
       loadData,
@@ -230,6 +262,8 @@ export function useAdminPresenter(
       openDeleteModal,
       closeDeleteModal,
       setError,
+      goToPage,
+      setStatusFilter,
     },
   ];
 }

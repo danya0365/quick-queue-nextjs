@@ -23,10 +23,12 @@ export class HomePresenter {
    */
   async getViewModel(): Promise<HomeViewModel> {
     try {
-      const [items, stats] = await Promise.all([
-        this.repository.getAll(),
+      const [paginated, stats] = await Promise.all([
+        this.repository.getPaginated(1, 10),
         this.repository.getStats(),
       ]);
+
+      const items = paginated.data;
 
       // Find the current serving number
       const inProgressItems = items.filter((i) => i.status === 'in_progress');
