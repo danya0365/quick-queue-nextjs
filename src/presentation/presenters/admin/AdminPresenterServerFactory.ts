@@ -1,13 +1,14 @@
 /**
  * AdminPresenterServerFactory
+ * ✅ Injects SQLite Repository for real data
  */
 
-import { MockQueueItemRepository } from '@/src/infrastructure/repositories/mock/MockQueueItemRepository';
+import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
 import { AdminPresenter } from './AdminPresenter';
 
 export class AdminPresenterServerFactory {
   static create(): AdminPresenter {
-    const repository = new MockQueueItemRepository();
+    const repository = new SqliteQueueItemRepository();
     return new AdminPresenter(repository);
   }
 }

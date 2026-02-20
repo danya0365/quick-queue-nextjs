@@ -1,14 +1,14 @@
 /**
  * QueuePresenterServerFactory
- * ✅ Injects Mock Repository for development
+ * ✅ Injects SQLite Repository for real data
  */
 
-import { MockQueueItemRepository } from '@/src/infrastructure/repositories/mock/MockQueueItemRepository';
+import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
 import { QueuePresenter } from './QueuePresenter';
 
 export class QueuePresenterServerFactory {
   static create(): QueuePresenter {
-    const repository = new MockQueueItemRepository();
+    const repository = new SqliteQueueItemRepository();
     return new QueuePresenter(repository);
   }
 }

@@ -10,8 +10,8 @@ interface LoginGateProps {
 }
 
 /**
- * LoginGate - Simple login form for the admin page
- * Mock: admin / admin
+ * LoginGate - Real login form calling /api/auth/login
+ * Authenticates against SQLite via API route
  */
 export function LoginGate({ onLogin }: LoginGateProps) {
   const [username, setUsername] = useState('');
@@ -37,15 +37,27 @@ export function LoginGate({ onLogin }: LoginGateProps) {
     setError('');
     setIsLoading(true);
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (username === 'admin' && password === 'admin') {
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || 'เกิดข้อผิดพลาด');
+        setIsLoading(false);
+        return;
+      }
+
+      // Success — session cookie is now set by the server
       onLogin();
-    } else {
-      setError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+    } catch {
+      setError('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

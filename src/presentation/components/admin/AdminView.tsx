@@ -16,7 +16,7 @@ import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface AdminViewProps {
   initialViewModel?: AdminViewModel;
@@ -24,13 +24,48 @@ interface AdminViewProps {
 
 export function AdminView({ initialViewModel }: AdminViewProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const [state, actions] = useAdminPresenter(initialViewModel);
   const viewModel = state.viewModel;
   const [filter, setFilter] = useState<'all' | QueueStatus>('all');
 
+  // ─── Check existing session on mount ───
+  useEffect(() => {
+    async function checkSession() {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          setIsAuthenticated(true);
+        }
+      } catch {
+        // No session
+      } finally {
+        setAuthChecking(false);
+      }
+    }
+    checkSession();
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setIsAuthenticated(false);
+  };
+
+  // ─── Auth checking spinner ───
+  if (authChecking) {
+    return (
+      <div className="flex-1 flex items-center justify-center h-full">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-muted text-sm">ตรวจสอบเซสชัน...</p>
+        </div>
+      </div>
+    );
+  }
+
   // ─── Auth Gate ───
   if (!isAuthenticated) {
-    return <LoginGate onLogin={() => setIsAuthenticated(true)} />;
+    return <LoginGate onLogin={() => { setIsAuthenticated(true); actions.loadData(); }} />;
   }
 
   // ─── Loading ───
@@ -101,7 +136,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
             <AnimatedButton
               variant="ghost"
               size="md"
-              onClick={() => setIsAuthenticated(false)}
+              onClick={handleLogout}
               icon={<span>🚪</span>}
             >
               ออก
