@@ -1,48 +1,41 @@
-/**
- * Database Singleton
- * Provides a single SQLite connection via better-sqlite3
- * DB file: data/quick-queue.db (project root)
- */
-
-import Database from 'better-sqlite3';
+import { Client, createClient } from '@libsql/client';
 import fs from 'fs';
 import path from 'path';
 
-const DB_DIR = path.join(process.cwd(), 'data');
-const DB_PATH = path.join(DB_DIR, 'quick-queue.db');
+let tursoClient: Client | null = null;
+let migrationsRun = false;
 
-let db: Database.Database | null = null;
+const DB_DIR = path.join(process.cwd(), 'data');
 
 /**
- * Get the singleton database instance.
- * Auto-creates the data/ directory and runs migrations on first call.
+ * Get the singleton Turso (libsql) database instance.
  */
-export function getDatabase(): Database.Database {
-  if (db) return db;
+export function getTursoDatabase(): Client {
+  if (tursoClient) return tursoClient;
 
-  // Ensure data/ directory exists
+  // Ensure data/ directory exists for local files
   if (!fs.existsSync(DB_DIR)) {
     fs.mkdirSync(DB_DIR, { recursive: true });
   }
 
-  db = new Database(DB_PATH);
+  const url = process.env.TURSO_DATABASE_URL || 'file:data/quick-queue.db';
+  const authToken = process.env.TURSO_AUTH_TOKEN;
 
-  // Enable WAL mode for better concurrent read performance
-  db.pragma('journal_mode = WAL');
-  // Enable foreign keys
-  db.pragma('foreign_keys = ON');
+  tursoClient = createClient({
+    url,
+    authToken,
+  });
 
-  // Run migrations on first connection
-  runMigrations(db);
-
-  return db;
+  return tursoClient;
 }
 
 /**
- * Run migrations — creates tables if they don't exist
+ * Ensure database schema is created via @libsql/client
  */
-function runMigrations(db: Database.Database): void {
-  db.exec(`
+export async function runMigrations(db: Client): Promise<void> {
+  if (migrationsRun) return;
+
+  await db.executeMultiple(`
     -- Queue Items
     CREATE TABLE IF NOT EXISTS queue_items (
       id            TEXT PRIMARY KEY,
@@ -79,14 +72,6 @@ function runMigrations(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
     CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
   `);
-}
 
-/**
- * Close the database connection (for cleanup / testing)
- */
-export function closeDatabase(): void {
-  if (db) {
-    db.close();
-    db = null;
-  }
+  migrationsRun = true;
 }

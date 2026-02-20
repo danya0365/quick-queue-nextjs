@@ -10,32 +10,45 @@
  *   yarn db:reset:mock      → wipe DB + starter + 1000 mock items
  */
 
-import { closeDatabase, getDatabase } from './database';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+
 import { seedMock } from './seeds/mock.seed';
 import { seedStarter } from './seeds/starter.seed';
+import { getTursoDatabase, runMigrations } from './turso';
 
-function main(): void {
+async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const mode = args[0] || 'starter';
 
-  const db = getDatabase();
+  // Get single instance of the database (Local SQLite via Turso Client or Remote Turso)
+  const db = getTursoDatabase();
 
   console.log('🌱 Quick Queue — Database Seed');
   console.log(`   Mode: ${mode}`);
+  console.log(`   Provider: @libsql/client`);
   console.log('═'.repeat(40));
 
+  console.log('  ⏳ Enforcing Database Schema (Migrations)...');
+  await runMigrations(db);
+
   // Always run starter seed (admin user)
-  seedStarter(db);
+  await seedStarter(db);
 
   // Conditionally run mock seed
   if (mode === 'mock') {
     const count = parseInt(args[1] || '1000', 10);
-    seedMock(db, count);
+    await seedMock(db, count);
   }
 
-  closeDatabase();
+  // Close the client correctly
+  db.close();
+
   console.log('═'.repeat(40));
   console.log('🌱 Seed complete!');
 }
 
-main();
+main().catch(err => {
+  console.error('Seed Error:', err);
+  process.exit(1);
+});

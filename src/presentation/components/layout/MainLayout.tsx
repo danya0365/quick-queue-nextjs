@@ -18,7 +18,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     <div
       className="
         flex flex-col
-        h-screen w-screen
+        h-[100dvh] w-screen
         overflow-hidden
         bg-background text-foreground
       "

@@ -3,13 +3,14 @@
  * GET  /api/queue-items — List all queue items
  * POST /api/queue-items — Create a new queue item
  *
- * Server-side only: uses SqliteQueueItemRepository
+ * Server-side only: uses TursoQueueItemRepository
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { requireAuth } from '@/src/infrastructure/auth/session';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const repository = new SqliteQueueItemRepository();
+const repository = getQueueItemRepository();
 
 export async function GET(request: NextRequest) {
   try {
@@ -42,6 +43,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const { errorResponse } = await requireAuth(request);
+    if (errorResponse) return errorResponse;
     const body = await request.json();
 
     if (!body.customerName || !body.serviceType) {

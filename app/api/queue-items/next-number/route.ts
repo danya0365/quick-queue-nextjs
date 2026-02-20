@@ -3,10 +3,10 @@
  * GET /api/queue-items/next-number — Get the next queue number
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextResponse } from 'next/server';
 
-const repository = new SqliteQueueItemRepository();
+const repository = getQueueItemRepository();
 
 export async function GET() {
   try {

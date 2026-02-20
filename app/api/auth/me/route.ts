@@ -3,10 +3,10 @@
  * GET /api/auth/me — Check if current session is valid
  */
 
-import { SqliteAuthRepository } from '@/src/infrastructure/repositories/sqlite/SqliteAuthRepository';
+import { getAuthRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const authRepo = new SqliteAuthRepository();
+const authRepo = getAuthRepository();
 
 export async function GET(request: NextRequest) {
   try {

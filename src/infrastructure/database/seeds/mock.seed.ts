@@ -5,7 +5,7 @@
  * Usage: yarn db:seed:mock
  */
 
-import type Database from 'better-sqlite3';
+import { Client, InStatement } from '@libsql/client';
 
 // ── Thai name pools ──
 const FIRST_NAMES = [
@@ -86,74 +86,81 @@ function generateTimestamp(baseDate: Date, minutesOffset: number): string {
   return d.toISOString();
 }
 
-export function seedMock(db: Database.Database, count: number = 1000): void {
+export async function seedMock(db: Client, count: number = 1000): Promise<void> {
   console.log('');
   console.log(`🧪 Mock Seed — Generating ${count} queue items`);
   console.log('─'.repeat(40));
 
   // Check existing items
-  const existing = db
-    .prepare('SELECT COUNT(*) as count FROM queue_items')
-    .get() as { count: number };
+  const existing = await db.execute('SELECT COUNT(*) as count FROM queue_items');
+  const countRow = existing.rows[0].count as number;
 
-  if (existing.count > 0) {
-    console.log(`  ⚠️  Found ${existing.count} existing items. Clearing...`);
-    db.prepare('DELETE FROM queue_items').run();
+  if (countRow > 0) {
+    console.log(`  ⚠️  Found ${countRow} existing items. Clearing...`);
+    await db.execute('DELETE FROM queue_items');
     console.log('  🗑️  Cleared existing queue items');
   }
 
   const rand = createSeededRandom(42); // Deterministic for reproducible data
-  const baseDate = new Date('2026-02-20T08:00:00.000Z');
-
-  const insert = db.prepare(
-    `INSERT INTO queue_items (id, queue_number, customer_name, service_type, status, note, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  );
+  const baseDate = new Date();
+  baseDate.setHours(8, 0, 0, 0); // Today at 08:00 AM
 
   let waitingCount = 0;
   let inProgressCount = 0;
   let completedCount = 0;
   let cancelledCount = 0;
 
-  const insertAll = db.transaction(() => {
-    for (let i = 1; i <= count; i++) {
-      const firstName = pickRandom(FIRST_NAMES, rand);
-      const lastName = pickRandom(LAST_NAMES, rand);
-      const customerName = `คุณ${firstName} ${lastName.charAt(0)}.`;
+  const batchStatements: InStatement[] = [];
 
-      const serviceType = pickWeighted(SERVICE_TYPES, SERVICE_WEIGHTS, rand);
-      const status = pickWeighted(STATUSES, STATUS_WEIGHTS, rand);
-      const notes = NOTES_BY_SERVICE[serviceType];
-      const note = pickRandom(notes, rand);
+  for (let i = 1; i <= count; i++) {
+    const firstName = pickRandom(FIRST_NAMES, rand);
+    const lastName = pickRandom(LAST_NAMES, rand);
+    const customerName = `คุณ${firstName} ${lastName.charAt(0)}.`;
 
-      // Stagger created_at by ~2-8 min per item
-      const minuteOffset = Math.floor(i * (2 + rand() * 6));
-      const createdAt = generateTimestamp(baseDate, minuteOffset);
+    const serviceType = pickWeighted(SERVICE_TYPES, SERVICE_WEIGHTS, rand);
+    const status = pickWeighted(STATUSES, STATUS_WEIGHTS, rand);
+    const notes = NOTES_BY_SERVICE[serviceType];
+    const note = pickRandom(notes, rand);
 
-      // Updated later for non-waiting items
-      let updatedMinutes = minuteOffset;
-      if (status === 'in_progress') {
-        updatedMinutes += Math.floor(5 + rand() * 20);
-      } else if (status === 'completed') {
-        updatedMinutes += Math.floor(15 + rand() * 45);
-      } else if (status === 'cancelled') {
-        updatedMinutes += Math.floor(5 + rand() * 10);
-      }
-      const updatedAt = generateTimestamp(baseDate, updatedMinutes);
+    // Stagger created_at by ~2-8 min per item
+    const minuteOffset = Math.floor(i * (2 + rand() * 6));
+    const createdAt = generateTimestamp(baseDate, minuteOffset);
 
-      insert.run(padId(i), i, customerName, serviceType, status, note, createdAt, updatedAt);
-
-      // Count stats
-      switch (status) {
-        case 'waiting': waitingCount++; break;
-        case 'in_progress': inProgressCount++; break;
-        case 'completed': completedCount++; break;
-        case 'cancelled': cancelledCount++; break;
-      }
+    // Updated later for non-waiting items
+    let updatedMinutes = minuteOffset;
+    if (status === 'in_progress') {
+      updatedMinutes += Math.floor(5 + rand() * 20);
+    } else if (status === 'completed') {
+      updatedMinutes += Math.floor(15 + rand() * 45);
+    } else if (status === 'cancelled') {
+      updatedMinutes += Math.floor(5 + rand() * 10);
     }
-  });
+    const updatedAt = generateTimestamp(baseDate, updatedMinutes);
 
-  insertAll();
+    batchStatements.push({
+      sql: `INSERT INTO queue_items (id, queue_number, customer_name, service_type, status, note, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [padId(i), i, customerName, serviceType, status, note, createdAt, updatedAt]
+    });
+
+    // Count stats
+    switch (status) {
+      case 'waiting': waitingCount++; break;
+      case 'in_progress': inProgressCount++; break;
+      case 'completed': completedCount++; break;
+      case 'cancelled': cancelledCount++; break;
+    }
+  }
+
+  console.log('  ⏳  Executing batch insert over libSQL/Turso... (this may take a few seconds)');
+  
+  // Use batch operation to insert in one go (works for both local file: and remote libsql://)
+  // Execute chunks to avoid max payload limits, 500 records at a time
+  const maxBatchSize = 500;
+  for (let i = 0; i < batchStatements.length; i += maxBatchSize) {
+    const chunk = batchStatements.slice(i, i + maxBatchSize);
+    await db.batch(chunk, 'write');
+  }
 
   console.log(`  ✅ ${count} queue items created`);
   console.log(`     📊 Breakdown:`);

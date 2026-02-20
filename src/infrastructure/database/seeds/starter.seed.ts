@@ -5,28 +5,30 @@
  * Usage: yarn db:seed:starter
  */
 
-import type Database from 'better-sqlite3';
+import { Client } from '@libsql/client';
 import crypto from 'crypto';
 
 function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-export function seedStarter(db: Database.Database): void {
+export async function seedStarter(db: Client): Promise<void> {
   console.log('');
   console.log('📦 Starter Seed — Admin User Only');
   console.log('─'.repeat(40));
 
   // ── Admin User ──
-  const existingAdmin = db
-    .prepare('SELECT id FROM admin_users WHERE username = ?')
-    .get('admin');
+  const existingAdmin = await db.execute({
+    sql: 'SELECT id FROM admin_users WHERE username = ?',
+    args: ['admin']
+  });
 
-  if (!existingAdmin) {
-    db.prepare(
-      `INSERT INTO admin_users (id, username, password_hash, display_name)
-       VALUES (?, ?, ?, ?)`
-    ).run('admin-001', 'admin', hashPassword('admin'), 'เจ้าของร้าน');
+  if (existingAdmin.rows.length === 0) {
+    await db.execute({
+      sql: `INSERT INTO admin_users (id, username, password_hash, display_name)
+            VALUES (?, ?, ?, ?)`,
+      args: ['admin-001', 'admin', hashPassword('admin'), 'เจ้าของร้าน']
+    });
     console.log('  ✅ Admin user created (admin / admin)');
   } else {
     console.log('  ⏭️  Admin user already exists, skipped');

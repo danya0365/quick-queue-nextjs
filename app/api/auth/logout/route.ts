@@ -3,10 +3,10 @@
  * POST /api/auth/logout — Logout (invalidate session)
  */
 
-import { SqliteAuthRepository } from '@/src/infrastructure/repositories/sqlite/SqliteAuthRepository';
+import { getAuthRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const authRepo = new SqliteAuthRepository();
+const authRepo = getAuthRepository();
 
 export async function POST(request: NextRequest) {
   try {

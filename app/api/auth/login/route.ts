@@ -4,10 +4,10 @@
  * Returns session token in HTTP-only cookie
  */
 
-import { SqliteAuthRepository } from '@/src/infrastructure/repositories/sqlite/SqliteAuthRepository';
+import { getAuthRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const authRepo = new SqliteAuthRepository();
+const authRepo = getAuthRepository();
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,11 +35,14 @@ export async function POST(request: NextRequest) {
     // Get the session token that was just created
     // The login method creates a session internally — we need to get the token
     // Retrieve the latest session for this user
-    const { getDatabase } = await import('@/src/infrastructure/database/database');
-    const db = getDatabase();
-    const session = db
-      .prepare('SELECT token FROM sessions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1')
-      .get(user.id) as { token: string } | undefined;
+    const { getTursoDatabase } = await import('@/src/infrastructure/database/turso');
+    const db = getTursoDatabase();
+    const sessionResult = await db.execute({
+      sql: 'SELECT token FROM sessions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1',
+      args: [user.id]
+    });
+    const sessionRow = sessionResult.rows[0];
+    const session = sessionRow ? { token: sessionRow.token as string } : undefined;
 
     if (!session) {
       return NextResponse.json(

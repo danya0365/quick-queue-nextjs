@@ -5,10 +5,11 @@
  * DELETE /api/queue-items/[id] — Delete a queue item
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { requireAuth } from '@/src/infrastructure/auth/session';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const repository = new SqliteQueueItemRepository();
+const repository = getQueueItemRepository();
 
 export async function GET(
   _request: NextRequest,
@@ -40,6 +41,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { errorResponse } = await requireAuth(request);
+    if (errorResponse) return errorResponse;
     const { id } = await params;
     const body = await request.json();
 
@@ -62,10 +65,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { errorResponse } = await requireAuth(request);
+    if (errorResponse) return errorResponse;
     const { id } = await params;
     const success = await repository.delete(id);
 

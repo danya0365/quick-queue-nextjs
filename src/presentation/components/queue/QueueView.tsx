@@ -1,6 +1,7 @@
 'use client';
 
 import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { QueueSkeleton } from '@/src/presentation/components/queue/QueueSkeleton';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
@@ -53,14 +54,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
   });
 
   if (state.loading && !viewModel) {
-    return (
-      <div className="flex-1 flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted text-sm">กำลังโหลดข้อมูลคิว...</p>
-        </div>
-      </div>
-    );
+    return <QueueSkeleton />;
   }
 
   if (state.error && !viewModel) {

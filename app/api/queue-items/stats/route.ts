@@ -3,10 +3,10 @@
  * GET /api/queue-items/stats — Get queue statistics
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextResponse } from 'next/server';
 
-const repository = new SqliteQueueItemRepository();
+const repository = getQueueItemRepository();
 
 export async function GET() {
   try {

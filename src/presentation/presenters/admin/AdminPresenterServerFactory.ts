@@ -3,12 +3,12 @@
  * ✅ Injects SQLite Repository for real data
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { AdminPresenter } from './AdminPresenter';
 
 export class AdminPresenterServerFactory {
   static create(): AdminPresenter {
-    const repository = new SqliteQueueItemRepository();
+    const repository = getQueueItemRepository();
     return new AdminPresenter(repository);
   }
 }

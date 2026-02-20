@@ -6,6 +6,7 @@ import {
     QueueStatus,
     SERVICE_TYPE_CONFIG,
 } from '@/src/domain/types/queue';
+import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
@@ -98,14 +99,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
 
   // ─── Loading ───
   if (state.loading && !viewModel) {
-    return (
-      <div className="flex-1 flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
-          <p className="text-muted text-sm">กำลังโหลด...</p>
-        </div>
-      </div>
-    );
+    return <AdminSkeleton />;
   }
 
   const stats = viewModel?.stats;

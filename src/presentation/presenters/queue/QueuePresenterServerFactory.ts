@@ -3,12 +3,12 @@
  * ✅ Injects SQLite Repository for real data
  */
 
-import { SqliteQueueItemRepository } from '@/src/infrastructure/repositories/sqlite/SqliteQueueItemRepository';
+import { getQueueItemRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { QueuePresenter } from './QueuePresenter';
 
 export class QueuePresenterServerFactory {
   static create(): QueuePresenter {
-    const repository = new SqliteQueueItemRepository();
+    const repository = getQueueItemRepository();
     return new QueuePresenter(repository);
   }
 }
