@@ -4,38 +4,80 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ============================================
-   @theme — Design Tokens (generates utility classes)
+   :root — Light Mode base CSS Custom Properties
+   Using --qq- prefix to avoid conflict with @theme
+   ============================================ */
+:root {
+  --qq-background: #f8fafc;
+  --qq-foreground: #0f172a;
+  --qq-surface: #ffffff;
+  --qq-surface-alt: #f1f5f9;
+  --qq-muted: #64748b;
+  --qq-muted-light: #94a3b8;
+  --qq-border: #e2e8f0;
+  --qq-border-light: #f1f5f9;
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: rgba(0, 0, 0, 0.06);
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --hero-gradient: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #ec4899 100%);
+  --grid-color: rgba(15, 23, 42, 0.04);
+}
+
+/* ============================================
+   .dark — Dark Mode Overrides
+   ============================================ */
+.dark {
+  --qq-background: #0b0f1a;
+  --qq-foreground: #e2e8f0;
+  --qq-surface: #141a2e;
+  --qq-surface-alt: #1a2240;
+  --qq-muted: #94a3b8;
+  --qq-muted-light: #64748b;
+  --qq-border: #1e293b;
+  --qq-border-light: #1a2240;
+
+  --glass-bg: rgba(20, 26, 46, 0.75);
+  --glass-border: rgba(124, 58, 237, 0.15);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  --header-bg: rgba(11, 15, 26, 0.85);
+  --grid-color: rgba(124, 58, 237, 0.04);
+}
+
+/* ============================================
+   @theme — Design Tokens
    
-   These tokens generate Tailwind utility classes automatically:
-   --color-background  → bg-background, text-background
-   --color-primary     → bg-primary, text-primary, border-primary
-   --color-surface     → bg-surface, text-surface
-   etc.
+   Static colors → hardcoded values
+   Dynamic colors → var(--qq-*) references
+   
+   This makes Tailwind utilities like bg-background,
+   text-foreground, bg-surface reactive to .dark class
    ============================================ */
 @theme {
-  /* ── Primary Palette ── */
+  /* ── Primary Palette (static) ── */
   --color-primary: #7c3aed;
   --color-primary-light: #a78bfa;
   --color-primary-dark: #5b21b6;
   --color-primary-glow: rgba(124, 58, 237, 0.35);
 
-  /* ── Accent ── */
+  /* ── Accent (static) ── */
   --color-accent: #06b6d4;
   --color-accent-light: #67e8f9;
   --color-accent-dark: #0891b2;
   --color-accent-glow: rgba(6, 182, 212, 0.35);
 
-  /* ── Semantic ── */
-  --color-background: #f8fafc;
-  --color-foreground: #0f172a;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f1f5f9;
-  --color-muted: #64748b;
-  --color-muted-light: #94a3b8;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
+  /* ── Semantic (dynamic — resolves via --qq-* vars) ── */
+  --color-background: var(--qq-background);
+  --color-foreground: var(--qq-foreground);
+  --color-surface: var(--qq-surface);
+  --color-surface-alt: var(--qq-surface-alt);
+  --color-muted: var(--qq-muted);
+  --color-muted-light: var(--qq-muted-light);
+  --color-border: var(--qq-border);
+  --color-border-light: var(--qq-border-light);
 
-  /* ── Gradients ── */
+  /* ── Gradients (static) ── */
   --color-gradient-start: #7c3aed;
   --color-gradient-mid: #06b6d4;
   --color-gradient-end: #ec4899;
@@ -53,37 +95,4 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
-}
-
-/* ============================================
-   :root — Light Mode CSS Variables
-   ============================================ */
-:root {
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: rgba(0, 0, 0, 0.06);
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --hero-gradient: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #ec4899 100%);
-  --grid-color: rgba(15, 23, 42, 0.04);
-}
-
-/* ============================================
-   .dark — Dark Mode Overrides
-   ============================================ */
-.dark {
-  --color-background: #0b0f1a;
-  --color-foreground: #e2e8f0;
-  --color-surface: #141a2e;
-  --color-surface-alt: #1a2240;
-  --color-muted: #94a3b8;
-  --color-muted-light: #64748b;
-  --color-border: #1e293b;
-  --color-border-light: #1a2240;
-  --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.3);
-
-  --glass-bg: rgba(20, 26, 46, 0.75);
-  --glass-border: rgba(124, 58, 237, 0.15);
-  --glass-shadow: rgba(0, 0, 0, 0.3);
-  --header-bg: rgba(11, 15, 26, 0.85);
-  --grid-color: rgba(124, 58, 237, 0.04);
 }

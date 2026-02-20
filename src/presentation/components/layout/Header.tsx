@@ -1,0 +1,76 @@
+'use client';
+
+import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
+import { ThemeToggle } from '@/src/presentation/components/shared/ThemeToggle';
+import { useState } from 'react';
+import { animated, useSpring } from 'react-spring';
+
+export function Header() {
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+
+  // Logo pulse animation on hover
+  const logoSpring = useSpring({
+    transform: isLogoHovered ? 'scale(1.05)' : 'scale(1)',
+    config: { tension: 300, friction: 15 },
+  });
+
+  // Glow on hover
+  const logoGlowSpring = useSpring({
+    textShadow: isLogoHovered
+      ? '0 0 20px rgba(124, 58, 237, 0.6)'
+      : '0 0 0px rgba(124, 58, 237, 0)',
+    config: { tension: 200, friction: 20 },
+  });
+
+  return (
+    <header
+      className="
+        h-16 flex-shrink-0
+        flex items-center justify-between px-6
+        border-b border-border
+        backdrop-blur-xl
+        bg-[var(--header-bg)]
+      "
+      id="main-header"
+    >
+      {/* Logo Section */}
+      <animated.div
+        style={{ ...logoSpring, ...logoGlowSpring }}
+        onMouseEnter={() => setIsLogoHovered(true)}
+        onMouseLeave={() => setIsLogoHovered(false)}
+        className="flex items-center gap-3 cursor-pointer select-none"
+      >
+        <div className="
+          w-9 h-9 rounded-lg
+          bg-gradient-to-br from-primary to-accent
+          flex items-center justify-center
+          shadow-md
+        ">
+          <span className="text-white font-bold text-sm">QQ</span>
+        </div>
+        <div className="flex flex-col">
+          <span className="text-foreground font-bold text-lg leading-tight tracking-tight">
+            {DEFAULT_SHOP_CONFIG.shopName}
+          </span>
+          <span className="text-muted text-[10px] leading-none tracking-wide uppercase">
+            ระบบจัดการคิวอัจฉริยะ
+          </span>
+        </div>
+      </animated.div>
+
+      {/* Right Section */}
+      <div className="flex items-center gap-3">
+        {/* Live Indicator */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-alt border border-border">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="text-xs text-muted font-medium">Online</span>
+        </div>
+
+        <ThemeToggle />
+      </div>
+    </header>
+  );
+}

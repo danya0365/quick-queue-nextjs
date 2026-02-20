@@ -4,8 +4,11 @@
    All styles are organized into separate modules:
    
    1. theme.css      → @theme tokens, :root, .dark overrides
-   2. will implement later
+   2. layout.css     → MainLayout, fullscreen, scrollbar
+   3. animations.css → Keyframes, micro-interactions
    ============================================ */
 
 @import "tailwindcss";
 @import "./theme.css";
+@import "./layout.css";
+@import "./animations.css";
