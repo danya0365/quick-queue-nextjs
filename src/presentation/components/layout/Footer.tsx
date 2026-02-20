@@ -16,8 +16,8 @@ export function Footer() {
   return (
     <footer
       className="
-        h-12 flex-shrink-0
-        flex items-center justify-between px-6
+        h-10 flex-shrink-0
+        hidden sm:flex items-center justify-between px-4 sm:px-6
         border-t border-border
         bg-surface/80 backdrop-blur-sm
       "

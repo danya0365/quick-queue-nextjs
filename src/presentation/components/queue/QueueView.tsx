@@ -89,11 +89,11 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
   const completedItems = viewModel?.completedItems || [];
 
   return (
-    <div className="h-full flex flex-col p-4 sm:p-6 gap-4 overflow-y-auto" id="queue-view">
+    <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-4 overflow-y-auto" id="queue-view">
       {/* ─── Top Bar: Live Status ─── */}
       <FadeInSection delay={0} direction="up">
         <div className="flex items-center justify-between">
-          <h1 className="text-foreground text-xl sm:text-2xl font-bold flex items-center gap-2">
+          <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
             📋 สถานะคิว
           </h1>
           <div className="flex items-center gap-3">
@@ -109,25 +109,25 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
       {/* ─── Currently Serving Hero ─── */}
       <FadeInSection delay={100} direction="up">
-        <GlassCard className="p-6 sm:p-8 text-center" glowColor="rgba(124, 58, 237, 0.25)">
-          <p className="text-muted text-sm mb-3 uppercase tracking-widest font-medium">
+        <GlassCard className="p-4 sm:p-8 text-center" glowColor="rgba(124, 58, 237, 0.25)">
+          <p className="text-muted text-xs sm:text-sm mb-2 sm:mb-3 uppercase tracking-widest font-medium">
             กำลังให้บริการคิวหมายเลข
           </p>
           <animated.div style={pulseSpring} className="inline-block">
             <div className="
-              w-32 h-32 sm:w-40 sm:h-40
+              w-24 h-24 sm:w-40 sm:h-40
               rounded-full mx-auto
               bg-gradient-to-br from-primary to-accent
               flex items-center justify-center
               shadow-xl
             ">
-              <span className="text-white text-6xl sm:text-7xl font-black tabular-nums">
+              <span className="text-white text-4xl sm:text-7xl font-black tabular-nums">
                 {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
               </span>
             </div>
           </animated.div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-5">
             <div className="flex items-center gap-2 text-sm text-muted">
               <span>⏳</span>
               <span>
@@ -146,8 +146,8 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
       {/* ─── Quick Stats ─── */}
       <FadeInSection delay={200} direction="up">
-        <div className="grid grid-cols-3 gap-3">
-          <GlassCard className="p-3 text-center" glowColor="rgba(245, 158, 11, 0.15)">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <GlassCard className="p-2 sm:p-3 text-center" glowColor="rgba(245, 158, 11, 0.15)">
             <AnimatedCounter
               value={stats?.waitingItems || 0}
               label="รอคิว"
@@ -155,7 +155,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
               color="text-amber-500"
             />
           </GlassCard>
-          <GlassCard className="p-3 text-center" glowColor="rgba(59, 130, 246, 0.15)">
+          <GlassCard className="p-2 sm:p-3 text-center" glowColor="rgba(59, 130, 246, 0.15)">
             <AnimatedCounter
               value={stats?.inProgressItems || 0}
               label="กำลังให้บริการ"
@@ -163,7 +163,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
               color="text-blue-500"
             />
           </GlassCard>
-          <GlassCard className="p-3 text-center" glowColor="rgba(16, 185, 129, 0.15)">
+          <GlassCard className="p-2 sm:p-3 text-center" glowColor="rgba(16, 185, 129, 0.15)">
             <AnimatedCounter
               value={stats?.completedItems || 0}
               label="เสร็จแล้ว"
@@ -176,11 +176,11 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
       {/* ─── Queue Sections ─── */}
       <FadeInSection delay={300} direction="up" className="flex-1 min-h-0">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 h-full">
 
           {/* In Progress */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(59, 130, 246, 0.1)">
-            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
@@ -203,7 +203,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
           {/* Waiting */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(245, 158, 11, 0.1)">
-            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
               <span>⏳</span>
               <h3 className="text-foreground font-semibold text-sm">รอคิว</h3>
               <span className="ml-auto text-xs bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full font-medium">
@@ -223,7 +223,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
           {/* Completed */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(16, 185, 129, 0.1)">
-            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-border flex items-center gap-2">
               <span>✅</span>
               <h3 className="text-foreground font-semibold text-sm">เสร็จแล้ว</h3>
               <span className="ml-auto text-xs bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-medium">

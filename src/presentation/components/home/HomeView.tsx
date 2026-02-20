@@ -84,10 +84,10 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     .slice(0, 5) || [];
 
   return (
-    <div className="h-full flex flex-col p-4 sm:p-6 gap-5 overflow-y-auto" id="home-view">
+    <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-5 overflow-y-auto" id="home-view">
       {/* ─── Hero Section ─── */}
       <FadeInSection delay={0} direction="up">
-        <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8"
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl p-4 sm:p-8"
           style={{
             background: `linear-gradient(${gradientAngle}deg, var(--color-primary), var(--color-accent), var(--color-gradient-end))`,
           }}
@@ -100,24 +100,24 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
             }}
           />
 
-          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6">
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
             {/* Current Queue Number */}
             <animated.div
               style={bigNumberSpring}
               className="flex flex-col items-center"
             >
-              <span className="text-white/70 text-xs font-medium uppercase tracking-widest mb-2">
+              <span className="text-white/70 text-[10px] sm:text-xs font-medium uppercase tracking-widest mb-1 sm:mb-2">
                 กำลังให้บริการ
               </span>
               <div className="
-                w-28 h-28 sm:w-32 sm:h-32
+                w-20 h-20 sm:w-32 sm:h-32
                 rounded-full
                 bg-white/20 backdrop-blur-sm
                 border-2 border-white/40
                 flex items-center justify-center
                 shadow-xl
               ">
-                <span className="text-white text-5xl sm:text-6xl font-black tabular-nums">
+                <span className="text-white text-3xl sm:text-6xl font-black tabular-nums">
                   {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
                 </span>
               </div>
@@ -125,19 +125,19 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
             {/* Hero Text */}
             <div className="flex-1 text-center sm:text-left">
-              <h1 className="text-white text-2xl sm:text-3xl font-bold mb-2 tracking-tight">
+              <h1 className="text-white text-lg sm:text-3xl font-bold mb-1 sm:mb-2 tracking-tight">
                 Quick Queue
               </h1>
-              <p className="text-white/80 text-sm sm:text-base mb-4">
+              <p className="text-white/80 text-xs sm:text-base mb-2 sm:mb-4">
                 ระบบจัดการคิวอัจฉริยะ — เช็คสถานะคิวแบบเรียลไทม์
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 justify-center sm:justify-start">
-                <div className="bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 text-white text-sm border border-white/20">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-start">
+                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20">
                   <span className="mr-1.5">⏱</span>
                   รอประมาณ <strong>{waitTime}</strong> นาที
                 </div>
-                <div className="bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 text-white text-sm border border-white/20">
+                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20">
                   <span className="mr-1.5">🕐</span>
                   {currentTime}
                 </div>
@@ -149,8 +149,8 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
       {/* ─── Stats Grid ─── */}
       <FadeInSection delay={150} direction="up">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          <GlassCard className="p-4" glowColor="rgba(124, 58, 237, 0.15)">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          <GlassCard className="p-2.5 sm:p-4" glowColor="rgba(124, 58, 237, 0.15)">
             <AnimatedCounter
               value={stats?.totalItems || 0}
               label="คิวทั้งหมด"
@@ -160,7 +160,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
             />
           </GlassCard>
 
-          <GlassCard className="p-4" glowColor="rgba(245, 158, 11, 0.15)">
+          <GlassCard className="p-2.5 sm:p-4" glowColor="rgba(245, 158, 11, 0.15)">
             <AnimatedCounter
               value={stats?.waitingItems || 0}
               label="รอคิว"
@@ -170,7 +170,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
             />
           </GlassCard>
 
-          <GlassCard className="p-4" glowColor="rgba(59, 130, 246, 0.15)">
+          <GlassCard className="p-2.5 sm:p-4" glowColor="rgba(59, 130, 246, 0.15)">
             <AnimatedCounter
               value={stats?.inProgressItems || 0}
               label="กำลังให้บริการ"
@@ -180,7 +180,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
             />
           </GlassCard>
 
-          <GlassCard className="p-4" glowColor="rgba(16, 185, 129, 0.15)">
+          <GlassCard className="p-2.5 sm:p-4" glowColor="rgba(16, 185, 129, 0.15)">
             <AnimatedCounter
               value={stats?.completedItems || 0}
               label="เสร็จแล้ว"
@@ -196,7 +196,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
       <FadeInSection delay={300} direction="up" className="flex-1 min-h-0">
         <GlassCard className="h-full flex flex-col overflow-hidden">
           {/* List Header */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+          <div className="flex items-center justify-between px-3 sm:px-5 py-2 sm:py-3 border-b border-border">
             <h2 className="text-foreground font-semibold text-sm">
               📋 รายการคิวล่าสุด
             </h2>
@@ -224,8 +224,8 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
                       direction="left"
                     >
                       <div className="
-                        flex items-center gap-3 sm:gap-4
-                        px-4 py-3
+                        flex items-center gap-2 sm:gap-4
+                        px-2.5 sm:px-4 py-2 sm:py-3
                         rounded-xl
                         bg-surface/50 hover:bg-surface-alt
                         border border-transparent hover:border-border

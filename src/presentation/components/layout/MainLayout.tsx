@@ -2,6 +2,7 @@
 
 import { Footer } from '@/src/presentation/components/layout/Footer';
 import { Header } from '@/src/presentation/components/layout/Header';
+import { MobileBottomNav } from '@/src/presentation/components/layout/MobileBottomNav';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -10,7 +11,7 @@ interface MainLayoutProps {
 /**
  * MainLayout - Full screen layout, no scrolling on the outer container.
  * Content area scrolls internally if needed.
- * Structure: Header (fixed h-16) + Content (flex-1) + Footer (fixed h-12)
+ * Structure: Header (fixed) + Content (flex-1) + Footer/MobileNav (fixed)
  */
 export function MainLayout({ children }: MainLayoutProps) {
   return (
@@ -31,6 +32,8 @@ export function MainLayout({ children }: MainLayoutProps) {
       </main>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   );
 }
+

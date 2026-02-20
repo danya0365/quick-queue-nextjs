@@ -28,8 +28,8 @@ export function Header() {
   return (
     <header
       className="
-        h-16 flex-shrink-0
-        flex items-center justify-between px-6
+        h-12 sm:h-14 flex-shrink-0
+        flex items-center justify-between px-3 sm:px-6
         border-b border-border
         backdrop-blur-xl
         bg-[var(--header-bg)]
@@ -37,24 +37,24 @@ export function Header() {
       id="main-header"
     >
       {/* Logo Section */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 sm:gap-6">
         <Link href="/">
           <animated.div
             style={{ ...logoSpring, ...logoGlowSpring }}
             onMouseEnter={() => setIsLogoHovered(true)}
             onMouseLeave={() => setIsLogoHovered(false)}
-            className="flex items-center gap-3 cursor-pointer select-none"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer select-none"
           >
             <div className="
-              w-9 h-9 rounded-lg
+              w-7 h-7 sm:w-9 sm:h-9 rounded-lg
               bg-gradient-to-br from-primary to-accent
               flex items-center justify-center
               shadow-md
             ">
-              <span className="text-white font-bold text-sm">QQ</span>
+              <span className="text-white font-bold text-xs sm:text-sm">QQ</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-foreground font-bold text-lg leading-tight tracking-tight">
+              <span className="text-foreground font-bold text-sm sm:text-lg leading-tight tracking-tight">
                 {DEFAULT_SHOP_CONFIG.shopName}
               </span>
               <span className="text-muted text-[10px] leading-none tracking-wide uppercase hidden sm:block">

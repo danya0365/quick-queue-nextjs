@@ -113,20 +113,20 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
   };
 
   return (
-    <div className="h-full flex flex-col p-4 sm:p-6 gap-4 overflow-y-auto" id="admin-view">
+    <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-4 overflow-y-auto" id="admin-view">
       {/* ─── Header Row ─── */}
       <FadeInSection delay={0} direction="up">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-foreground text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
               ⚙️ จัดการคิว
             </h1>
-            <p className="text-muted text-sm mt-0.5">จัดการรายการคิวแบบเรียลไทม์</p>
+            <p className="text-muted text-xs sm:text-sm mt-0.5">จัดการรายการคิวแบบเรียลไทม์</p>
           </div>
           <div className="flex items-center gap-2">
             <AnimatedButton
               variant="primary"
-              size="md"
+              size="sm"
               onClick={actions.openCreateModal}
               icon={<span>➕</span>}
               id="add-queue-btn"
@@ -135,7 +135,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
             </AnimatedButton>
             <AnimatedButton
               variant="ghost"
-              size="md"
+              size="sm"
               onClick={handleLogout}
               icon={<span>🚪</span>}
             >
@@ -147,20 +147,20 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
 
       {/* ─── Stats ─── */}
       <FadeInSection delay={100} direction="up">
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          <GlassCard className="p-3" glowColor="rgba(124, 58, 237, 0.1)">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
+          <GlassCard className="p-2 sm:p-3" glowColor="rgba(124, 58, 237, 0.1)">
             <AnimatedCounter value={stats?.totalItems || 0} label="ทั้งหมด" icon={<span>📊</span>} color="text-primary" />
           </GlassCard>
-          <GlassCard className="p-3" glowColor="rgba(245, 158, 11, 0.1)">
+          <GlassCard className="p-2 sm:p-3" glowColor="rgba(245, 158, 11, 0.1)">
             <AnimatedCounter value={stats?.waitingItems || 0} label="รอคิว" icon={<span>⏳</span>} color="text-amber-500" />
           </GlassCard>
-          <GlassCard className="p-3" glowColor="rgba(59, 130, 246, 0.1)">
+          <GlassCard className="p-2 sm:p-3" glowColor="rgba(59, 130, 246, 0.1)">
             <AnimatedCounter value={stats?.inProgressItems || 0} label="กำลังบริการ" icon={<span>🔄</span>} color="text-blue-500" />
           </GlassCard>
-          <GlassCard className="p-3" glowColor="rgba(16, 185, 129, 0.1)">
+          <GlassCard className="p-2 sm:p-3" glowColor="rgba(16, 185, 129, 0.1)">
             <AnimatedCounter value={stats?.completedItems || 0} label="เสร็จแล้ว" icon={<span>✅</span>} color="text-emerald-500" />
           </GlassCard>
-          <GlassCard className="p-3 hidden sm:block" glowColor="rgba(239, 68, 68, 0.1)">
+          <GlassCard className="p-2 sm:p-3 hidden sm:block" glowColor="rgba(239, 68, 68, 0.1)">
             <AnimatedCounter value={stats?.cancelledItems || 0} label="ยกเลิก" icon={<span>❌</span>} color="text-red-500" />
           </GlassCard>
         </div>
@@ -180,8 +180,8 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
               key={tab.key}
               onClick={() => setFilter(tab.key)}
               className={`
-                flex items-center gap-1.5
-                px-4 py-2 rounded-xl text-sm font-medium
+                flex items-center gap-1
+                px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium
                 whitespace-nowrap
                 border transition-all duration-200
                 ${
@@ -226,8 +226,8 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
                     <div
                       key={item.id}
                       className="
-                        flex items-center gap-3 sm:gap-4
-                        px-4 sm:px-5 py-3
+                        flex items-center gap-2 sm:gap-4
+                        px-2.5 sm:px-5 py-2 sm:py-3
                         hover:bg-surface-alt/50
                         transition-colors duration-150
                         group
@@ -276,7 +276,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
                       {/* Actions */}
                       <div className="
                         flex items-center gap-1
-                        opacity-0 group-hover:opacity-100
+                        sm:opacity-0 sm:group-hover:opacity-100
                         transition-opacity duration-200
                       ">
                         {statusActions.map((sa, i) => (

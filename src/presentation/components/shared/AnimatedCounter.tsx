@@ -29,13 +29,13 @@ export function AnimatedCounter({
   });
 
   return (
-    <div className="flex items-center gap-3" id={id}>
-      <div className={`text-2xl ${color}`}>{icon}</div>
+    <div className="flex items-center gap-2 sm:gap-3" id={id}>
+      <div className={`text-lg sm:text-2xl ${color}`}>{icon}</div>
       <div>
-        <animated.span className={`text-2xl font-bold ${color} tabular-nums`}>
+        <animated.span className={`text-lg sm:text-2xl font-bold ${color} tabular-nums`}>
           {numberSpring.val.to((v) => Math.floor(v))}
         </animated.span>
-        <p className="text-xs text-muted mt-0.5">{label}</p>
+        <p className="text-[10px] sm:text-xs text-muted mt-0.5">{label}</p>
       </div>
     </div>
   );
