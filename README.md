@@ -68,6 +68,7 @@ This repository strictly adheres to **Clean Architecture** and SOLID principles.
 - **Dual-Layer Security**: 
   - **Edge Proxy**: Next.js Middleware blocks unauthenticated mutations before they reach the server.
   - **Single Source of Truth**: API routes strictly validate HTTP-Only session cookies against the database.
+- **Online Queue Request Flow**: Customers can request a queue ticket online, complete dynamic math challenges (Bot mitigation), and track their request status via a randomly generated 6-character code entirely decoupled from internal IDs.
 
 ---
 

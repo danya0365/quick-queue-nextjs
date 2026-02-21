@@ -97,6 +97,8 @@ graph TB
 ### 2. ระบบแสดงผลสำหรับลูกค้า (Public Display)
 - **หน้าแรก (Home `/`)** — แสดงหมายเลขคิวปัจจุบันที่กำลังให้บริการ, สถิติ, เวลาประมาณ, รายการล่าสุด 10 รายการ
 - **หน้าเช็คคิว (Queue `/queue`)** — แสดงรายการคิวแยกตามสถานะ: กำลังให้บริการ, รอคิว, เสร็จแล้ว (สูงสุด 20 รายการ/สถานะ)
+- **หน้าขอบัตรคิว (Track `/track`)** — ตรวจสอบสถานะและประวัติการขอบัตรคิวผ่านรหัส 6 หลัก พร้อมระบบบันทึกประวัติ (Local Storage)
+- **ระบบขอบัตรคิว (Queue Request)** — ลูกค้าสามารถกด "ขอบัตรคิว" ได้จากหน้าแรก พร้อมระบบป้องกันบอท (Math Challenge + IP Rate Limiting)
 - **QR Code** — แสดง QR Code สำหรับลูกค้าสแกนเพื่อเข้าถึงหน้าเช็คคิว
 - **Sound Alert** — เสียงแจ้งเตือนเมื่อมีการอัปเดตคิว
 - **Queue Item Detail Modal** — คลิกรายการคิวเพื่อดูรายละเอียด
@@ -167,7 +169,19 @@ erDiagram
     }
 
     admin_users ||--o{ sessions : "has many"
-```
+
+    queue_requests {
+        TEXT id PK "UUID"
+        TEXT tracking_code "UNIQUE, 6 chars"
+        TEXT customer_name "NOT NULL"
+        TEXT service_type "CHECK(general|express|vip)"
+        TEXT status "DEFAULT pending, CHECK(pending|approved|rejected)"
+        TEXT note
+        TEXT reject_reason
+        INTEGER queue_number "FK -> queue_items(queue_number)"
+        TEXT created_at "DEFAULT datetime('now')"
+        TEXT updated_at "DEFAULT datetime('now')"
+    }
 
 ### Indexes
 - `idx_queue_items_status` — เร่ง query ตาม status
@@ -200,6 +214,16 @@ erDiagram
 | GET | `/api/queue-items/stats` | ❌ | ดึงสถิติคิว (total, waiting, in_progress, completed, cancelled) |
 | GET | `/api/queue-items/next-number` | ❌ | ดึงหมายเลขคิวถัดไป |
 | GET | `/api/queue-items/current-serving` | ❌ | ดึงหมายเลขคิวที่กำลังให้บริการ |
+
+### Queue Requests Routes (ระบบขอบัตรคิวออนไลน์)
+
+| Method | Route | Auth | หน้าที่ |
+|---|---|---|---|
+| POST | `/api/queue-requests` | ❌ | ลูกค้าขอบัตรคิว (มีการตรวจสอบ Math Challenge + IP Rate Limit) |
+| GET | `/api/queue-requests` | ✅ | Admin ดึงรายการคำขอที่รอการอนุมัติ (pending) |
+| PUT | `/api/queue-requests/[id]` | ✅ | Admin อนุมัติ (approved) หรือ ปฏิเสธ (rejected) คำขอ |
+| GET | `/api/queue-requests/track/[code]` | ❌ | ลูกค้าต้องการเช็คสถานะคำขอผ่าน Tracking Code 6 หลัก |
+| GET | `/api/queue-requests/challenge` | ❌ | รับโจทย์คณิตศาสตร์เพื่อยืนยันตัวตน (ป้องกัน Bot) |
 
 ---
 
@@ -317,6 +341,46 @@ sequenceDiagram
     Repo-->>ServerPresenter: results
     ServerPresenter-->>Queue: QueueViewModel
     Queue-->>Customer: แสดงรายการคิวแยกตามสถานะ
+
+### Flow 5: ระบบขอบัตรคิวออนไลน์ (Online Queue Request)
+
+```mermaid
+sequenceDiagram
+    actor Customer as 👤 ลูกค้า
+    actor Admin as 👤 Admin
+    participant Home as หน้าแรก (/)
+    participant Track as หน้าติดตาม (/track)
+    participant API as API Routes
+    participant Repo as TursoQueueRequestRepository
+    participant DB as SQLite / Turso
+
+    Customer->>Home: กดปุ่ม "ขอบัตรคิว"
+    Home->>API: GET /api/queue-requests/challenge
+    API-->>Home: { question, token }
+    Customer->>Home: กรอกข้อมูล + แก้โจทย์เลข
+    Home->>API: POST /api/queue-requests
+    API->>Repo: create(data) -> สร้าง Tracking Code 6 หลัก
+    Repo->>DB: INSERT INTO queue_requests
+    API-->>Home: { trackingCode }
+    Home-->>Customer: บันทึก Tracking Code ลง Zustand (localStorage)
+
+    Customer->>Track: เช็คสถานะด้วย Tracking Code
+    Track->>API: GET /api/queue-requests/track/[code]
+    API->>Repo: findByTrackingCode(code)
+    API-->>Track: status (pending | approved | rejected)
+    
+    Admin->>API: GET /api/queue-requests (AdminView)
+    API->>Repo: findPending()
+    API-->>Admin: แสดงรายการคำขอที่รอดำเนินการ
+    
+    alt อนุมัติ
+        Admin->>API: PUT /api/queue-requests/[id] { action: 'approve' }
+        API->>DB: INSERT queue_items (สร้างคิวจริง)
+        API->>DB: UPDATE queue_requests (status=approved, link to queue)
+    else ปฏิเสธ
+        Admin->>API: PUT /api/queue-requests/[id] { action: 'reject', reason }
+        API->>DB: UPDATE queue_requests (status=rejected, add reason)
+    end
 ```
 
 ### Flow 5: Template Switching
