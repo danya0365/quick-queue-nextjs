@@ -40,37 +40,37 @@ export function HomeEditorialTemplate({
       <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-8">
         
         {/* ─── Magazine Header ─── */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end border-b-[4px] sm:border-b-[8px] border-black pb-4 sm:pb-8 gap-4 sm:gap-8">
-          <div className="w-full md:w-auto">
-            <h1 className="text-5xl sm:text-7xl lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.9] sm:leading-[0.85] text-black">
+        <header className="flex flex-row justify-between items-end border-b-[3px] sm:border-b-[8px] border-black pb-2 sm:pb-8 gap-2 sm:gap-8 overflow-hidden">
+          <div className="w-auto shrink-0">
+            <h1 className="text-2xl sm:text-7xl lg:text-[6.5rem] font-black uppercase tracking-tighter leading-none sm:leading-[0.85] text-black flex flex-row md:flex-col">
               QUICK
               <br className="hidden md:block"/>
-              <span className="text-black bg-white md:pl-2 mt-2 md:mt-0 inline-block">QUEUE</span>
+              <span className="text-black bg-white md:pl-2 inline-block">QUEUE</span>
             </h1>
-            <p className="font-bold text-[10px] sm:text-xl uppercase tracking-widest mt-2 sm:mt-6 px-2 sm:px-4 py-1 sm:py-2 border-[2px] sm:border-[6px] border-black inline-block">
+            <p className="font-bold text-[6px] sm:text-xl uppercase tracking-widest mt-1 sm:mt-6 px-1.5 sm:px-4 py-0.5 sm:py-2 border-[1px] sm:border-[6px] border-black inline-block whitespace-nowrap">
               ISSUE 01 // LIVE QUEUE SYSTEM
             </p>
           </div>
 
-          <div className="flex flex-col md:items-end gap-3 sm:gap-6 w-full md:w-auto">
-            <div className="text-left md:text-right w-full md:w-auto pb-2 sm:pb-4 border-b-[2px] sm:border-b-[6px] border-black flex justify-between md:block items-end">
-              <div className="text-[10px] sm:text-sm font-bold uppercase tracking-widest opacity-60">LOCAL TIME</div>
-              <div className="text-3xl sm:text-5xl lg:text-6xl font-black tabular-nums tracking-tighter leading-none">{currentTime}</div>
+          <div className="flex flex-col items-end justify-end gap-1.5 sm:gap-6 w-auto shrink-0 pb-0.5 sm:pb-0">
+            <div className="text-right w-auto pb-1 sm:pb-4 border-b-[2px] sm:border-b-[6px] border-black flex flex-col justify-end items-end">
+              <div className="text-[6px] sm:text-sm font-bold uppercase tracking-widest opacity-60">LOCAL TIME</div>
+              <div className="text-xl sm:text-5xl lg:text-6xl font-black tabular-nums tracking-tighter leading-none">{currentTime}</div>
             </div>
-            <div className="flex flex-row gap-2 sm:gap-4 w-full md:w-auto">
+            <div className="flex flex-row gap-1 sm:gap-4 w-auto">
               <button
                 onClick={() => setSoundEnabled((prev) => !prev)}
-                className={`flex-1 sm:flex-none px-2 py-2 sm:px-8 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black text-[10px] sm:text-sm tracking-widest transition-colors hover:bg-black hover:text-white ${
+                className={`px-1.5 py-1 sm:px-8 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black text-[6px] sm:text-sm tracking-widest transition-colors hover:bg-black hover:text-white whitespace-nowrap ${
                   soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
                 }`}
               >
-                {soundEnabled ? 'AUDIO ON' : 'MUTED'}
+                {soundEnabled ? 'AUDIO' : 'MUTED'}
               </button>
               <button
                 onClick={() => setShowQR(true)}
-                className="flex-1 sm:flex-none px-2 py-2 sm:px-10 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors text-[10px] sm:text-sm tracking-widest"
+                className="px-1.5 py-1 sm:px-10 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap"
               >
-                SCAN TICKET
+                SCAN QR
               </button>
             </div>
           </div>

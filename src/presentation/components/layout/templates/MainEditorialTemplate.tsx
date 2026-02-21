@@ -17,16 +17,16 @@ export function MainEditorialTemplate({ children }: MainEditorialTemplateProps) 
       id="main-editorial-layout"
     >
       {/* ─── Editorial Header ─── */}
-      <nav className="border-b-[4px] sm:border-b-[6px] border-black flex flex-col sm:flex-row justify-between items-center px-4 sm:px-12 py-3 sm:py-5 shrink-0 z-50 gap-3 sm:gap-0">
-        <Link href="/" className="text-2xl sm:text-5xl font-black uppercase tracking-tighter hover:bg-black hover:text-white transition-colors px-2 text-center">
+      <nav className="border-b-[3px] sm:border-b-[6px] border-black flex flex-row justify-between items-center px-2 sm:px-12 py-2 sm:py-5 shrink-0 z-50 gap-2 sm:gap-0">
+        <Link href="/" className="text-sm sm:text-5xl font-black uppercase tracking-tighter hover:bg-black hover:text-white transition-colors px-1 sm:px-2 text-center whitespace-nowrap overflow-hidden text-ellipsis">
           QUEUE.EDITION
         </Link>
         
-        <div className="flex font-bold uppercase text-[10px] sm:text-sm border-[3px] sm:border-[6px] border-black bg-white w-full sm:w-auto">
-          <Link href="/queue" className="flex-1 sm:flex-none px-2 sm:px-10 py-2 sm:py-3 border-r-[3px] sm:border-r-[6px] border-black hover:bg-black hover:text-white transition-colors flex items-center justify-center">
+        <div className="flex font-bold uppercase text-[8px] sm:text-sm border-[2px] sm:border-[6px] border-black bg-white shrink-0">
+          <Link href="/queue" className="px-2 sm:px-10 py-1 sm:py-3 border-r-[2px] sm:border-r-[6px] border-black hover:bg-black hover:text-white transition-colors flex items-center justify-center">
             <span>MONITOR</span>
           </Link>
-          <Link href="/admin" className="flex-1 sm:flex-none px-2 sm:px-10 py-2 sm:py-3 hover:bg-black hover:text-white transition-colors flex items-center justify-center">
+          <Link href="/admin" className="px-2 sm:px-10 py-1 sm:py-3 hover:bg-black hover:text-white transition-colors flex items-center justify-center">
             <span>ADMIN</span>
           </Link>
         </div>

@@ -52,7 +52,7 @@ export function TemplateSwitcher() {
   };
 
   return (
-    <div ref={dropdownRef} className="fixed bottom-16 sm:bottom-20 right-4 sm:right-6 z-[100]">
+    <div ref={dropdownRef} className="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 z-[100]">
       {template === 'retroTechMagazine' && (
         <TemplateSwitcherRetroTechMagazineTemplate {...commonProps} />
       )}

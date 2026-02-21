@@ -1,4 +1,4 @@
-import { QueueItem, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { animated, SpringValue } from 'react-spring';
 
@@ -35,42 +35,42 @@ export function QueueEditorialTemplate({
       className="min-h-full font-serif p-4 sm:p-8 bg-white text-black overflow-y-auto selection:bg-black selection:text-white"
       id="queue-editorial-layout"
     >
-      <div className="max-w-[1400px] mx-auto space-y-12">
+      <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-8">
         {/* ─── Header ─── */}
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-[4px] sm:border-b-[6px] border-black pb-4 sm:pb-6 gap-4 sm:gap-6">
-          <div className="w-full sm:w-auto flex flex-col">
-            <h1 className="text-3xl sm:text-7xl font-black uppercase tracking-tighter leading-none mb-2">
+        <header className="flex flex-row justify-between items-end border-b-[3px] sm:border-b-[6px] border-black pb-2 sm:pb-6 gap-2 sm:gap-6 overflow-hidden">
+          <div className="w-auto flex flex-col shrink-0">
+            <h1 className="text-3xl sm:text-7xl font-black uppercase tracking-tighter leading-none mb-1 sm:mb-2 text-black">
               MONITOR
             </h1>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <span className="font-bold text-[10px] sm:text-xs uppercase tracking-widest bg-black text-white px-2 py-1 sm:px-3 sm:py-1">
+            <div className="flex items-center gap-1.5 sm:gap-4">
+              <span className="font-bold text-[6px] sm:text-xs uppercase tracking-widest bg-black text-white px-1.5 py-0.5 sm:px-3 sm:py-1 whitespace-nowrap">
                 LIVE STATUS
               </span>
-              <span className="font-bold text-[10px] sm:text-sm tracking-widest uppercase">
+              <span className="font-bold text-[6px] sm:text-sm tracking-widest uppercase whitespace-nowrap">
                 RELOAD: {refreshCountdown}
               </span>
             </div>
           </div>
 
-          <div className="flex flex-row sm:flex-col justify-between sm:justify-end items-end w-full sm:w-auto">
-            <div className="text-right">
-              <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter sm:border-b-[6px] sm:border-black pb-1 leading-none">
+          <div className="flex flex-col items-end justify-end gap-1.5 sm:gap-4 w-auto shrink-0 pb-0.5 sm:pb-0">
+            <div className="text-right w-auto pb-1 sm:pb-1 border-b-[2px] sm:border-b-[6px] border-black flex flex-col justify-end items-end">
+              <div className="text-xl sm:text-5xl font-black tabular-nums tracking-tighter leading-none">
                 {currentTime}
               </div>
             </div>
             <button
               onClick={() => setSoundEnabled((prev) => !prev)}
-              className={`px-4 sm:px-8 py-2 sm:py-3 font-black uppercase border-[3px] sm:border-[6px] border-black hover:bg-black hover:text-white transition-all text-[10px] sm:text-sm tracking-widest ${
+              className={`px-1.5 py-1 sm:px-8 sm:py-3 font-black uppercase border-[2px] sm:border-[6px] border-black hover:bg-black hover:text-white transition-all text-[6px] sm:text-sm tracking-widest whitespace-nowrap ${
                 soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
               }`}
             >
-              {soundEnabled ? 'AUDIO ON' : 'MUTED'}
+              {soundEnabled ? 'AUDIO' : 'MUTED'}
             </button>
           </div>
         </header>
 
         {/* ─── Hero Serving Section ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 border-[4px] sm:border-[6px] border-black p-4 sm:p-16 relative overflow-hidden bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 border-[4px] sm:border-[6px] border-black p-4 sm:p-8 relative overflow-hidden bg-white">
           {/* Diagonal Ribbon */}
           <div className="absolute top-4 sm:top-8 -left-16 sm:-left-12 z-20 bg-black text-white font-black text-[10px] sm:text-xl uppercase px-20 sm:px-16 py-1.5 sm:py-3 transform -rotate-45 shadow-none lg:shadow-xl border-y-[2px] sm:border-y-[6px] border-white">
             NOW SERVING
@@ -123,7 +123,7 @@ export function QueueEditorialTemplate({
         </div>
 
         {/* ─── Track Columns (Desktop Only) ─── */}
-        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative before:hidden lg:before:block before:absolute before:inset-0 before:border-t-[6px] before:border-black before:-top-4">
+        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative before:hidden lg:before:block before:absolute before:inset-0 before:pointer-events-none before:border-t-[6px] before:border-black before:-top-4">
           <EditorialColumn title="SERVING_NOW" items={inProgressItems} isServing />
           <EditorialColumn title="ON_DECK" items={waitingItems} />
           <EditorialColumn title="COMPLETED" items={completedItems} />
@@ -170,10 +170,34 @@ function EditorialColumn({ title, items, isServing = false }: { title: string; i
 
 function EditorialRow({ item, isServing }: { item: QueueItem; isServing: boolean }) {
   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
+
+  const getBadgeStyle = (type: ServiceType) => {
+    switch (type) {
+      case ServiceType.EXPRESS:
+        return 'bg-amber-400 text-black border-amber-400 group-hover:border-black';
+      case ServiceType.VIP:
+        return 'bg-fuchsia-600 text-white border-fuchsia-600 group-hover:border-black';
+      case ServiceType.GENERAL:
+      default:
+        return isServing ? 'bg-transparent text-white border-white group-hover:text-black group-hover:border-black' : 'bg-transparent text-black border-black group-hover:text-white group-hover:border-white';
+    }
+  };
+
+  const getStripeStyle = (type: ServiceType) => {
+    switch (type) {
+      case ServiceType.EXPRESS:
+        return 'bg-amber-400 border-amber-400 group-hover:border-black';
+      case ServiceType.VIP:
+        return 'bg-fuchsia-600 border-fuchsia-600 group-hover:border-black';
+      case ServiceType.GENERAL:
+      default:
+        return isServing ? 'bg-white border-white group-hover:bg-black group-hover:border-black' : 'bg-black border-black group-hover:bg-white group-hover:border-white';
+    }
+  };
   
   return (
     <div className={`border-[3px] sm:border-[6px] ${isServing ? 'border-white bg-black hover:bg-white hover:text-black' : 'border-black bg-white hover:bg-black hover:text-white'} p-3 sm:p-5 flex items-start gap-2 sm:gap-4 transition-colors group cursor-default`}>
-      <div className={`w-2 sm:w-3 flex-shrink-0 self-stretch border-[2px] sm:border-[3px] ${isServing ? 'bg-white border-white group-hover:bg-black group-hover:border-black' : 'bg-black border-black group-hover:bg-white group-hover:border-white'}`}></div>
+      <div className={`w-2 sm:w-3 flex-shrink-0 self-stretch border-[2px] sm:border-[3px] ${getStripeStyle(item.serviceType)}`}></div>
       
       <div className="flex flex-col justify-center min-w-[3rem] sm:min-w-[3.5rem] border-r-[2px] sm:border-r-[4px] border-inherit pr-2 sm:pr-4">
         <div className="font-black text-2xl sm:text-4xl tabular-nums leading-none tracking-tighter">{item.queueNumber.toString().padStart(2, '0')}</div>
@@ -182,7 +206,7 @@ function EditorialRow({ item, isServing }: { item: QueueItem; isServing: boolean
       <div className="flex-1 min-w-0 flex flex-col justify-center pl-2">
         <div className="font-black text-lg sm:text-xl leading-tight uppercase truncate">{item.customerName}</div>
         <div className="flex flex-wrap gap-1 sm:gap-2 mt-1 sm:mt-2">
-           <span className={`text-[9px] sm:text-[11px] font-bold uppercase px-1.5 py-0.5 sm:px-2 sm:py-1 border-[2px] sm:border-[3px] inline-block tracking-widest ${isServing ? 'border-white group-hover:border-black' : 'border-black group-hover:border-white'}`}>
+           <span className={`text-[9px] sm:text-[11px] font-bold uppercase px-1.5 py-0.5 sm:px-2 sm:py-1 border-[2px] sm:border-[3px] inline-block tracking-widest ${getBadgeStyle(item.serviceType)}`}>
             {serviceConfig.label}
           </span>
           {item.note && (
