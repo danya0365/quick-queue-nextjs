@@ -52,14 +52,14 @@ export function QueueRetroTechMagazineTemplate({
               </span>
             </h1>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <div className="flex gap-4 border-4 border-black bg-white p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-2">
-              <div className="px-4 py-2 border-r-4 border-black font-bold text-sm tracking-widest uppercase truncate max-w-[150px] sm:max-w-none">
-                RELOAD IN <span className="text-[#FF00FF]">{refreshCountdown}s</span>
+          <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
+            <div className="flex gap-2 sm:gap-4 border-4 border-black bg-white p-1.5 sm:p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-2 w-full sm:w-auto overflow-hidden">
+              <div className="px-2 sm:px-4 py-1 sm:py-2 border-r-4 border-black font-bold text-[10px] sm:text-sm tracking-widest uppercase flex flex-1 items-center justify-center whitespace-nowrap min-w-0">
+                RELOAD IN <span className="text-[#FF00FF] ml-1">{refreshCountdown}s</span>
               </div>
               <button
                 onClick={() => setSoundEnabled((prev) => !prev)}
-                className={`px-4 py-2 font-black uppercase border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all ${
+                className={`px-2 sm:px-4 py-1 sm:py-2 font-black uppercase border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all flex-shrink-0 text-[10px] sm:text-sm ${
                   soundEnabled ? 'bg-[#39FF14] text-black' : 'bg-black text-white'
                 }`}
               >
@@ -97,8 +97,37 @@ export function QueueRetroTechMagazineTemplate({
           </div>
         </div>
 
-        {/* ─── Track Columns ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mt-8">
+        {/* ─── Mobile Tabs (Hidden on Desktop) ─── */}
+        <div className="lg:hidden mt-8 flex border-4 border-black bg-white shadow-[4px_4px_0_0_rgba(0,0,0,1)] font-bold uppercase tracking-widest text-xs sm:text-sm">
+          <button
+            onClick={() => setMobileTab('in_progress')}
+            className={`flex-1 py-3 text-center transition-colors border-r-4 border-black flex flex-col items-center justify-center ${mobileTab === 'in_progress' ? 'bg-[#00FFFF] text-black shadow-inner' : 'hover:bg-gray-100 text-black'}`}
+          >
+            SERVING <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{inProgressItems.length}</span>
+          </button>
+          <button
+            onClick={() => setMobileTab('waiting')}
+            className={`flex-1 py-3 text-center transition-colors border-r-4 border-black flex flex-col items-center justify-center ${mobileTab === 'waiting' ? 'bg-[#FF00FF] text-white shadow-inner' : 'hover:bg-gray-100 text-black'}`}
+          >
+            WAITING <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{waitingItems.length}</span>
+          </button>
+          <button
+            onClick={() => setMobileTab('completed')}
+            className={`flex-1 py-3 text-center transition-colors flex flex-col items-center justify-center ${mobileTab === 'completed' ? 'bg-[#39FF14] text-black shadow-inner' : 'hover:bg-gray-100 text-black'}`}
+          >
+            DONE <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{completedItems.length}</span>
+          </button>
+        </div>
+
+        {/* ─── Active Track Column (Mobile Only) ─── */}
+        <div className="lg:hidden mt-6">
+          {mobileTab === 'in_progress' && <RetroQueueColumn title="IN_PROGRESS" items={inProgressItems} baseColor="#00FFFF" />}
+          {mobileTab === 'waiting' && <RetroQueueColumn title="WAITING_Q" items={waitingItems} baseColor="#FF00FF" />}
+          {mobileTab === 'completed' && <RetroQueueColumn title="COMPLETED" items={completedItems} baseColor="#39FF14" />}
+        </div>
+
+        {/* ─── Track Columns (Desktop Only) ─── */}
+        <div className="hidden lg:grid grid-cols-3 gap-8 items-start mt-8">
           <RetroQueueColumn title="IN_PROGRESS" items={inProgressItems} baseColor="#00FFFF" />
           <RetroQueueColumn title="WAITING_Q" items={waitingItems} baseColor="#FF00FF" />
           <RetroQueueColumn title="COMPLETED" items={completedItems} baseColor="#39FF14" />
