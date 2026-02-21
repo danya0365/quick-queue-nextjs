@@ -11,6 +11,9 @@ export interface QueueRetroTechMagazineTemplateProps {
   pulseSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
   mobileTab: 'in_progress' | 'waiting' | 'completed';
   setMobileTab: (tab: 'in_progress' | 'waiting' | 'completed') => void;
+  showQR: boolean;
+  setShowQR: (show: boolean) => void;
+  onItemClick: (item: QueueItem) => void;
 }
 
 export function QueueRetroTechMagazineTemplate({
@@ -22,6 +25,9 @@ export function QueueRetroTechMagazineTemplate({
   pulseSpring,
   mobileTab,
   setMobileTab,
+  showQR,
+  setShowQR,
+  onItemClick,
 }: QueueRetroTechMagazineTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentServingNumber || 0;
@@ -121,16 +127,16 @@ export function QueueRetroTechMagazineTemplate({
 
         {/* ─── Active Track Column (Mobile Only) ─── */}
         <div className="lg:hidden mt-6">
-          {mobileTab === 'in_progress' && <RetroQueueColumn title="กำลังเรียก" items={inProgressItems} baseColor="#00FFFF" />}
-          {mobileTab === 'waiting' && <RetroQueueColumn title="รอคิว" items={waitingItems} baseColor="#FF00FF" />}
-          {mobileTab === 'completed' && <RetroQueueColumn title="เสร็จสิ้น" items={completedItems} baseColor="#39FF14" />}
+          {mobileTab === 'in_progress' && <RetroQueueColumn title="กำลังเรียก" items={inProgressItems} baseColor="#00FFFF" onItemClick={onItemClick} />}
+          {mobileTab === 'waiting' && <RetroQueueColumn title="รอคิว" items={waitingItems} baseColor="#FF00FF" onItemClick={onItemClick} />}
+          {mobileTab === 'completed' && <RetroQueueColumn title="เสร็จสิ้น" items={completedItems} baseColor="#39FF14" onItemClick={onItemClick} />}
         </div>
 
         {/* ─── Track Columns (Desktop Only) ─── */}
         <div className="hidden lg:grid grid-cols-3 gap-8 items-start mt-8">
-          <RetroQueueColumn title="กำลังเรียก" items={inProgressItems} baseColor="#00FFFF" />
-          <RetroQueueColumn title="รอคิว" items={waitingItems} baseColor="#FF00FF" />
-          <RetroQueueColumn title="เสร็จสิ้น" items={completedItems} baseColor="#39FF14" />
+          <RetroQueueColumn title="IN_PROGRESS" items={inProgressItems} baseColor="#00FFFF" onItemClick={onItemClick} />
+          <RetroQueueColumn title="WAITING_Q" items={waitingItems} baseColor="#FF00FF" onItemClick={onItemClick} />
+          <RetroQueueColumn title="DONE_SYNC" items={completedItems} baseColor="#39FF14" onItemClick={onItemClick} />
         </div>
 
       </div>
@@ -149,7 +155,7 @@ function RetroQueueStat({ label, val, color }: { label: string; val: number | st
   );
 }
 
-function RetroQueueColumn({ title, items, baseColor }: { title: string; items: QueueItem[]; baseColor: string }) {
+function RetroQueueColumn({ title, items, baseColor, onItemClick }: { title: string; items: QueueItem[]; baseColor: string; onItemClick?: (item: QueueItem) => void }) {
   return (
     <div className="bg-white border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-col h-[500px]">
       <div className="px-4 py-3 border-b-4 border-black flex items-center justify-between" style={{ backgroundColor: baseColor }}>
@@ -164,19 +170,19 @@ function RetroQueueColumn({ title, items, baseColor }: { title: string; items: Q
             {title === 'เสร็จสิ้น' ? 'ยังไม่มีคิวที่เสร็จสิ้น' : 'ไม่มีข้อมูลคิว'}
           </div>
         ) : (
-          items.map((item) => <RetroQueueItemRow key={item.id} item={item} highlightColor={baseColor} />)
+          items.map((item) => <RetroQueueItemRow key={item.id} item={item} highlightColor={baseColor} onClick={() => onItemClick?.(item)} />)
         )}
       </div>
     </div>
   );
 }
 
-function RetroQueueItemRow({ item, highlightColor }: { item: QueueItem; highlightColor: string }) {
+function RetroQueueItemRow({ item, highlightColor, onClick }: { item: QueueItem; highlightColor: string; onClick?: () => void }) {
   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
   const isServing = item.status === QueueStatus.IN_PROGRESS;
 
   return (
-    <div className={`border-4 border-black p-3 flex items-start gap-3 hover:-translate-y-1 transition-transform relative bg-white group cursor-default ${isServing ? 'shadow-[4px_4px_0_0_rgba(0,255,255,1)]' : 'shadow-[4px_4px_0_0_rgba(0,0,0,1)]'}`}>
+    <div onClick={onClick} className={`border-4 border-black p-3 flex items-start gap-3 hover:-translate-y-1 transition-transform relative bg-white group cursor-pointer ${isServing ? 'shadow-[4px_4px_0_0_rgba(0,255,255,1)]' : 'shadow-[4px_4px_0_0_rgba(0,0,0,1)]'}`}>
       {/* Side Color Ribbon */}
       <div className="absolute left-0 top-0 bottom-0 w-2 border-r-4 border-black" style={{ backgroundColor: highlightColor }}></div>
       

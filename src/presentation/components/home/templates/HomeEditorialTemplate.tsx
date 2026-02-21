@@ -1,4 +1,4 @@
-import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { animated, SpringValue } from 'react-spring';
 
@@ -11,6 +11,7 @@ export interface HomeEditorialTemplateProps {
   showQR: boolean;
   setShowQR: (show: boolean) => void;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
+  onItemClick: (item: QueueItem) => void;
 }
 
 export function HomeEditorialTemplate({
@@ -21,6 +22,7 @@ export function HomeEditorialTemplate({
   showQR,
   setShowQR,
   bigNumberSpring,
+  onItemClick,
 }: HomeEditorialTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentQueueNumber || 0;
@@ -134,7 +136,7 @@ export function HomeEditorialTemplate({
                   const isServing = item.status === QueueStatus.IN_PROGRESS;
                   
                   return (
-                    <div key={item.id} className={`border-[2px] sm:border-[6px] border-black p-2 sm:p-5 flex gap-2 sm:gap-5 transition-all cursor-pointer font-sans ${isServing ? 'bg-black text-white hover:bg-white hover:text-black hover:border-black' : 'bg-white text-black hover:bg-black hover:text-white'}`}>
+                    <div key={item.id} onClick={() => onItemClick(item)} className={`border-[2px] sm:border-[6px] border-black p-2 sm:p-5 flex gap-2 sm:gap-5 transition-all cursor-pointer font-sans ${isServing ? 'bg-black text-white hover:bg-white hover:text-black hover:border-black' : 'bg-white text-black hover:bg-black hover:text-white'}`}>
                       <div className="flex flex-col justify-center border-r-[2px] sm:border-r-[4px] border-inherit pr-2 sm:pr-5 min-w-[50px] sm:min-w-[80px]">
                         <div className="font-black text-3xl sm:text-5xl tabular-nums leading-none tracking-tighter text-center">{item.queueNumber.toString().padStart(2, '0')}</div>
                       </div>

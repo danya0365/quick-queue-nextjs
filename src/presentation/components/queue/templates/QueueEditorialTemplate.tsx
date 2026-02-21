@@ -13,6 +13,7 @@ export interface QueueEditorialTemplateProps {
   setMobileTab: (tab: 'in_progress' | 'waiting' | 'completed') => void;
   showQR: boolean;
   setShowQR: (show: boolean) => void;
+  onItemClick: (item: QueueItem) => void;
 }
 
 export function QueueEditorialTemplate({
@@ -26,6 +27,7 @@ export function QueueEditorialTemplate({
   setMobileTab,
   showQR,
   setShowQR,
+  onItemClick,
 }: QueueEditorialTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentServingNumber || 0;
@@ -136,9 +138,9 @@ export function QueueEditorialTemplate({
 
         {/* ─── Track Columns (Desktop Only) ─── */}
         <div className="hidden lg:grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative before:hidden lg:before:block before:absolute before:inset-0 before:pointer-events-none before:border-t-[6px] before:border-black before:-top-4">
-          <EditorialColumn title="กำลังเรียก" items={inProgressItems} isServing />
-          <EditorialColumn title="รอคิว" items={waitingItems} />
-          <EditorialColumn title="เสร็จสิ้น" items={completedItems} />
+          <EditorialColumn title="กำลังเรียก" items={inProgressItems} isServing onItemClick={onItemClick} />
+          <EditorialColumn title="รอคิว" items={waitingItems} onItemClick={onItemClick} />
+          <EditorialColumn title="เสร็จสิ้น" items={completedItems} onItemClick={onItemClick} />
         </div>
 
       </div>
@@ -157,7 +159,7 @@ function EditorialStat({ title, value }: { title: string; value: string | number
   );
 }
 
-function EditorialColumn({ title, items, isServing = false }: { title: string; items: QueueItem[]; isServing?: boolean }) {
+function EditorialColumn({ title, items, isServing = false, onItemClick }: { title: string; items: QueueItem[]; isServing?: boolean; onItemClick?: (item: QueueItem) => void }) {
   return (
     <div className={`flex flex-col border-[4px] sm:border-[6px] border-black h-[450px] sm:h-[600px] ${isServing ? 'bg-black text-white' : 'bg-white text-black'}`}>
       <div className={`px-4 lg:px-6 py-3 lg:py-4 flex items-center justify-between border-b-[4px] sm:border-b-[6px] ${isServing ? 'border-white' : 'border-black'}`}>
@@ -173,14 +175,14 @@ function EditorialColumn({ title, items, isServing = false }: { title: string; i
             ไม่มีข้อมูล
           </div>
         ) : (
-           items.map((item) => <EditorialRow key={item.id} item={item} isServing={isServing} />)
+           items.map((item) => <EditorialRow key={item.id} item={item} isServing={isServing} onClick={() => onItemClick?.(item)} />)
         )}
       </div>
     </div>
   );
 }
 
-function EditorialRow({ item, isServing }: { item: QueueItem; isServing: boolean }) {
+function EditorialRow({ item, isServing, onClick }: { item: QueueItem; isServing: boolean; onClick?: () => void }) {
   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
 
   const getBadgeStyle = (type: ServiceType) => {
@@ -208,7 +210,7 @@ function EditorialRow({ item, isServing }: { item: QueueItem; isServing: boolean
   };
   
   return (
-    <div className={`border-[3px] sm:border-[6px] ${isServing ? 'border-white bg-black hover:bg-white hover:text-black' : 'border-black bg-white hover:bg-black hover:text-white'} p-3 sm:p-5 flex items-start gap-2 sm:gap-4 transition-colors group cursor-default`}>
+    <div onClick={onClick} className={`border-[3px] sm:border-[6px] ${isServing ? 'border-white bg-black hover:bg-white hover:text-black' : 'border-black bg-white hover:bg-black hover:text-white'} p-3 sm:p-5 flex items-start gap-2 sm:gap-4 transition-colors group cursor-pointer`}>
       <div className={`w-2 sm:w-3 flex-shrink-0 self-stretch border-[2px] sm:border-[3px] ${getStripeStyle(item.serviceType)}`}></div>
       
       <div className="flex flex-col justify-center min-w-[3rem] sm:min-w-[3.5rem] border-r-[2px] sm:border-r-[4px] border-inherit pr-2 sm:pr-4">

@@ -1,11 +1,13 @@
 'use client';
 
+import { QueueItem } from '@/src/domain/types/queue';
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
 import { HomeClassicTemplate } from '@/src/presentation/components/home/templates/HomeClassicTemplate';
 import { HomeEditorialTemplate } from '@/src/presentation/components/home/templates/HomeEditorialTemplate';
 import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
 import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { QRModal } from '@/src/presentation/components/shared/QRModal';
+import { QueueItemDetailModal } from '@/src/presentation/components/shared/QueueItemDetailModal';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
@@ -53,6 +55,9 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   // QR Code Modal
   const [showQR, setShowQR] = useState(false);
 
+  // Queue Item Detail Modal
+  const [selectedItem, setSelectedItem] = useState<QueueItem | null>(null);
+
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
   useEffect(() => {
@@ -99,6 +104,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     showQR,
     setShowQR,
     bigNumberSpring,
+    onItemClick: setSelectedItem,
   };
 
   return (
@@ -114,6 +120,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
         <HomeClassicTemplate {...layoutProps} />
       )}
       <QRModal isOpen={showQR} onClose={() => setShowQR(false)} url={currentUrl} />
+      <QueueItemDetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} item={selectedItem} />
     </>
   );
 }

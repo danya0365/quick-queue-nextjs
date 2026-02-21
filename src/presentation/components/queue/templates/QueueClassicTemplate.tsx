@@ -12,6 +12,9 @@ export interface QueueClassicTemplateProps {
   refreshCountdown: number;
   soundEnabled: boolean;
   setSoundEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
+  showQR: boolean;
+  setShowQR: (show: boolean) => void;
+  onItemClick: (item: QueueItem) => void;
   pulseSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
   mobileTab: 'in_progress' | 'waiting' | 'completed';
   setMobileTab: (tab: 'in_progress' | 'waiting' | 'completed') => void;
@@ -26,6 +29,9 @@ export function QueueClassicTemplate({
   pulseSpring,
   mobileTab,
   setMobileTab,
+  showQR,
+  setShowQR,
+  onItemClick,
 }: QueueClassicTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentServingNumber || 0;
@@ -186,17 +192,17 @@ export function QueueClassicTemplate({
               {mobileTab === 'in_progress' && (
                 inProgressItems.length === 0
                   ? <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่กำลังให้บริการ</div>
-                  : inProgressItems.map((item) => <QueueItemRow key={item.id} item={item} highlight />)
+                  : inProgressItems.map((item) => <QueueItemRow key={item.id} item={item} highlight onClick={() => onItemClick(item)} />)
               )}
               {mobileTab === 'waiting' && (
                 waitingItems.length === 0
                   ? <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่รออยู่</div>
-                  : waitingItems.map((item) => <QueueItemRow key={item.id} item={item} />)
+                  : waitingItems.map((item) => <QueueItemRow key={item.id} item={item} onClick={() => onItemClick(item)} />)
               )}
               {mobileTab === 'completed' && (
                 completedItems.length === 0
                   ? <div className="text-center text-muted text-xs py-8">ยังไม่มีคิวที่เสร็จ</div>
-                  : completedItems.map((item) => <QueueItemRow key={item.id} item={item} />)
+                  : completedItems.map((item) => <QueueItemRow key={item.id} item={item} onClick={() => onItemClick(item)} />)
               )}
             </div>
           </GlassCard>
@@ -222,7 +228,7 @@ export function QueueClassicTemplate({
                 <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่กำลังให้บริการ</div>
               ) : (
                 inProgressItems.map((item) => (
-                  <QueueItemRow key={item.id} item={item} highlight />
+                  <QueueItemRow key={item.id} item={item} highlight onClick={() => onItemClick(item)} />
                 ))
               )}
             </div>
@@ -242,7 +248,7 @@ export function QueueClassicTemplate({
                 <div className="text-center text-muted text-xs py-8">ไม่มีคิวที่รออยู่</div>
               ) : (
                 waitingItems.map((item) => (
-                  <QueueItemRow key={item.id} item={item} />
+                  <QueueItemRow key={item.id} item={item} onClick={() => onItemClick(item)} />
                 ))
               )}
             </div>
@@ -262,7 +268,7 @@ export function QueueClassicTemplate({
                 <div className="text-center text-muted text-xs py-8">ยังไม่มีคิวที่เสร็จ</div>
               ) : (
                 completedItems.map((item) => (
-                  <QueueItemRow key={item.id} item={item} />
+                  <QueueItemRow key={item.id} item={item} onClick={() => onItemClick(item)} />
                 ))
               )}
             </div>
@@ -278,7 +284,7 @@ export function QueueClassicTemplate({
 
 import { QueueItem } from '@/src/domain/types/queue';
 
-function QueueItemRow({ item, highlight = false }: { item: QueueItem; highlight?: boolean }) {
+function QueueItemRow({ item, highlight = false, onClick }: { item: QueueItem; highlight?: boolean; onClick?: () => void }) {
   const statusConfig = QUEUE_STATUS_CONFIG[item.status];
   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
 
@@ -291,8 +297,8 @@ function QueueItemRow({ item, highlight = false }: { item: QueueItem; highlight?
         ? 'bg-blue-500/5 border border-blue-500/20'
         : 'bg-surface/50 hover:bg-surface-alt border border-transparent'
       }
-      transition-all duration-200
-    `}>
+      transition-all duration-200 cursor-pointer
+    `} onClick={onClick}>
       <QueueNumberBadge
         number={item.queueNumber}
         size="sm"

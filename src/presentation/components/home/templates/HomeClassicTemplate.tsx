@@ -1,4 +1,4 @@
-import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { AnimatedButton } from '@/src/presentation/components/shared/AnimatedButton';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
@@ -16,6 +16,7 @@ export interface HomeClassicTemplateProps {
   showQR: boolean;
   setShowQR: (show: boolean) => void;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
+  onItemClick: (item: QueueItem) => void;
 }
 
 export function HomeClassicTemplate({
@@ -27,6 +28,7 @@ export function HomeClassicTemplate({
   showQR,
   setShowQR,
   bigNumberSpring,
+  onItemClick,
 }: HomeClassicTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentQueueNumber || 0;
@@ -195,10 +197,12 @@ export function HomeClassicTemplate({
                       delay={400 + index * 80}
                       direction="left"
                     >
-                      <div className="
+                      <div 
+                        onClick={() => onItemClick(item)}
+                        className="
                         flex items-center gap-2 sm:gap-4
                         px-2.5 sm:px-4 py-2 sm:py-3
-                        rounded-xl
+                        rounded-xl cursor-pointer
                         bg-surface/50 hover:bg-surface-alt
                         border border-transparent hover:border-border
                         transition-all duration-200

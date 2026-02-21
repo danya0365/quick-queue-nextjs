@@ -1,11 +1,13 @@
 'use client';
 
+import { QueueItem } from '@/src/domain/types/queue';
 import { QueueSkeleton } from '@/src/presentation/components/queue/QueueSkeleton';
 import { QueueClassicTemplate } from '@/src/presentation/components/queue/templates/QueueClassicTemplate';
 import { QueueEditorialTemplate } from '@/src/presentation/components/queue/templates/QueueEditorialTemplate';
 import { QueueRetroTechMagazineTemplate } from '@/src/presentation/components/queue/templates/QueueRetroTechMagazineTemplate';
 import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { QRModal } from '@/src/presentation/components/shared/QRModal';
+import { QueueItemDetailModal } from '@/src/presentation/components/shared/QueueItemDetailModal';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
@@ -62,6 +64,9 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
   // QR Code Modal
   const [showQR, setShowQR] = useState(false);
 
+  // Queue Item Detail Modal
+  const [selectedItem, setSelectedItem] = useState<QueueItem | null>(null);
+
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
   useEffect(() => {
@@ -107,6 +112,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
     setMobileTab,
     showQR,
     setShowQR,
+    onItemClick: setSelectedItem,
   };
 
   return (
@@ -122,6 +128,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
         <QueueClassicTemplate {...layoutProps} />
       )}
       <QRModal isOpen={showQR} onClose={() => setShowQR(false)} url={currentUrl} />
+      <QueueItemDetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} item={selectedItem} />
     </>
   );
 }

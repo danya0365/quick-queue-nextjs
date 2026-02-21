@@ -1,4 +1,4 @@
-import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { animated, SpringValue } from 'react-spring';
 
@@ -11,6 +11,7 @@ export interface HomeRetroTechMagazineTemplateProps {
   showQR: boolean;
   setShowQR: (show: boolean) => void;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
+  onItemClick: (item: QueueItem) => void;
 }
 
 export function HomeRetroTechMagazineTemplate({
@@ -21,6 +22,7 @@ export function HomeRetroTechMagazineTemplate({
   showQR,
   setShowQR,
   bigNumberSpring,
+  onItemClick,
 }: HomeRetroTechMagazineTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentQueueNumber || 0;
@@ -145,7 +147,7 @@ export function HomeRetroTechMagazineTemplate({
                   const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
                   
                   return (
-                    <div key={item.id} className="border-4 border-black p-4 flex gap-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all bg-white group cursor-pointer relative overflow-hidden">
+                    <div key={item.id} onClick={() => onItemClick(item)} className="border-4 border-black p-4 flex gap-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all bg-white group cursor-pointer relative overflow-hidden">
                       {/* Highlight color block */}
                       <div className={`absolute left-0 top-0 bottom-0 w-2 ${item.status === 'in_progress' ? 'bg-[#39FF14]' : 'bg-black'}`}></div>
                       
