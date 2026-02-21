@@ -38,9 +38,9 @@ export function TemplateSwitcher() {
   }, []);
 
   const templates: TemplateOption[] = [
-    { id: 'classic', label: 'Classic Mode' },
-    { id: 'retroTechMagazine', label: 'Retro Mode' },
     { id: 'editorial', label: 'Editorial Mode' },
+    { id: 'retroTechMagazine', label: 'Retro Mode' },
+    { id: 'classic', label: 'Classic Mode' },
   ];
 
   const commonProps = {
