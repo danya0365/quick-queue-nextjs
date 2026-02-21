@@ -55,7 +55,7 @@ export function TemplateSwitcherClassicTemplate({
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        title="Change Template"
+        title="เปลี่ยนสไตล์"
         className="transition-all duration-300 active:scale-95 flex items-center justify-center w-12 h-12 bg-surface/90 dark:bg-surface-alt/90 backdrop-blur-md border border-border text-foreground rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:border-primary/50 hover:shadow-[0_8px_30px_rgba(var(--primary),0.2)]"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

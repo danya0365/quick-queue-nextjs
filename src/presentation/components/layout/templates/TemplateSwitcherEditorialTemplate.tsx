@@ -51,7 +51,7 @@ export function TemplateSwitcherEditorialTemplate({
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        title="Change Style"
+        title="เปลี่ยนสไตล์"
         className={`
           transition-all duration-300 active:translate-y-1 flex justify-center items-center
           w-12 h-12 sm:w-14 sm:h-14 rounded-full border-[3px] sm:border-[4px] border-black

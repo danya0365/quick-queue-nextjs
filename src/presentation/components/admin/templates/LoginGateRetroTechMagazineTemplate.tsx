@@ -48,10 +48,10 @@ export function LoginGateRetroTechMagazineTemplate({
 
           <animated.div style={logoSpring} className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-widest text-[#FF00FF] drop-shadow-[2px_2px_0_rgba(255,255,255,1)]">
-              SYS_LOGIN
+              เข้าสู่ระบบ
             </h1>
             <div className="inline-block bg-white text-black font-bold uppercase text-xs tracking-widest px-2 py-1 mt-2 transform -skew-x-12">
-              AUTHORIZED PERSONNEL ONLY
+              สำหรับเจ้าหน้าที่เท่านั้น
             </div>
           </animated.div>
 
@@ -59,7 +59,7 @@ export function LoginGateRetroTechMagazineTemplate({
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-[#39FF14] mb-2 uppercase tracking-widest">
-                  &gt; IDENTIFICATION
+                  &gt; ชื่อผู้ใช้
                 </label>
                 <input
                   type="text"
@@ -73,7 +73,7 @@ export function LoginGateRetroTechMagazineTemplate({
                     focus:outline-none focus:border-[#39FF14] focus:shadow-[0_0_10px_rgba(57,255,20,0.5)]
                     transition-all
                   "
-                  placeholder="ENTER_USERNAME_"
+                  placeholder="กรอกชื่อผู้ใช้"
                   autoFocus
                   id="login-username"
                 />
@@ -81,7 +81,7 @@ export function LoginGateRetroTechMagazineTemplate({
 
               <div>
                 <label className="block text-sm font-bold text-[#39FF14] mb-2 uppercase tracking-widest">
-                  &gt; SECURITY CODES
+                  &gt; รหัสผ่าน
                 </label>
                 <input
                   type="password"
@@ -102,7 +102,7 @@ export function LoginGateRetroTechMagazineTemplate({
 
               {error && (
                 <div className="text-white font-bold bg-[#FF00FF] border-2 border-white px-4 py-3 uppercase text-sm animate-pulse tracking-widest text-center shadow-[4px_4px_0_0_rgba(255,255,255,1)]">
-                  ⚠ ERR: {error}
+                  ⚠ ข้อผิดพลาด: {error}
                 </div>
               )}
 
@@ -116,14 +116,14 @@ export function LoginGateRetroTechMagazineTemplate({
                   shadow-[4px_4px_0_0_rgba(0,255,255,1)]
                 "
               >
-                {isLoading ? 'ESTABLISHING CONN...' : 'GRANT ACCESS'}
+                {isLoading ? 'กำลังเชื่อมต่อ...' : 'ยืนยันการเข้าสู่ระบบ'}
               </button>
             </form>
 
             {process.env.NODE_ENV !== 'production' && (
               <div className="mt-8 pt-4 border-t-2 border-dashed border-gray-600 text-center">
                 <p className="text-gray-400 font-mono text-xs uppercase tracking-widest">
-                  DEMO CONFIG: admin / admin
+                  ทดสอบ: admin / admin
                 </p>
               </div>
             )}

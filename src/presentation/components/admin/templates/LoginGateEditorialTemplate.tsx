@@ -33,12 +33,12 @@ export function LoginGateEditorialTemplate({
 
         <animated.div style={logoSpring} className="text-left mb-12 border-b-[6px] border-black pb-8">
           <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none mb-4">
-            AUTH
+            เข้าสู่
             <br />
-            <span className="text-white bg-black px-2">ENTRY</span>
+            <span className="text-white bg-black px-2">ระบบ</span>
           </h1>
           <div className="inline-block font-sans font-bold uppercase text-xs sm:text-sm tracking-widest border-[3px] border-black px-3 py-1">
-            STAFF ONLY CREDENTIALS
+            สำหรับเจ้าหน้าที่เท่านั้น
           </div>
         </animated.div>
 
@@ -46,7 +46,7 @@ export function LoginGateEditorialTemplate({
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="flex flex-col">
               <label className="text-xl font-black uppercase tracking-tighter mb-2">
-                IDENTITY.
+                ชื่อผู้ใช้.
               </label>
               <input
                 type="text"
@@ -61,7 +61,7 @@ export function LoginGateEditorialTemplate({
 
             <div className="flex flex-col">
               <label className="text-xl font-black uppercase tracking-tighter mb-2">
-                KEY.
+                รหัสผ่าน.
               </label>
               <input
                 type="password"
@@ -75,7 +75,7 @@ export function LoginGateEditorialTemplate({
 
             {error && (
               <div className="text-white font-bold bg-black border-[4px] border-black px-5 py-4 uppercase text-sm tracking-widest text-center">
-                ERROR: {error}
+                ข้อผิดพลาด: {error}
               </div>
             )}
 
@@ -83,14 +83,14 @@ export function LoginGateEditorialTemplate({
               type="submit"
               className="w-full bg-black text-white hover:bg-white hover:text-black border-[6px] border-black px-6 py-5 font-black uppercase tracking-widest text-xl transition-all active:translate-y-1 mt-4"
             >
-              {isLoading ? 'VERIFYING...' : 'LOGIN'}
+              {isLoading ? 'กำลังตรวจสอบ...' : 'เข้าสู่ระบบ'}
             </button>
           </form>
 
           {process.env.NODE_ENV !== 'production' && (
             <div className="mt-10 pt-6 border-t-[4px] border-black text-center">
               <p className="text-gray-500 font-bold text-xs uppercase tracking-widest">
-                DEMO: admin / admin
+                ทดสอบ: admin / admin
               </p>
             </div>
           )}

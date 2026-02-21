@@ -44,14 +44,14 @@ export function QueueEditorialTemplate({
         <header className="flex flex-row justify-between items-end border-b-[3px] sm:border-b-[6px] border-black pb-2 sm:pb-6 gap-2 sm:gap-6 overflow-hidden">
           <div className="w-auto flex flex-col shrink-0">
             <h1 className="text-3xl sm:text-7xl font-black uppercase tracking-tighter leading-none mb-1 sm:mb-2 text-black">
-              MONITOR
+              ข้อมูลคิว
             </h1>
             <div className="flex items-center gap-1.5 sm:gap-4">
               <span className="font-bold text-[6px] sm:text-xs uppercase tracking-widest bg-black text-white px-1.5 py-0.5 sm:px-3 sm:py-1 whitespace-nowrap">
-                LIVE STATUS
+                สถานะเรียลไทม์
               </span>
               <span className="font-bold text-[6px] sm:text-sm tracking-widest uppercase whitespace-nowrap">
-                RELOAD: {refreshCountdown}
+                รีโหลดใน: {refreshCountdown}
               </span>
             </div>
           </div>
@@ -69,13 +69,13 @@ export function QueueEditorialTemplate({
                   soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
                 }`}
               >
-                {soundEnabled ? 'AUDIO' : 'MUTED'}
+                {soundEnabled ? 'เสียง: เปิด' : 'เสียง: ปิด'}
               </button>
               <button
                 onClick={() => setShowQR(true)}
                 className="px-1.5 py-1 sm:px-10 sm:py-3 font-black uppercase border-[2px] sm:border-[6px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap"
               >
-                SCAN QR
+                สแกนดูคิว
               </button>
             </div>
           </div>
@@ -85,11 +85,11 @@ export function QueueEditorialTemplate({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8 border-[4px] sm:border-[6px] border-black p-4 sm:p-8 relative overflow-hidden bg-white">
           {/* Diagonal Ribbon */}
           <div className="absolute top-4 sm:top-8 -left-16 sm:-left-12 z-20 bg-black text-white font-black text-[10px] sm:text-xl uppercase px-20 sm:px-16 py-1.5 sm:py-3 transform -rotate-45 shadow-none lg:shadow-xl border-y-[2px] sm:border-y-[6px] border-white">
-            NOW SERVING
+            กำลังเรียกคิว
           </div>
 
           <div className="col-span-1 lg:col-span-8 flex flex-col justify-center items-center lg:items-start lg:border-r-[6px] lg:border-black lg:pr-12 relative z-10 pt-10 lg:pt-0">
-            <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tighter mb-2 sm:mb-4 opacity-50">CURRENT TICKET</h2>
+            <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tighter mb-2 sm:mb-4 opacity-50">คิวปัจจุบัน</h2>
             <animated.div style={pulseSpring} className="relative w-full text-center lg:text-left">
               <div className="text-[10rem] sm:text-[18rem] md:text-[22rem] font-black tabular-nums leading-[0.8] tracking-tighter text-black">
                 {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
@@ -98,10 +98,10 @@ export function QueueEditorialTemplate({
           </div>
 
           <div className="col-span-1 lg:col-span-4 flex flex-row lg:flex-col justify-between lg:justify-center items-center lg:items-stretch gap-4 sm:gap-8 relative z-10 lg:pl-4 border-t-[4px] lg:border-t-0 p-4 lg:p-0 border-black mt-4 lg:mt-0">
-            <EditorialStat title="WAITING" value={stats?.waitingItems || 0} />
+            <EditorialStat title="รอคิว" value={stats?.waitingItems || 0} />
             <div className="hidden lg:block w-full h-[6px] bg-black"></div>
             <div className="block lg:hidden w-[4px] h-12 bg-black"></div>
-            <EditorialStat title="WAIT TIME" value={`${waitTime}M`} />
+            <EditorialStat title="เวลารอโดยประมาณ" value={`${waitTime} นาที`} />
           </div>
         </div>
 
@@ -111,34 +111,34 @@ export function QueueEditorialTemplate({
             onClick={() => setMobileTab('in_progress')}
             className={`flex-1 py-3 text-center transition-colors border-r-[4px] border-black flex flex-col items-center justify-center ${mobileTab === 'in_progress' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
           >
-            SERVING <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'in_progress' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{inProgressItems.length}</span>
+            กำลังเรียก <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'in_progress' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{inProgressItems.length}</span>
           </button>
           <button
             onClick={() => setMobileTab('waiting')}
             className={`flex-1 py-3 text-center transition-colors border-r-[4px] border-black flex flex-col items-center justify-center ${mobileTab === 'waiting' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
           >
-            WAITING <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'waiting' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{waitingItems.length}</span>
+            รอคิว <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'waiting' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{waitingItems.length}</span>
           </button>
           <button
             onClick={() => setMobileTab('completed')}
             className={`flex-1 py-3 text-center transition-colors flex flex-col items-center justify-center ${mobileTab === 'completed' ? 'bg-black text-white' : 'hover:bg-gray-100 text-black'}`}
           >
-            DONE <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'completed' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{completedItems.length}</span>
+            เสร็จสิ้น <span className={`px-2 py-0.5 mt-1 border-[2px] tabular-nums ${mobileTab === 'completed' ? 'bg-white text-black border-white' : 'bg-black text-white border-black'}`}>{completedItems.length}</span>
           </button>
         </div>
 
         {/* ─── Active Track Column (Mobile Only) ─── */}
         <div className="lg:hidden mt-6">
-          {mobileTab === 'in_progress' && <EditorialColumn title="SERVING_NOW" items={inProgressItems} isServing />}
-          {mobileTab === 'waiting' && <EditorialColumn title="ON_DECK" items={waitingItems} />}
-          {mobileTab === 'completed' && <EditorialColumn title="COMPLETED" items={completedItems} />}
+          {mobileTab === 'in_progress' && <EditorialColumn title="กำลังเรียก" items={inProgressItems} isServing />}
+          {mobileTab === 'waiting' && <EditorialColumn title="รอคิว" items={waitingItems} />}
+          {mobileTab === 'completed' && <EditorialColumn title="เสร็จสิ้น" items={completedItems} />}
         </div>
 
         {/* ─── Track Columns (Desktop Only) ─── */}
         <div className="hidden lg:grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative before:hidden lg:before:block before:absolute before:inset-0 before:pointer-events-none before:border-t-[6px] before:border-black before:-top-4">
-          <EditorialColumn title="SERVING_NOW" items={inProgressItems} isServing />
-          <EditorialColumn title="ON_DECK" items={waitingItems} />
-          <EditorialColumn title="COMPLETED" items={completedItems} />
+          <EditorialColumn title="กำลังเรียก" items={inProgressItems} isServing />
+          <EditorialColumn title="รอคิว" items={waitingItems} />
+          <EditorialColumn title="เสร็จสิ้น" items={completedItems} />
         </div>
 
       </div>
@@ -170,7 +170,7 @@ function EditorialColumn({ title, items, isServing = false }: { title: string; i
       <div className={`flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-6 ${isServing ? 'bg-black' : 'bg-gray-100'}`}>
         {items.length === 0 ? (
           <div className={`h-full flex items-center justify-center font-bold uppercase border-[4px] sm:border-[6px] border-dashed text-center p-6 ${isServing ? 'border-white/20 text-white/40' : 'border-black/20 text-black/40'}`}>
-            EMPTY
+            ไม่มีข้อมูล
           </div>
         ) : (
            items.map((item) => <EditorialRow key={item.id} item={item} isServing={isServing} />)

@@ -25,10 +25,10 @@ export function QRModalEditorialTemplate({ onClose, url, qrSpring }: QRModalEdit
           X
         </button>
         <h3 className="text-3xl sm:text-5xl font-black uppercase text-black mb-3 sm:mb-4 tracking-tighter w-full text-center border-b-[4px] sm:border-b-[6px] border-black pb-4 sm:pb-6">
-          DIGITAL TICKET
+          ตั๋วดิจิทัล
         </h3>
         <p className="text-[10px] sm:text-sm font-bold text-gray-500 mb-6 sm:mb-10 text-center uppercase tracking-widest">
-          SCAN TO JOIN THE QUEUE REMOTELY
+          สแกนเพื่อรับคิวของคุณผ่านทางออนไลน์
         </p>
         <div className="bg-white p-4 sm:p-6 border-[4px] sm:border-[6px] border-black w-full max-w-[280px] aspect-square flex justify-center items-center">
           <QRCodeSVG

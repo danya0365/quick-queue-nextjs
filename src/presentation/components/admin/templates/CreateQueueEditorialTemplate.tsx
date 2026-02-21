@@ -43,9 +43,9 @@ export function CreateQueueEditorialTemplate({
       {/* Header */}
       <div className="px-6 py-4 border-b-[6px] border-black flex items-center justify-between bg-white text-black">
         <div>
-          <h2 className="font-black text-3xl uppercase tracking-tighter">NEW TICKET</h2>
+          <h2 className="font-black text-3xl uppercase tracking-tighter">สร้างคิวใหม่</h2>
           <p className="font-bold text-xs uppercase tracking-widest mt-1 opacity-60">
-            TICKET <span className="bg-black text-white px-2 py-0.5 ml-1">#{nextQueueNumber}</span>
+            คิวที่ <span className="bg-black text-white px-2 py-0.5 ml-1">#{nextQueueNumber}</span>
           </p>
         </div>
         <button
@@ -61,8 +61,8 @@ export function CreateQueueEditorialTemplate({
       <form onSubmit={handleSubmit} className="p-6 space-y-6 font-sans">
         <div>
           <label className="block font-black text-md uppercase tracking-widest mb-2 flex justify-between items-end border-b-[3px] border-black pb-1">
-            <span>IDENTITY</span>
-            <span className="text-[10px] font-bold opacity-50">AUTO-FILL AVAILABLE</span>
+            <span>รายละเอียดลูกค้า</span>
+            <span className="text-[10px] font-bold opacity-50">ปล่อยว่างให้ระบบจัดรหัสอัตโนมัติ</span>
           </label>
           <div className="relative">
             <input
@@ -76,7 +76,7 @@ export function CreateQueueEditorialTemplate({
                 focus:outline-none focus:ring-4 focus:ring-black/20
                 transition-all duration-200 uppercase
               "
-              placeholder={`E.G. TICKET #${nextQueueNumber}`}
+              placeholder={`เช่น ลูกค้าคิวที่ #${nextQueueNumber}`}
               autoFocus
               id="create-customer-name"
             />
@@ -93,7 +93,7 @@ export function CreateQueueEditorialTemplate({
           </div>
           {/* Quick Presets */}
           <div className="flex flex-wrap gap-2 mt-3">
-            {['GUEST', 'GRAB', 'LINEMAN', 'PANDA', 'LALA'].map((preset) => (
+            {['ลูกค้าทั่วไป', 'GRAB', 'LINEMAN', 'FOODPANDA', 'LALAMOVE'].map((preset) => (
               <button
                 key={preset}
                 type="button"
@@ -108,12 +108,12 @@ export function CreateQueueEditorialTemplate({
 
         <div>
           <label className="block font-black text-md uppercase tracking-widest mb-2 border-b-[3px] border-black pb-1">
-            SERVICE TYPE
+            ประเภทบริการ
           </label>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { value: ServiceType.GENERAL, label: 'STD' },
-              { value: ServiceType.EXPRESS, label: 'EXP' },
+              { value: ServiceType.GENERAL, label: 'ทั่วไป' },
+              { value: ServiceType.EXPRESS, label: 'ด่วน' },
               { value: ServiceType.VIP, label: 'VIP' },
             ].map((option) => (
               <button
@@ -137,7 +137,7 @@ export function CreateQueueEditorialTemplate({
 
         <div>
           <label className="block font-black text-md uppercase tracking-widest mb-2 border-b-[3px] border-black pb-1">
-             INFO
+             หมายเหตุ
           </label>
           <div className="relative">
             <input
@@ -151,7 +151,7 @@ export function CreateQueueEditorialTemplate({
                 focus:outline-none focus:ring-4 focus:ring-black/20
                 transition-all duration-200 uppercase
               "
-              placeholder="E.G. ADD DETAIL"
+              placeholder="เช่น เพิ่มรายละเอียดคำสั่งซื้อ"
               id="create-note"
             />
             {note && (
@@ -166,7 +166,7 @@ export function CreateQueueEditorialTemplate({
             )}
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
-            {['1X', '2X', '3X', 'BEEF', 'CHICKEN', 'BANANA', 'REG', 'SPCL'].map((preset) => (
+            {['1 ชิ้น', '2 ชิ้น', '3 ชิ้น', 'เนื้อ', 'ไก่', 'กล้วย', 'ธรรมดา', 'พิเศษ'].map((preset) => (
               <button
                 key={preset}
                 type="button"
@@ -190,7 +190,7 @@ export function CreateQueueEditorialTemplate({
               hover:bg-gray-100 transition-colors
             "
           >
-            CANCEL
+            ยกเลิก
           </button>
           <button
             type="submit"
@@ -204,7 +204,7 @@ export function CreateQueueEditorialTemplate({
             "
             id="create-submit"
           >
-            {isSubmitting ? 'WORKING...' : `ISSUE #${nextQueueNumber}`}
+            {isSubmitting ? 'กำลังสร้าง...' : `สร้างคิว #${nextQueueNumber}`}
           </button>
         </div>
       </form>

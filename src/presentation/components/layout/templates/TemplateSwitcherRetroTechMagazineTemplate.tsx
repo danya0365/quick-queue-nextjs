@@ -51,7 +51,7 @@ export function TemplateSwitcherRetroTechMagazineTemplate({
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        title="Styles"
+        title="เปลี่ยนสไตล์"
         className={`
           transition-all duration-300 active:scale-95 flex items-center justify-center
           w-12 h-12 sm:w-14 sm:h-14

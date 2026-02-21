@@ -29,12 +29,12 @@ export function ClearConfirmRetroTechMagazineTemplate({
 
       <div className="text-6xl mb-6">☢️</div>
       <h2 className="text-white font-black text-2xl mb-4 uppercase tracking-widest">
-        NUKE ALL?
+        ล้างข้อมูลทั้งหมด?
       </h2>
       <p className="text-gray-300 font-mono text-sm mb-8 uppercase">
-        WARNING: THIS WILL WIPE ENTIRE DATABASE. 
+        คำเตือน! การกระทำนี้จะลบข้อมูลคิวทั้งหมด 
         <br />
-        NO RECOVERY POSSIBLE.
+        และไม่สามารถกู้คืนได้
       </p>
 
       <div className="flex flex-col gap-4">
@@ -50,7 +50,7 @@ export function ClearConfirmRetroTechMagazineTemplate({
             active:translate-y-1 active:shadow-none
           "
         >
-          NUKE IT
+          ยืนยันการล้างข้อมูล
         </button>
         <button
           onClick={onClose}
@@ -61,7 +61,7 @@ export function ClearConfirmRetroTechMagazineTemplate({
             transition-all
           "
         >
-          ABORT
+          ยกเลิก
         </button>
       </div>
     </animated.div>

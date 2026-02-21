@@ -20,7 +20,7 @@ export function MobileBottomNavClassicTemplate() {
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-1 py-1 px-4 text-[10px] text-muted hover:text-primary transition-colors border-b border-border/40"
       >
-        <span>Made with ❤️</span>
+        <span>สร้างด้วย ❤️</span>
         <span className="font-semibold">Clean Code 1986</span>
       </a>
 

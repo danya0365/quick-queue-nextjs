@@ -34,12 +34,12 @@ export function DeleteConfirmRetroTechMagazineTemplate({
 
       <div className="text-6xl mb-6">🗑️</div>
       <h2 className="text-white font-black text-2xl mb-2 uppercase tracking-widest">
-        DELETE FILE?
+        ลบทิ้ง?
       </h2>
       <p className="text-gray-300 font-mono text-sm mb-8 uppercase">
-        TARGET: <strong className="text-[#FF0000]">Q#{queueNumber}</strong>
+        คิวที่: <strong className="text-[#FF0000]">Q#{queueNumber}</strong>
         <br />
-        ID: {customerName}
+        ชื่อ: {customerName}
       </p>
 
       <div className="flex flex-col gap-4">
@@ -56,7 +56,7 @@ export function DeleteConfirmRetroTechMagazineTemplate({
           "
           id="delete-confirm"
         >
-          CONFIRM DEL
+          ยืนยันการลบ
         </button>
         <button
           onClick={onClose}
@@ -67,7 +67,7 @@ export function DeleteConfirmRetroTechMagazineTemplate({
             transition-all
           "
         >
-          ABORT
+          ยกเลิก
         </button>
       </div>
     </animated.div>

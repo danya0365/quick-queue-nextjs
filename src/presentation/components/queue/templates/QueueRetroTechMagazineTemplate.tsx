@@ -46,16 +46,16 @@ export function QueueRetroTechMagazineTemplate({
         <header className="flex flex-col sm:flex-row justify-between items-end border-b-8 border-black pb-4 gap-4">
           <div>
             <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none text-black">
-              Q_MONITOR
+              ระบบคิว
               <span className="block text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] stroke-black" style={{ WebkitTextStroke: '1px black' }}>
-                LIVE FEED
+                ฟีดเรียลไทม์
               </span>
             </h1>
           </div>
           <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
             <div className="flex gap-2 sm:gap-4 border-4 border-black bg-white p-1.5 sm:p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-2 w-full sm:w-auto overflow-hidden">
               <div className="px-2 sm:px-4 py-1 sm:py-2 border-r-4 border-black font-bold text-[10px] sm:text-sm tracking-widest uppercase flex flex-1 items-center justify-center whitespace-nowrap min-w-0">
-                RELOAD IN <span className="text-[#FF00FF] ml-1">{refreshCountdown}s</span>
+                รีโหลดใน <span className="text-[#FF00FF] ml-1">{refreshCountdown}วิ.</span>
               </div>
               <button
                 onClick={() => setSoundEnabled((prev) => !prev)}
@@ -63,7 +63,7 @@ export function QueueRetroTechMagazineTemplate({
                   soundEnabled ? 'bg-[#39FF14] text-black' : 'bg-black text-white'
                 }`}
               >
-                {soundEnabled ? 'BEEP ON' : 'MUTE'}
+                {soundEnabled ? 'เสียงแจ้งเตือน: เปิด' : 'เสียงแจ้งเตือน: ปิด'}
               </button>
             </div>
             <div className="text-black bg-[#00FFFF] border-2 border-black px-3 py-1 font-bold text-xl uppercase tracking-widest shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
@@ -75,7 +75,7 @@ export function QueueRetroTechMagazineTemplate({
         {/* ─── Hero Serving Section ─── */}
         <div className="relative">
           <div className="absolute -top-4 -left-4 z-20 bg-[#FF00FF] text-white font-black text-xs sm:text-lg uppercase px-3 py-1 sm:px-4 sm:py-2 border-4 border-black transform -rotate-12 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-            NOW SERVING
+            กำลังเรียกคิว
           </div>
           
           <div className="bg-white border-8 border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
@@ -88,8 +88,8 @@ export function QueueRetroTechMagazineTemplate({
 
             {/* Right: Quick Stats */}
             <div className="grid grid-cols-2 gap-4 w-full md:w-auto relative z-10">
-               <RetroQueueStat label="WAITING" val={stats?.waitingItems || 0} color="#FF00FF" />
-               <RetroQueueStat label="EST. WAIT" val={`${waitTime} m`} color="#39FF14" />
+               <RetroQueueStat label="กำลังรอ (คิว)" val={stats?.waitingItems || 0} color="#FF00FF" />
+               <RetroQueueStat label="ระยะเวลารอ" val={`${waitTime} นาที`} color="#39FF14" />
             </div>
 
             {/* Background Pattern */}
@@ -103,34 +103,34 @@ export function QueueRetroTechMagazineTemplate({
             onClick={() => setMobileTab('in_progress')}
             className={`flex-1 py-3 text-center transition-colors border-r-4 border-black flex flex-col items-center justify-center ${mobileTab === 'in_progress' ? 'bg-[#00FFFF] text-black shadow-inner' : 'hover:bg-gray-100 text-black'}`}
           >
-            SERVING <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{inProgressItems.length}</span>
+            กำลังเรียก <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{inProgressItems.length}</span>
           </button>
           <button
             onClick={() => setMobileTab('waiting')}
             className={`flex-1 py-3 text-center transition-colors border-r-4 border-black flex flex-col items-center justify-center ${mobileTab === 'waiting' ? 'bg-[#FF00FF] text-white shadow-inner' : 'hover:bg-gray-100 text-black'}`}
           >
-            WAITING <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{waitingItems.length}</span>
+            รอคิว <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{waitingItems.length}</span>
           </button>
           <button
             onClick={() => setMobileTab('completed')}
             className={`flex-1 py-3 text-center transition-colors flex flex-col items-center justify-center ${mobileTab === 'completed' ? 'bg-[#39FF14] text-black shadow-inner' : 'hover:bg-gray-100 text-black'}`}
           >
-            DONE <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{completedItems.length}</span>
+            เสร็จสิ้น <span className="bg-black text-white px-2 py-0.5 mt-1 border border-black tabular-nums">{completedItems.length}</span>
           </button>
         </div>
 
         {/* ─── Active Track Column (Mobile Only) ─── */}
         <div className="lg:hidden mt-6">
-          {mobileTab === 'in_progress' && <RetroQueueColumn title="IN_PROGRESS" items={inProgressItems} baseColor="#00FFFF" />}
-          {mobileTab === 'waiting' && <RetroQueueColumn title="WAITING_Q" items={waitingItems} baseColor="#FF00FF" />}
-          {mobileTab === 'completed' && <RetroQueueColumn title="COMPLETED" items={completedItems} baseColor="#39FF14" />}
+          {mobileTab === 'in_progress' && <RetroQueueColumn title="กำลังเรียก" items={inProgressItems} baseColor="#00FFFF" />}
+          {mobileTab === 'waiting' && <RetroQueueColumn title="รอคิว" items={waitingItems} baseColor="#FF00FF" />}
+          {mobileTab === 'completed' && <RetroQueueColumn title="เสร็จสิ้น" items={completedItems} baseColor="#39FF14" />}
         </div>
 
         {/* ─── Track Columns (Desktop Only) ─── */}
         <div className="hidden lg:grid grid-cols-3 gap-8 items-start mt-8">
-          <RetroQueueColumn title="IN_PROGRESS" items={inProgressItems} baseColor="#00FFFF" />
-          <RetroQueueColumn title="WAITING_Q" items={waitingItems} baseColor="#FF00FF" />
-          <RetroQueueColumn title="COMPLETED" items={completedItems} baseColor="#39FF14" />
+          <RetroQueueColumn title="กำลังเรียก" items={inProgressItems} baseColor="#00FFFF" />
+          <RetroQueueColumn title="รอคิว" items={waitingItems} baseColor="#FF00FF" />
+          <RetroQueueColumn title="เสร็จสิ้น" items={completedItems} baseColor="#39FF14" />
         </div>
 
       </div>
@@ -161,7 +161,7 @@ function RetroQueueColumn({ title, items, baseColor }: { title: string; items: Q
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {items.length === 0 ? (
           <div className="h-full flex items-center justify-center font-bold uppercase text-gray-400 border-4 border-dashed border-gray-300 p-4 text-center">
-            {title === 'COMPLETED' ? 'NOTHING YET' : 'EMPTY DECK'}
+            {title === 'เสร็จสิ้น' ? 'ยังไม่มีคิวที่เสร็จสิ้น' : 'ไม่มีข้อมูลคิว'}
           </div>
         ) : (
           items.map((item) => <RetroQueueItemRow key={item.id} item={item} highlightColor={baseColor} />)

@@ -43,13 +43,13 @@ export function HomeEditorialTemplate({
               <span className="text-black bg-white md:pl-2 inline-block">QUEUE</span>
             </h1>
             <p className="font-bold text-[6px] sm:text-xl uppercase tracking-widest mt-1 sm:mt-6 px-1.5 sm:px-4 py-0.5 sm:py-2 border-[1px] sm:border-[6px] border-black inline-block whitespace-nowrap">
-              ISSUE 01 // LIVE QUEUE SYSTEM
+              ระบบจัดการคิวออนไลน์ // QUICK QUEUE
             </p>
           </div>
 
           <div className="flex flex-col items-end justify-end gap-1.5 sm:gap-6 w-auto shrink-0 pb-0.5 sm:pb-0">
             <div className="text-right w-auto pb-1 sm:pb-4 border-b-[2px] sm:border-b-[6px] border-black flex flex-col justify-end items-end">
-              <div className="text-[6px] sm:text-sm font-bold uppercase tracking-widest opacity-60">LOCAL TIME</div>
+              <div className="text-[6px] sm:text-sm font-bold uppercase tracking-widest opacity-60">เวลาปัจจุบัน</div>
               <div className="text-xl sm:text-5xl lg:text-6xl font-black tabular-nums tracking-tighter leading-none">{currentTime}</div>
             </div>
             <div className="flex flex-row gap-1 sm:gap-4 w-auto">
@@ -59,13 +59,13 @@ export function HomeEditorialTemplate({
                   soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
                 }`}
               >
-                {soundEnabled ? 'AUDIO' : 'MUTED'}
+                {soundEnabled ? 'เสียง: เปิด' : 'เสียง: ปิด'}
               </button>
               <button
                 onClick={() => setShowQR(true)}
                 className="px-1.5 py-1 sm:px-10 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap"
               >
-                SCAN QR
+                สแกนดูคิว
               </button>
             </div>
           </div>
@@ -82,11 +82,11 @@ export function HomeEditorialTemplate({
             >
               {/* Diagonal Ribbon */}
               <div className="absolute top-6 sm:top-12 -left-20 sm:-left-16 z-20 bg-white text-black font-black text-[10px] sm:text-xl uppercase px-24 py-1.5 sm:py-4 transform -rotate-45 font-sans tracking-widest border-y-[2px] sm:border-y-[6px] border-black">
-                SPOTLIGHT
+                กำลังเรียกคิว
               </div>
 
               <div className="text-[10px] sm:text-sm font-bold uppercase tracking-widest border-[2px] sm:border-[4px] border-white px-3 py-1 sm:px-6 sm:py-2 mb-6 sm:mb-12 opacity-80 mt-6 sm:mt-0">
-                CURRENT TICKET
+                คิวปัจจุบัน
               </div>
               
               <div className="text-[7rem] sm:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black tabular-nums leading-[0.75] tracking-tighter mix-blend-difference mb-6 sm:mb-12">
@@ -94,8 +94,8 @@ export function HomeEditorialTemplate({
               </div>
 
               <div className="mt-auto border-t-[2px] sm:border-t-[6px] border-white pt-4 sm:pt-8 w-full flex justify-between items-end">
-                <span className="font-bold text-[10px] sm:text-xl uppercase tracking-widest text-left w-1/2 leading-tight">EST Wait<br/>TIME</span>
-                <span className="text-3xl sm:text-6xl font-black tabular-nums tracking-tighter">{waitTime}M</span>
+                <span className="font-bold text-[10px] sm:text-xl uppercase tracking-widest text-left w-1/2 leading-tight">เวลารอ<br/>โดยประมาณ</span>
+                <span className="text-3xl sm:text-6xl font-black tabular-nums tracking-tighter">{waitTime} นาที</span>
               </div>
             </animated.div>
           </div>
@@ -103,14 +103,14 @@ export function HomeEditorialTemplate({
           {/* Stats Column (Center) - 2 cols */}
           <div className="lg:col-span-2 flex flex-row lg:flex-col gap-2 sm:gap-4 lg:gap-6 h-full mt-0 lg:mt-0 overflow-x-auto pb-2 lg:pb-0 snap-x">
             <h2 className="hidden lg:block text-2xl sm:text-3xl font-black uppercase border-b-[4px] sm:border-b-[6px] border-black pb-3 sm:pb-4">
-              METRICS
+              สถิติวันนี้
             </h2>
             
             <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 lg:gap-6 font-sans w-full min-w-max lg:min-w-0">
-              <div className="snap-center"><EditorialStatCard label="TOTAL" value={stats?.totalItems || 0} isDark /></div>
-              <div className="snap-center"><EditorialStatCard label="WAITING" value={stats?.waitingItems || 0} /></div>
-              <div className="snap-center"><EditorialStatCard label="PLAYING" value={stats?.inProgressItems || 0} /></div>
-              <div className="snap-center"><EditorialStatCard label="DONE" value={stats?.completedItems || 0} /></div>
+              <div className="snap-center"><EditorialStatCard label="ทั้งหมด" value={stats?.totalItems || 0} isDark /></div>
+              <div className="snap-center"><EditorialStatCard label="รอคิว" value={stats?.waitingItems || 0} /></div>
+              <div className="snap-center"><EditorialStatCard label="กำลังเรียก" value={stats?.inProgressItems || 0} /></div>
+              <div className="snap-center"><EditorialStatCard label="เสร็จสิ้น" value={stats?.completedItems || 0} /></div>
             </div>
           </div>
 
@@ -118,14 +118,14 @@ export function HomeEditorialTemplate({
           <div className="lg:col-span-4 border-[2px] sm:border-[6px] border-black p-3 sm:p-6 lg:p-8 min-h-[300px] sm:h-[550px] lg:h-[700px] flex flex-col bg-white">
             <div className="flex justify-between items-center mb-4 pb-2 sm:mb-8 sm:pb-6 border-b-[2px] sm:border-b-[6px] border-black">
               <h2 className="text-xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tighter">
-                THE ROSTER
+                รายการคิว
               </h2>
             </div>
             
             <div className="flex-1 overflow-y-auto pr-1 sm:pr-4 space-y-3 sm:space-y-6">
               {recentItems.length === 0 ? (
                 <div className="p-6 sm:p-12 border-[2px] sm:border-[6px] border-dashed border-gray-300 font-bold text-lg sm:text-2xl text-center uppercase text-gray-400">
-                  NO ENTRIES
+                  ไม่มีข้อมูลคิว
                 </div>
               ) : (
                 recentItems.map((item) => {

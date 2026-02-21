@@ -25,10 +25,10 @@ export function QRModalRetroTechMagazineTemplate({ onClose, url, qrSpring }: QRM
           X
         </button>
         <h3 className="text-2xl sm:text-3xl font-black uppercase text-black mb-2 bg-white px-3 sm:px-4 border-2 sm:border-4 border-black transform -rotate-2">
-          SCAN ME
+          รับคิวออนไลน์
         </h3>
         <p className="text-[10px] sm:text-sm font-bold text-black mb-4 sm:mb-6 text-center uppercase">
-          Get your virtual queue ticket instantly
+          สแกน QR Code เพื่อรับตั๋วคิวดิจิทัลของคุณ
         </p>
         <div className="bg-white p-3 sm:p-4 border-[3px] sm:border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)] w-full max-w-[240px] aspect-square flex justify-center items-center">
           <QRCodeSVG

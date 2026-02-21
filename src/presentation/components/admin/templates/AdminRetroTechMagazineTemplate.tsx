@@ -50,9 +50,9 @@ export function AdminRetroTechMagazineTemplate({
         <header className="flex flex-col sm:flex-row justify-between items-end border-b-8 border-black pb-4 gap-4">
           <div>
             <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none text-black">
-              SYS_ADMIN
+              ผู้ดูแลระบบ
               <span className="block text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] stroke-black" style={{ WebkitTextStroke: '1px black' }}>
-                CONTROL PANEL
+                แผงควบคุม
               </span>
             </h1>
           </div>
@@ -61,30 +61,30 @@ export function AdminRetroTechMagazineTemplate({
               onClick={actions.openCreateModal}
               className="bg-[#39FF14] text-black px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
             >
-              + ADD Q
+              + สร้างคิว
             </button>
             <button
               onClick={actions.openClearAllModal}
               className="bg-[#FF00FF] text-white px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
             >
-              NUKE ALL
+              ล้างข้อมูล
             </button>
             <button
               onClick={handleLogout}
               className="bg-black text-white px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
             >
-              LOGOUT
+              ออก
             </button>
           </div>
         </header>
 
         {/* ─── Stats Grid ─── */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          <RetroStatBox label="TOTAL" value={stats?.totalItems || 0} color="#FFFFFF" />
-          <RetroStatBox label="WAITING" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
-          <RetroStatBox label="SERVING" value={stats?.inProgressItems || 0} color="#00FFFF" />
-          <RetroStatBox label="DONE" value={stats?.completedItems || 0} color="#39FF14" />
-          <RetroStatBox label="CANCELED" value={stats?.cancelledItems || 0} color="#000000" textColor="text-white" />
+          <RetroStatBox label="รวม" value={stats?.totalItems || 0} color="#FFFFFF" />
+          <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
+          <RetroStatBox label="เรียกคิว" value={stats?.inProgressItems || 0} color="#00FFFF" />
+          <RetroStatBox label="เสร็จ" value={stats?.completedItems || 0} color="#39FF14" />
+          <RetroStatBox label="ยกเลิก" value={stats?.cancelledItems || 0} color="#000000" textColor="text-white" />
         </div>
 
         {/* ─── Main Content ─── */}
@@ -92,11 +92,11 @@ export function AdminRetroTechMagazineTemplate({
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
             {[
-              { key: 'all', label: 'ALL FILES' },
-              { key: QueueStatus.WAITING, label: 'WAITING' },
-              { key: QueueStatus.IN_PROGRESS, label: 'IN PROGRESS' },
-              { key: QueueStatus.COMPLETED, label: 'COMPLETED' },
-              { key: QueueStatus.CANCELLED, label: 'CANCELED' },
+              { key: 'all', label: 'ทั้งหมด' },
+              { key: QueueStatus.WAITING, label: 'รอคิว' },
+              { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก' },
+              { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น' },
+              { key: QueueStatus.CANCELLED, label: 'ยกเลิก' },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -116,16 +116,16 @@ export function AdminRetroTechMagazineTemplate({
           <div className="flex-1 overflow-x-auto border-4 border-black mb-4 bg-gray-50">
             {items.length === 0 ? (
               <div className="p-12 text-center text-xl font-black uppercase tracking-widest text-gray-400">
-                NO RECORDS FOUND.
+                ไม่พบข้อมูลคิว
               </div>
             ) : (
               <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                   <tr className="bg-black text-white font-bold uppercase tracking-wider">
-                    <th className="p-3 border-r-2 border-white/20 whitespace-nowrap">Q #</th>
-                    <th className="p-3 border-r-2 border-white/20">Name / Svc</th>
-                    <th className="p-3 border-r-2 border-white/20">Status</th>
-                    <th className="p-3 text-right">Actions</th>
+                    <th className="p-3 border-r-2 border-white/20 whitespace-nowrap">หมายเลข</th>
+                    <th className="p-3 border-r-2 border-white/20">ชื่อ / บริการ</th>
+                    <th className="p-3 border-r-2 border-white/20">สถานะ</th>
+                    <th className="p-3 text-right">จัดการ</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,7 +143,7 @@ export function AdminRetroTechMagazineTemplate({
                           <div className="text-xs font-bold uppercase bg-black text-white inline-block px-1 mt-1">
                             {serviceConfig.label}
                           </div>
-                          {item.note && <div className="text-xs font-mono mt-1 opacity-70">NT: {item.note}</div>}
+                          {item.note && <div className="text-xs font-mono mt-1 opacity-70">หมายเหตุ: {item.note}</div>}
                         </td>
                         <td className="p-3 border-r-2 border-black whitespace-nowrap">
                           <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${
@@ -167,7 +167,7 @@ export function AdminRetroTechMagazineTemplate({
                                   onClick={sa.action}
                                   className={`${btnColor} text-black px-2 py-1 text-xs font-bold uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgba(0,0,0,1)] transition-all whitespace-nowrap`}
                                 >
-                                  {sa.label.replace('🔄', '').replace('❌', '').replace('✅', '').trim()}
+                                  {sa.label}
                                 </button>
                               );
                             })}
@@ -175,7 +175,7 @@ export function AdminRetroTechMagazineTemplate({
                                onClick={() => actions.openDeleteModal(item.id)}
                                className="bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgba(0,0,0,1)] transition-all"
                             >
-                              DEL
+                              ลบ
                             </button>
                           </div>
                         </td>
@@ -190,7 +190,7 @@ export function AdminRetroTechMagazineTemplate({
           {/* Pagination */}
           <div className="flex justify-between items-center font-bold uppercase tracking-widest text-sm">
             <div>
-              PAGE {currentPage} OF {totalPages}
+              หน้า {currentPage} จาก {totalPages}
             </div>
             {totalPages > 1 && (
               <div className="flex gap-1 border-2 border-black bg-black p-1">
@@ -231,7 +231,7 @@ export function AdminRetroTechMagazineTemplate({
       {state.error && (
         <div className="fixed bottom-20 right-6 bg-red-600 text-white font-bold p-4 border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] z-40 animate-bounce">
           <div className="flex items-center gap-4">
-            <span className="text-2xl">ERR</span>
+            <span className="text-2xl">ข้อผิดพลาด</span>
             <span className="text-sm uppercase tracking-wider">{state.error}</span>
             <button onClick={() => actions.setError(null)} className="ml-4 bg-black text-white px-2 border-2 border-white hover:bg-white hover:text-black">X</button>
           </div>

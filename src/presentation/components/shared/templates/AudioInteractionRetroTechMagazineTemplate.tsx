@@ -17,10 +17,10 @@ export function AudioInteractionRetroTechMagazineTemplate() {
         </div>
         <div className="flex-1">
           <h3 className="font-black text-xl sm:text-2xl mb-1.5 uppercase tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,1)] leading-none">
-            ACTION REQUIRED
+            เรียกคิวผ่านเสียง
           </h3>
           <p className="text-white font-bold text-[10px] sm:text-xs uppercase tracking-widest bg-black px-2 py-1 inline-block border-2 border-white shadow-[2px_2px_0_0_rgba(255,255,255,1)]">
-            CLICK ANYWHERE TO ENABLE AUDIO
+            แตะที่หน้าจอเพื่ออนุญาตเสียงแจ้งเตือน
           </p>
         </div>
       </animated.div>

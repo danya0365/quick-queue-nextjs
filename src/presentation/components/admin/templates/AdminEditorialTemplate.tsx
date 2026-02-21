@@ -60,30 +60,30 @@ export function AdminEditorialTemplate({
       case QueueStatus.IN_PROGRESS:
         return (
           <div className="absolute -right-6 top-1.5 sm:-right-8 sm:top-2 bg-black text-white font-black text-[6px] sm:text-[8px] px-8 sm:px-10 py-0.5 sm:py-1 transform rotate-45 border-y-[1px] sm:border-y-[2px] border-white pointer-events-none tracking-widest shadow-sm z-0">
-            SERVING
+            กำลังเรียก
           </div>
         );
       case QueueStatus.COMPLETED:
         return (
           <div className="absolute -right-6 top-1.5 sm:-right-8 sm:top-2 bg-emerald-500 text-white font-black text-[6px] sm:text-[8px] px-8 sm:px-10 py-0.5 sm:py-1 transform rotate-45 border-y-[1px] sm:border-y-[2px] border-white pointer-events-none tracking-widest shadow-sm z-0">
-            DONE
+            เสร็จสิ้น
           </div>
         );
       case QueueStatus.CANCELLED:
         return (
           <div className="absolute right-2 top-2 border-[2px] sm:border-[3px] border-solid border-gray-400 text-gray-400 font-black text-[6px] sm:text-[10px] px-1.5 py-0.5 transform -rotate-[15deg] pointer-events-none tracking-widest uppercase z-0">
-            VOID
+            ยกเลิก
           </div>
         );
     }
   };
 
   const tabs = [
-    { key: 'all', label: 'ALL TICKETS', count: stats?.totalItems || 0 },
-    { key: QueueStatus.WAITING, label: 'WAITING', count: stats?.waitingItems || 0 },
-    { key: QueueStatus.IN_PROGRESS, label: 'SERVING', count: stats?.inProgressItems || 0 },
-    { key: QueueStatus.COMPLETED, label: 'DONE', count: stats?.completedItems || 0 },
-    { key: QueueStatus.CANCELLED, label: 'VOID', count: stats?.cancelledItems || 0 },
+    { key: 'all', label: 'ทั้งหมด', count: stats?.totalItems || 0 },
+    { key: QueueStatus.WAITING, label: 'รอคิว', count: stats?.waitingItems || 0 },
+    { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก', count: stats?.inProgressItems || 0 },
+    { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น', count: stats?.completedItems || 0 },
+    { key: QueueStatus.CANCELLED, label: 'ยกเลิก', count: stats?.cancelledItems || 0 },
   ];
 
   // Service Type Color mapping for Vertical Stripe
@@ -111,14 +111,14 @@ export function AdminEditorialTemplate({
         {/* Main Row / Primary Actions */}
         <div className="px-4 py-3 sm:py-4 flex justify-between items-center w-full">
           <h1 className="text-xl sm:text-5xl font-black uppercase tracking-tighter shrink-0 mr-4">
-            CONTROL<span className="bg-black text-white px-1 sm:px-2 ml-0.5 sm:ml-1">PANEL</span>
+            จัดการ<span className="bg-black text-white px-1 sm:px-2 ml-0.5 sm:ml-1">คิว</span>
           </h1>
           
           <div className="flex gap-2 sm:gap-4 items-center flex-1 justify-end">
             {state.loading && (
               <span className="font-bold uppercase tracking-widest bg-black text-white px-2 py-1 sm:px-3 animate-pulse text-[8px] sm:text-xs">
-                <span className="sm:hidden">SYNC</span>
-                <span className="hidden sm:inline">SYNCING</span>
+                <span className="sm:hidden">โหลด</span>
+                <span className="hidden sm:inline">กำลังอัปเดต</span>
               </span>
             )}
             <button
@@ -132,8 +132,8 @@ export function AdminEditorialTemplate({
               onClick={actions.openCreateModal}
               className="px-3 py-1.5 sm:px-6 sm:py-2.5 bg-black text-white border-[2px] sm:border-[4px] border-black font-black uppercase tracking-widest text-[10px] sm:text-sm active:scale-95 transition-transform sm:hover:bg-white sm:hover:text-black shrink-0"
             >
-              <span className="sm:hidden">+ ADD</span>
-              <span className="hidden sm:inline">+ ADD TICKET</span>
+              <span className="sm:hidden">+ สร้างคิว</span>
+              <span className="hidden sm:inline">+ สร้างคิวใหม่</span>
             </button>
             <div className="relative shrink-0">
               <button 
@@ -151,7 +151,7 @@ export function AdminEditorialTemplate({
                     }}
                     className="px-4 py-3 sm:py-4 text-red-600 font-black uppercase tracking-widest text-[10px] sm:text-sm hover:bg-gray-100 text-left transition-colors whitespace-nowrap"
                   >
-                    PURGE DB
+                    ล้างข้อมูลทั้งหมด
                   </button>
                   <button
                     onClick={() => {
@@ -160,7 +160,7 @@ export function AdminEditorialTemplate({
                     }}
                     className="px-4 py-3 sm:py-4 text-black font-black uppercase tracking-widest text-[10px] sm:text-sm hover:bg-gray-100 text-left transition-colors whitespace-nowrap"
                   >
-                    LOGOUT
+                    ออกจากระบบ
                   </button>
                 </div>
               )}
@@ -173,7 +173,7 @@ export function AdminEditorialTemplate({
         {/* ─── Error Banner ─── */}
         {state.error && (
           <div className="bg-black text-white border-[6px] border-black p-6 font-sans">
-            <h3 className="font-black text-xl uppercase tracking-widest mb-2 border-b-[4px] border-white pb-2 inline-block">SYSTEM ERROR</h3>
+            <h3 className="font-black text-xl uppercase tracking-widest mb-2 border-b-[4px] border-white pb-2 inline-block">เกิดข้อผิดพลาด</h3>
             <p className="font-bold">{state.error}</p>
           </div>
         )}
@@ -182,23 +182,23 @@ export function AdminEditorialTemplate({
         <section className="font-sans uppercase">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-4">
             <div className="col-span-2 sm:col-span-1 border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group cursor-default">
-              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">TOTAL</div>
+              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">รวม</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2">{stats?.totalItems || 0}</div>
             </div>
             <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group cursor-default">
-              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">WAITING</div>
+              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">รอคิว</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2">{stats?.waitingItems || 0}</div>
             </div>
             <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-black text-white hover:bg-white hover:text-black transition-colors group cursor-default">
-              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">SERVING</div>
+              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">กำลังเรียก</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2">{stats?.inProgressItems || 0}</div>
             </div>
             <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group cursor-default">
-              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">DONE</div>
+              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">เสร็จสิ้น</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2">{stats?.completedItems || 0}</div>
             </div>
             <div className="border-[3px] sm:border-[6px] border-dashed border-black/50 p-3 sm:p-4 bg-white hover:border-solid hover:border-black hover:bg-black hover:text-white transition-colors group cursor-default">
-              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">VOID</div>
+              <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">ยกเลิก</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2 text-black/50 group-hover:text-white">{stats?.cancelledItems || 0}</div>
             </div>
           </div>
@@ -213,7 +213,7 @@ export function AdminEditorialTemplate({
             className="sm:hidden w-full flex items-center justify-between px-4 py-3 bg-black text-white border-[3px] border-black font-black uppercase tracking-widest text-[10px] active:scale-[0.99] transition-transform"
           >
             <div className="flex items-center">
-               <span className="opacity-60 mr-2">FILTER:</span>
+               <span className="opacity-60 mr-2">ตัวกรอง:</span>
                {activeTab.label}
             </div>
             <div className="flex items-center">
@@ -275,17 +275,17 @@ export function AdminEditorialTemplate({
         <section className="border-[2px] sm:border-[6px] border-black bg-white font-sans overflow-x-auto relative min-w-full block">
           {/* Pagination Top Banner */}
           <div className="flex justify-between items-center bg-black text-white px-2 py-1.5 sm:px-4 sm:py-2">
-            <div className="font-black text-[10px] sm:text-sm uppercase tracking-widest hidden sm:block">THE ROSTER</div>
+            <div className="font-black text-[10px] sm:text-sm uppercase tracking-widest hidden sm:block">รายชื่อคิว</div>
             <div className="font-black text-[8px] sm:text-xs uppercase tracking-widest w-full text-right sm:w-auto">
-               PAGE {currentPage} OF {totalPages}
+               หน้า {currentPage} จาก {totalPages}
             </div>
           </div>
           
           <table className="w-full text-left font-bold border-collapse whitespace-nowrap sm:whitespace-normal min-w-max sm:min-w-0">
             <thead className="bg-[#f0f0f0] border-b-[2px] sm:border-b-[4px] border-black text-black text-[8px] sm:text-xs uppercase tracking-widest">
               <tr>
-                <th className="p-2 sm:p-4 border-l-[2px] sm:border-l-[4px] border-black w-12 sm:w-24">NO.</th>
-                <th className="p-2 sm:p-4 border-b-[2px] sm:border-b-[4px] border-black border-l-[2px] sm:border-l-[4px]">IDENTITY</th>
+                <th className="p-2 sm:p-4 border-l-[2px] sm:border-l-[4px] border-black w-12 sm:w-24">หมายเลข</th>
+                <th className="p-2 sm:p-4 border-b-[2px] sm:border-b-[4px] border-black border-l-[2px] sm:border-l-[4px]">ข้อมูล</th>
               </tr>
             </thead>
             <tbody className="text-[10px] sm:text-sm">
@@ -315,7 +315,7 @@ export function AdminEditorialTemplate({
                             {item.note && (
                                <div className="mt-1 sm:mt-2 flex">
                                  <span className="px-1.5 sm:px-2 py-0.5 text-[6px] sm:text-[8px] uppercase font-bold border-[1.5px] sm:border-[2px] border-black bg-white text-black tracking-widest inline-flex items-center gap-1 truncate max-w-full">
-                                   <span className="text-black/50">NOTE:</span> {item.note}
+                                   <span className="text-black/50">หมายเหตุ:</span> {item.note}
                                  </span>
                                </div>
                             )}
@@ -333,15 +333,15 @@ export function AdminEditorialTemplate({
                                 `}
                                 title={sa.label}
                               >
-                                {sa.label.includes('เริ่ม') ? 'START' : sa.label.includes('เสร็จ') ? 'DONE' : sa.label.includes('ยกเลิก') ? 'VOID' : sa.label}
+                                {sa.label}
                               </button>
                             ))}
                             <button
                               onClick={() => actions.openDeleteModal(item.id)}
                               className="text-[8px] sm:text-[10px] uppercase font-black tracking-widest px-1.5 py-1 sm:px-3 sm:py-2 border-[2px] sm:border-[3px] border-black bg-red-100 hover:bg-red-500 hover:text-white transition-colors text-red-600 flex-shrink-0"
-                              title="DELETE"
+                              title="ลบ"
                             >
-                              DEL
+                              ลบ
                             </button>
                           </div>
                         </div>
@@ -353,7 +353,7 @@ export function AdminEditorialTemplate({
               {items.length === 0 && (
                 <tr>
                   <td colSpan={2} className="p-16 text-center text-gray-400 font-black uppercase text-2xl border-l-[4px] border-black">
-                    NO TICKETS FOUND
+                    ไม่พบข้อมูลคิว
                   </td>
                 </tr>
               )}
@@ -470,9 +470,9 @@ export function AdminEditorialTemplate({
             </div>
 
             <div className="p-6 font-sans">
-              <h3 className="text-xl font-bold uppercase mb-2">END SESSION?</h3>
+              <h3 className="text-xl font-bold uppercase mb-2">ต้องการออกจากระบบ?</h3>
               <p className="text-sm font-bold opacity-80 mb-6 uppercase">
-                YOU ARE ABOUT TO DISCONNECT FROM THE SYSTEM.
+                คุณกำลังจะออกจากระบบจัดการคิว
               </p>
               
               <div className="flex gap-4 border-t-[6px] border-black pt-6">
@@ -480,7 +480,7 @@ export function AdminEditorialTemplate({
                   onClick={() => setIsLogoutModalOpen(false)}
                   className="flex-1 px-4 py-4 font-black uppercase text-sm border-[4px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
                 >
-                  STAY
+                  ยกเลิก
                 </button>
                 <button
                   onClick={() => {
@@ -489,7 +489,7 @@ export function AdminEditorialTemplate({
                   }}
                   className="flex-1 px-4 py-4 font-black uppercase text-sm border-[4px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors"
                 >
-                  LEAVE
+                  ตกลง
                 </button>
               </div>
             </div>

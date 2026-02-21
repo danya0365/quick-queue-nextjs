@@ -77,13 +77,13 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
     switch (item.status) {
       case QueueStatus.WAITING:
         return [
-          { label: '🔄 เริ่มให้บริการ', action: () => actions.markInProgress(item.id), color: 'text-blue-500' },
-          { label: '❌ ยกเลิก', action: () => actions.markCancelled(item.id), color: 'text-red-500' },
+          { label: 'เริ่มให้บริการ', action: () => actions.markInProgress(item.id), color: 'text-blue-500' },
+          { label: 'ยกเลิก', action: () => actions.markCancelled(item.id), color: 'text-red-500' },
         ];
       case QueueStatus.IN_PROGRESS:
         return [
-          { label: '✅ เสร็จแล้ว', action: () => actions.markCompleted(item.id), color: 'text-emerald-500' },
-          { label: '❌ ยกเลิก', action: () => actions.markCancelled(item.id), color: 'text-red-500' },
+          { label: 'เสร็จสิ้น', action: () => actions.markCompleted(item.id), color: 'text-emerald-500' },
+          { label: 'ยกเลิก', action: () => actions.markCancelled(item.id), color: 'text-red-500' },
         ];
       default:
         return [];

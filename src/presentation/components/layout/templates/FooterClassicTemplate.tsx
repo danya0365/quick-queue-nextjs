@@ -37,11 +37,11 @@ export function FooterClassicTemplate() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <span>Made with</span>
+        <span>สร้างด้วย</span>
         <animated.span style={heartSpring} className="inline-block">
           ❤️
         </animated.span>
-        <span className="font-semibold ml-0.5 hidden sm:inline">by Clean Code 1986</span>
+        <span className="font-semibold ml-0.5 hidden sm:inline">โดย Clean Code 1986</span>
         <span className="font-semibold ml-0.5 sm:hidden">Clean Code 1986</span>
       </a>
     </footer>

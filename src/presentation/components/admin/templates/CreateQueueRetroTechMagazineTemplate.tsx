@@ -44,10 +44,10 @@ export function CreateQueueRetroTechMagazineTemplate({
       <div className="bg-[#39FF14] px-6 py-4 border-b-8 border-black flex items-center justify-between">
         <div>
           <h2 className="text-black font-black text-2xl uppercase tracking-widest">
-            ADD_Q RECORD
+            สร้างคิวใหม่
           </h2>
           <p className="text-black font-mono text-sm mt-1 uppercase font-bold">
-            NEXT INT: <strong className="text-white bg-black px-1 py-0.5">#{nextQueueNumber}</strong>
+            หมายเลขคิวต่อไป : <strong className="text-white bg-black px-1 py-0.5">#{nextQueueNumber}</strong>
           </p>
         </div>
         <button
@@ -62,7 +62,7 @@ export function CreateQueueRetroTechMagazineTemplate({
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         <div>
           <label className="block text-sm font-black text-black mb-2 uppercase tracking-widest bg-[#00FFFF] inline-block px-2 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-            CUSTOMER_ID
+            ชื่อลูกค้า
           </label>
           <div className="relative">
             <input
@@ -77,7 +77,7 @@ export function CreateQueueRetroTechMagazineTemplate({
                 focus:outline-none focus:bg-[#00FFFF]/10 focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)]
                 transition-all block
               "
-              placeholder={`AUTO GEN IF EMPTY`}
+              placeholder={`ปล่อยว่างให้ระบบจัดรหัสอัตโนมัติ`}
               autoFocus
               id="create-customer-name-retro"
             />
@@ -99,13 +99,13 @@ export function CreateQueueRetroTechMagazineTemplate({
 
         <div>
           <label className="block text-sm font-black text-black mb-2 uppercase tracking-widest bg-[#FF00FF] text-white inline-block px-2 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-            PROCESS_TYPE
+            ประเภทบริการ
           </label>
           <div className="flex gap-2">
             {[
-              { value: ServiceType.GENERAL, label: 'STD' },
-              { value: ServiceType.EXPRESS, label: 'FAST' },
-              { value: ServiceType.VIP, label: 'PRIME' },
+              { value: ServiceType.GENERAL, label: 'ทั่วไป' },
+              { value: ServiceType.EXPRESS, label: 'ด่วน' },
+              { value: ServiceType.VIP, label: 'วีไอพี' },
             ].map((option) => (
               <button
                 key={option.value}
@@ -128,7 +128,7 @@ export function CreateQueueRetroTechMagazineTemplate({
 
         <div>
           <label className="block text-sm font-black text-black mb-2 uppercase tracking-widest bg-[#39FF14] inline-block px-2 border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-            PARAMS / NOTES
+            หมายเหตุ / รายละเอียด
           </label>
           <div className="relative">
             <input
@@ -143,7 +143,7 @@ export function CreateQueueRetroTechMagazineTemplate({
                 focus:outline-none focus:bg-[#39FF14]/10 focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)]
                 transition-all block
               "
-              placeholder="OPTIONAL ARGS..."
+              placeholder="ระบุรายละเอียดเพิ่มเติม..."
               id="create-note-retro"
             />
           </div>
@@ -174,7 +174,7 @@ export function CreateQueueRetroTechMagazineTemplate({
               transition-all
             "
           >
-            ABORT
+            ยกเลิก
           </button>
           <button
             type="submit"
@@ -188,7 +188,7 @@ export function CreateQueueRetroTechMagazineTemplate({
             "
             id="create-submit-retro"
           >
-            {isSubmitting ? 'WORKING...' : 'EXECUTE'}
+            {isSubmitting ? 'กำลังสร้าง...' : 'ตกลง'}
           </button>
         </div>
       </form>
