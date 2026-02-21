@@ -120,11 +120,13 @@ export function LoginGateRetroTechMagazineTemplate({
               </button>
             </form>
 
-            <div className="mt-8 pt-4 border-t-2 border-dashed border-gray-600 text-center">
-              <p className="text-gray-400 font-mono text-xs uppercase tracking-widest">
-                DEMO CONFIG: admin / admin
-              </p>
-            </div>
+            {process.env.NODE_ENV !== 'production' && (
+              <div className="mt-8 pt-4 border-t-2 border-dashed border-gray-600 text-center">
+                <p className="text-gray-400 font-mono text-xs uppercase tracking-widest">
+                  DEMO CONFIG: admin / admin
+                </p>
+              </div>
+            )}
           </animated.div>
         </div>
       </div>

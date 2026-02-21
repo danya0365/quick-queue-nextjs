@@ -114,11 +114,13 @@ export function LoginGateClassicTemplate({
               </AnimatedButton>
             </form>
 
-            <div className="mt-4 text-center">
-              <p className="text-muted text-xs">
-                Demo: <code className="bg-surface-alt px-1.5 py-0.5 rounded text-foreground">admin</code> / <code className="bg-surface-alt px-1.5 py-0.5 rounded text-foreground">admin</code>
-              </p>
-            </div>
+            {process.env.NODE_ENV !== 'production' && (
+              <div className="mt-4 text-center">
+                <p className="text-muted text-xs">
+                  Demo: <code className="bg-surface-alt px-1.5 py-0.5 rounded text-foreground">admin</code> / <code className="bg-surface-alt px-1.5 py-0.5 rounded text-foreground">admin</code>
+                </p>
+              </div>
+            )}
           </GlassCard>
         </animated.div>
       </div>
