@@ -113,13 +113,23 @@ export function AdminRetroTechMagazineTemplate({
           </div>
         </header>
 
-        {/* ─── Stats Grid ─── */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
-          <RetroStatBox label="รวม" value={stats?.totalItems || 0} color="#FFFFFF" />
-          <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
-          <RetroStatBox label="เรียกคิว" value={stats?.inProgressItems || 0} color="#00FFFF" />
-          <RetroStatBox label="เสร็จ" value={stats?.completedItems || 0} color="#39FF14" />
-          <RetroStatBox label="ยกเลิก" value={stats?.cancelledItems || 0} color="#000000" textColor="text-white" />
+        {/* ─── Stats Grid (Horizontal Scroll on Mobile) ─── */}
+        <div className="flex overflow-x-auto sm:grid sm:grid-cols-5 gap-2 sm:gap-4 pb-2 sm:pb-0 snap-x [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
+            <RetroStatBox label="รวม" value={stats?.totalItems || 0} color="#FFFFFF" />
+          </div>
+          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
+            <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
+          </div>
+          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
+            <RetroStatBox label="เรียกคิว" value={stats?.inProgressItems || 0} color="#00FFFF" />
+          </div>
+          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
+             <RetroStatBox label="เสร็จ" value={stats?.completedItems || 0} color="#39FF14" />
+          </div>
+          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
+            <RetroStatBox label="ยกเลิก" value={stats?.cancelledItems || 0} color="#000000" textColor="text-white" />
+          </div>
         </div>
 
         {/* ─── Main Content ─── */}
@@ -384,9 +394,9 @@ export function AdminRetroTechMagazineTemplate({
 // ─── Retro Stat Box ───
 function RetroStatBox({ label, value, color, textColor = 'text-black' }: { label: string; value: number; color: string; textColor?: string }) {
   return (
-    <div className={`border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] p-3 flex flex-col items-center justify-center transform hover:scale-105 transition-transform ${textColor}`} style={{ backgroundColor: color }}>
-      <div className="text-4xl font-black tabular-nums">{value}</div>
-      <div className="text-xs font-bold uppercase tracking-widest mt-1 bg-black text-white px-1">{label}</div>
+    <div className={`border-[3px] sm:border-4 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] py-1.5 px-2 sm:p-3 flex flex-col items-center justify-center transform hover:scale-105 transition-transform ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-2xl sm:text-4xl font-black tabular-nums leading-none mb-1 sm:mb-0">{value}</div>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest sm:mt-1 bg-black text-white px-1 leading-none py-0.5">{label}</div>
     </div>
   );
 }
