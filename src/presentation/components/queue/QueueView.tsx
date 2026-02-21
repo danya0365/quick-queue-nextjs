@@ -3,8 +3,9 @@
 import { QueueSkeleton } from '@/src/presentation/components/queue/QueueSkeleton';
 import { QueueClassicTemplate } from '@/src/presentation/components/queue/templates/QueueClassicTemplate';
 import { QueueRetroTechMagazineTemplate } from '@/src/presentation/components/queue/templates/QueueRetroTechMagazineTemplate';
-import { useTemplate } from '@/src/presentation/hooks/useTemplate';
+import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
 import { useEffect, useState } from 'react';
@@ -96,6 +97,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
   return (
     <>
+      <AudioInteractionOverlay />
       {template === 'retroTechMagazine' ? (
         <QueueRetroTechMagazineTemplate {...layoutProps} />
       ) : (

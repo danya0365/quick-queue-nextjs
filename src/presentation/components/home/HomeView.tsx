@@ -3,8 +3,9 @@
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
 import { HomeClassicTemplate } from '@/src/presentation/components/home/templates/HomeClassicTemplate';
 import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
-import { useTemplate } from '@/src/presentation/hooks/useTemplate';
+import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
 import { useEffect, useState } from 'react';
@@ -92,7 +93,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
   if (!viewModel) return null;
 
-  const props = {
+  const layoutProps = {
     viewModel,
     gradientAngle,
     currentTime,
@@ -107,10 +108,11 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
   return (
     <>
+      <AudioInteractionOverlay />
       {template === 'retroTechMagazine' ? (
-        <HomeRetroTechMagazineTemplate {...props} />
+        <HomeRetroTechMagazineTemplate {...layoutProps} />
       ) : (
-        <HomeClassicTemplate {...props} />
+        <HomeClassicTemplate {...layoutProps} />
       )}
     </>
   );
