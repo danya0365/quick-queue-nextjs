@@ -1,8 +1,8 @@
 'use client';
 
-import { DeleteConfirmClassicLayout } from '@/src/presentation/components/admin/layouts/DeleteConfirmClassicLayout';
-import { DeleteConfirmRetroLayout } from '@/src/presentation/components/admin/layouts/DeleteConfirmRetroLayout';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { DeleteConfirmClassicTemplate } from '@/src/presentation/components/admin/templates/DeleteConfirmClassicTemplate';
+import { DeleteConfirmRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/DeleteConfirmRetroTechMagazineTemplate';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { animated, useSpring } from 'react-spring';
 
 interface DeleteConfirmModalProps {
@@ -20,7 +20,7 @@ export function DeleteConfirmModal({
   customerName,
   queueNumber,
 }: DeleteConfirmModalProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
   
   const overlaySpring = useSpring({
     opacity: isOpen ? 1 : 0,
@@ -43,8 +43,8 @@ export function DeleteConfirmModal({
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      {theme === 'retro' ? (
-        <DeleteConfirmRetroLayout
+      {template === 'retroTechMagazine' ? (
+        <DeleteConfirmRetroTechMagazineTemplate
           onClose={onClose}
           onConfirm={onConfirm}
           customerName={customerName}
@@ -52,7 +52,7 @@ export function DeleteConfirmModal({
           modalSpring={modalSpring}
         />
       ) : (
-        <DeleteConfirmClassicLayout
+        <DeleteConfirmClassicTemplate
           onClose={onClose}
           onConfirm={onConfirm}
           customerName={customerName}

@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { ReactNode } from 'react';
-import { GlassCardClassicLayout } from './layouts/GlassCardClassicLayout';
-import { GlassCardRetroLayout } from './layouts/GlassCardRetroLayout';
+import { GlassCardClassicTemplate } from './templates/GlassCardClassicTemplate';
+import { GlassCardRetroTechMagazineTemplate } from './templates/GlassCardRetroTechMagazineTemplate';
 
 interface GlassCardProps {
   children: ReactNode;
@@ -15,11 +15,11 @@ interface GlassCardProps {
 }
 
 export function GlassCard(props: GlassCardProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <GlassCardRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <GlassCardRetroTechMagazineTemplate {...props} />;
   }
 
-  return <GlassCardClassicLayout {...props} />;
+  return <GlassCardClassicTemplate {...props} />;
 }

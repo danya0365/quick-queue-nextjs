@@ -2,10 +2,10 @@
 
 import { QueueItem, QueueStatus } from '@/src/domain/types/queue';
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
-import { AdminClassicLayout } from '@/src/presentation/components/admin/layouts/AdminClassicLayout';
-import { AdminRetroLayout } from '@/src/presentation/components/admin/layouts/AdminRetroLayout';
+import { AdminClassicTemplate } from '@/src/presentation/components/admin/templates/AdminClassicTemplate';
+import { AdminRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/AdminRetroTechMagazineTemplate';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useEffect, useState } from 'react';
@@ -47,7 +47,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
   const [authChecking, setAuthChecking] = useState(true);
   const [state, actions] = useAdminPresenter(initialViewModel);
   const viewModel = state.viewModel;
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
   // ─── Check existing session on mount ───
   useEffect(() => {
@@ -123,10 +123,10 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
 
   return (
     <>
-      {theme === 'retro' ? (
-        <AdminRetroLayout {...layoutProps} />
+      {template === 'retroTechMagazine' ? (
+        <AdminRetroTechMagazineTemplate {...layoutProps} />
       ) : (
-        <AdminClassicLayout {...layoutProps} />
+        <AdminClassicTemplate {...layoutProps} />
       )}
     </>
   );

@@ -1,9 +1,9 @@
 'use client';
 
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
-import { HomeClassicLayout } from '@/src/presentation/components/home/layouts/HomeClassicLayout';
-import { HomeRetroLayout } from '@/src/presentation/components/home/layouts/HomeRetroLayout';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { HomeClassicTemplate } from '@/src/presentation/components/home/templates/HomeClassicTemplate';
+import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
@@ -19,7 +19,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   const viewModel = state.viewModel;
 
   // Theme switcher state from Zustand
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
   // Animated gradient rotation
   const [gradientAngle, setGradientAngle] = useState(135);
@@ -107,10 +107,10 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
   return (
     <>
-      {theme === 'retro' ? (
-        <HomeRetroLayout {...props} />
+      {template === 'retroTechMagazine' ? (
+        <HomeRetroTechMagazineTemplate {...props} />
       ) : (
-        <HomeClassicLayout {...props} />
+        <HomeClassicTemplate {...props} />
       )}
     </>
   );

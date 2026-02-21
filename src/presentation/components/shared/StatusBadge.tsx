@@ -1,10 +1,10 @@
 'use client';
 
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
-import { QueueNumberBadgeClassicLayout } from './layouts/QueueNumberBadgeClassicLayout';
-import { QueueNumberBadgeRetroLayout } from './layouts/QueueNumberBadgeRetroLayout';
-import { StatusBadgeClassicLayout } from './layouts/StatusBadgeClassicLayout';
-import { StatusBadgeRetroLayout } from './layouts/StatusBadgeRetroLayout';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
+import { QueueNumberBadgeClassicTemplate } from './templates/QueueNumberBadgeClassicTemplate';
+import { QueueNumberBadgeRetroTechMagazineTemplate } from './templates/QueueNumberBadgeRetroTechMagazineTemplate';
+import { StatusBadgeClassicTemplate } from './templates/StatusBadgeClassicTemplate';
+import { StatusBadgeRetroTechMagazineTemplate } from './templates/StatusBadgeRetroTechMagazineTemplate';
 
 interface StatusBadgeProps {
   label: string;
@@ -19,13 +19,13 @@ interface StatusBadgeProps {
  * StatusBadge - Animated status badge with hover effect
  */
 export function StatusBadge(props: StatusBadgeProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <StatusBadgeRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <StatusBadgeRetroTechMagazineTemplate {...props} />;
   }
 
-  return <StatusBadgeClassicLayout {...props} />;
+  return <StatusBadgeClassicTemplate {...props} />;
 }
 
 // ─── QueueNumberBadge ───
@@ -38,11 +38,11 @@ interface QueueNumberBadgeProps {
 }
 
 export function QueueNumberBadge(props: QueueNumberBadgeProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <QueueNumberBadgeRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <QueueNumberBadgeRetroTechMagazineTemplate {...props} />;
   }
 
-  return <QueueNumberBadgeClassicLayout {...props} />;
+  return <QueueNumberBadgeClassicTemplate {...props} />;
 }

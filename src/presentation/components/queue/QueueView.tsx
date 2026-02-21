@@ -1,9 +1,9 @@
 'use client';
 
 import { QueueSkeleton } from '@/src/presentation/components/queue/QueueSkeleton';
-import { QueueClassicLayout } from '@/src/presentation/components/queue/layouts/QueueClassicLayout';
-import { QueueRetroLayout } from '@/src/presentation/components/queue/layouts/QueueRetroLayout';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { QueueClassicTemplate } from '@/src/presentation/components/queue/templates/QueueClassicTemplate';
+import { QueueRetroTechMagazineTemplate } from '@/src/presentation/components/queue/templates/QueueRetroTechMagazineTemplate';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
@@ -17,7 +17,7 @@ interface QueueViewProps {
 export function QueueView({ initialViewModel }: QueueViewProps) {
   const [state, actions] = useQueuePresenter(initialViewModel);
   const viewModel = state.viewModel;
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
   // Live clock
   const [currentTime, setCurrentTime] = useState('');
@@ -96,10 +96,10 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
   return (
     <>
-      {theme === 'retro' ? (
-        <QueueRetroLayout {...layoutProps} />
+      {template === 'retroTechMagazine' ? (
+        <QueueRetroTechMagazineTemplate {...layoutProps} />
       ) : (
-        <QueueClassicLayout {...layoutProps} />
+        <QueueClassicTemplate {...layoutProps} />
       )}
     </>
   );

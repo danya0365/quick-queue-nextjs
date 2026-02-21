@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { ReactNode } from 'react';
-import { FadeInSectionClassicLayout } from './layouts/FadeInSectionClassicLayout';
-import { FadeInSectionRetroLayout } from './layouts/FadeInSectionRetroLayout';
+import { FadeInSectionClassicTemplate } from './templates/FadeInSectionClassicTemplate';
+import { FadeInSectionRetroTechMagazineTemplate } from './templates/FadeInSectionRetroTechMagazineTemplate';
 
 interface FadeInSectionProps {
   children: ReactNode;
@@ -17,11 +17,11 @@ interface FadeInSectionProps {
  * Triggers once when the component mounts
  */
 export function FadeInSection(props: FadeInSectionProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <FadeInSectionRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <FadeInSectionRetroTechMagazineTemplate {...props} />;
   }
 
-  return <FadeInSectionClassicLayout {...props} />;
+  return <FadeInSectionClassicTemplate {...props} />;
 }

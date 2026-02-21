@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { ReactNode } from 'react';
-import { AnimatedCounterClassicLayout } from './layouts/AnimatedCounterClassicLayout';
-import { AnimatedCounterRetroLayout } from './layouts/AnimatedCounterRetroLayout';
+import { AnimatedCounterClassicTemplate } from './templates/AnimatedCounterClassicTemplate';
+import { AnimatedCounterRetroTechMagazineTemplate } from './templates/AnimatedCounterRetroTechMagazineTemplate';
 
 interface AnimatedCounterProps {
   value: number;
@@ -18,11 +18,11 @@ interface AnimatedCounterProps {
  * The number smoothly animates to its target value
  */
 export function AnimatedCounter(props: AnimatedCounterProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <AnimatedCounterRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <AnimatedCounterRetroTechMagazineTemplate {...props} />;
   }
 
-  return <AnimatedCounterClassicLayout {...props} />;
+  return <AnimatedCounterClassicTemplate {...props} />;
 }

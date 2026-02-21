@@ -1,9 +1,9 @@
 'use client';
 
 import { CreateQueueItemData, ServiceType } from '@/src/domain/types/queue';
-import { CreateQueueClassicLayout } from '@/src/presentation/components/admin/layouts/CreateQueueClassicLayout';
-import { CreateQueueRetroLayout } from '@/src/presentation/components/admin/layouts/CreateQueueRetroLayout';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { CreateQueueClassicTemplate } from '@/src/presentation/components/admin/templates/CreateQueueClassicTemplate';
+import { CreateQueueRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/CreateQueueRetroTechMagazineTemplate';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { FormEvent, useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
@@ -20,7 +20,7 @@ export function CreateQueueModal({
   onSubmit,
   nextQueueNumber,
 }: CreateQueueModalProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
   
   const [customerName, setCustomerName] = useState('');
   const [serviceType, setServiceType] = useState<ServiceType>(ServiceType.GENERAL);
@@ -71,8 +71,8 @@ export function CreateQueueModal({
       {/* Overlay - Removed onClick onClose to force button click */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      {theme === 'retro' ? (
-        <CreateQueueRetroLayout
+      {template === 'retroTechMagazine' ? (
+        <CreateQueueRetroTechMagazineTemplate
           onClose={onClose}
           nextQueueNumber={nextQueueNumber}
           customerName={customerName}
@@ -86,7 +86,7 @@ export function CreateQueueModal({
           modalSpring={modalSpring}
         />
       ) : (
-        <CreateQueueClassicLayout
+        <CreateQueueClassicTemplate
           onClose={onClose}
           nextQueueNumber={nextQueueNumber}
           customerName={customerName}

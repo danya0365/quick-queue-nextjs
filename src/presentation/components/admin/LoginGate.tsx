@@ -1,8 +1,8 @@
 'use client';
 
-import { LoginGateClassicLayout } from '@/src/presentation/components/admin/layouts/LoginGateClassicLayout';
-import { LoginGateRetroLayout } from '@/src/presentation/components/admin/layouts/LoginGateRetroLayout';
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { LoginGateClassicTemplate } from '@/src/presentation/components/admin/templates/LoginGateClassicTemplate';
+import { LoginGateRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/LoginGateRetroTechMagazineTemplate';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { FormEvent, useState } from 'react';
 import { useSpring } from 'react-spring';
 
@@ -15,7 +15,7 @@ interface LoginGateProps {
  * Authenticates against SQLite via API route
  */
 export function LoginGate({ onLogin }: LoginGateProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -77,10 +77,10 @@ export function LoginGate({ onLogin }: LoginGateProps) {
 
   return (
     <>
-      {theme === 'retro' ? (
-        <LoginGateRetroLayout {...layoutProps} />
+      {template === 'retroTechMagazine' ? (
+        <LoginGateRetroTechMagazineTemplate {...layoutProps} />
       ) : (
-        <LoginGateClassicLayout {...layoutProps} />
+        <LoginGateClassicTemplate {...layoutProps} />
       )}
     </>
   );

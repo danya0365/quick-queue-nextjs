@@ -1,5 +1,5 @@
 import '@/public/styles/index.css';
-import { MainLayout } from '@/src/presentation/components/layout/MainLayout';
+import { MainTemplate } from '@/src/presentation/components/layout/MainTemplate';
 import { ThemeProvider } from '@/src/presentation/providers/ThemeProvider';
 import type { Metadata } from 'next';
 import { Noto_Sans_Thai } from 'next/font/google';
@@ -28,9 +28,9 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-noto-sans-thai), sans-serif' }}
       >
         <ThemeProvider>
-          <MainLayout>
+          <MainTemplate>
             {children}
-          </MainLayout>
+          </MainTemplate>
         </ThemeProvider>
       </body>
     </html>

@@ -1,9 +1,9 @@
 'use client';
 
-import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { ReactNode } from 'react';
-import { AnimatedButtonClassicLayout } from './layouts/AnimatedButtonClassicLayout';
-import { AnimatedButtonRetroLayout } from './layouts/AnimatedButtonRetroLayout';
+import { AnimatedButtonClassicTemplate } from './templates/AnimatedButtonClassicTemplate';
+import { AnimatedButtonRetroTechMagazineTemplate } from './templates/AnimatedButtonRetroTechMagazineTemplate';
 
 interface AnimatedButtonProps {
   children: ReactNode;
@@ -17,11 +17,11 @@ interface AnimatedButtonProps {
 }
 
 export function AnimatedButton(props: AnimatedButtonProps) {
-  const { theme } = useAppTheme();
+  const { template } = useTemplate();
 
-  if (theme === 'retro') {
-    return <AnimatedButtonRetroLayout {...props} />;
+  if (template === 'retroTechMagazine') {
+    return <AnimatedButtonRetroTechMagazineTemplate {...props} />;
   }
 
-  return <AnimatedButtonClassicLayout {...props} />;
+  return <AnimatedButtonClassicTemplate {...props} />;
 }
