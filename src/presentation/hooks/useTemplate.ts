@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type AppTemplate = 'classic' | 'retroTechMagazine' | 'editorial';
+export type AppTemplate = 'retroTechMagazine' | 'editorial' | 'classic';
 
 interface AppTemplateState {
   template: AppTemplate;
@@ -12,11 +12,11 @@ interface AppTemplateState {
 export const useTemplate = create<AppTemplateState>()(
   persist(
     (set) => ({
-      template: 'classic', // โทนค่าเริ่มต้น
+      template: 'editorial', // โทนค่าเริ่มต้น
       setTemplate: (template) => set({ template }),
       toggleTemplate: () =>
         set((state) => {
-          const templates: AppTemplate[] = ['classic', 'retroTechMagazine', 'editorial'];
+          const templates: AppTemplate[] = ['retroTechMagazine', 'editorial', 'classic'];
           const nextIndex = (templates.indexOf(state.template) + 1) % templates.length;
           return { template: templates[nextIndex] };
         }),
