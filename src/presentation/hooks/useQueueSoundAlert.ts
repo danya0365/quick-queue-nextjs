@@ -12,7 +12,7 @@ interface SoundStore {
 export const useSoundStore = create<SoundStore>()(
   persist(
     (set) => ({
-      soundEnabled: false,
+      soundEnabled: true,
       setSoundEnabled: (val) =>
         set((state) => ({
           soundEnabled: typeof val === 'function' ? val(state.soundEnabled) : val,
