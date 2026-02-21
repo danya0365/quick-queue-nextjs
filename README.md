@@ -1,13 +1,15 @@
 <div align="center">
   <h1>Quick Queue</h1>
   <p>
-    A robust, edge-ready Queue Management System built with Clean Architecture.
+    A robust, edge-ready Queue Management System built with Clean Architecture and Multiple UI Themes.
   </p>
   <p>
-    <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js"></a>
+    <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js" alt="Next.js"></a>
     <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square&logo=typescript" alt="TypeScript"></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-38bdf8?style=flat-square&logo=tailwind-css" alt="Tailwind CSS"></a>
+    <a href="https://zustand-demo.pmnd.rs/"><img src="https://img.shields.io/badge/State_Management-Zustand-orange?style=flat-square" alt="Zustand"></a>
+    <a href="https://react-spring.dev/"><img src="https://img.shields.io/badge/Animations-React_Spring-ff69b4?style=flat-square" alt="React Spring"></a>
     <a href="https://turso.tech/"><img src="https://img.shields.io/badge/Database-Turso%20%7C%20libSQL-48b89e?style=flat-square&logo=sqlite" alt="Turso"></a>
-    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Styling-Tailwind_CSS-38bdf8?style=flat-square&logo=tailwind-css" alt="Tailwind CSS"></a>
   </p>
 </div>
 
@@ -15,22 +17,30 @@
 
 ## 📌 Overview
 
-Quick Queue is a modern, full-stack queue management application designed for high scalability, maintainability, and responsiveness. Built on **Next.js 16 (App Router)** and architected around **Clean Architecture** patterns, the system ensures that enterprise business rules remain strictly decoupled from UI and framework-specific implementations.
+Quick Queue is a modern, full-stack queue management application designed for high scalability, maintainability, and visual excellence. Built on **Next.js 15 (App Router)** and architected around **Clean Architecture** patterns, the system ensures that enterprise business rules remain strictly decoupled from UI and framework-specific implementations.
 
-It features an edge-ready database connection via **Turso (libSQL)**, a dual-layer security middleware, and a mobile-first UI designed to feel like a native application.
+The app features a rich, dynamic multi-theme system (switching seamlessly between a "Classic" clean UI and a bold "Retro 90s Hacker" aesthetic), powered by **Zustand** for state persistence and **React Spring** for buttery-smooth, physics-based UI animations.
 
 ## 📖 Table of Contents
 
+- [Tech Stack](#-tech-stack)
 - [Architecture](#-architecture)
 - [Key Features](#-key-features)
 - [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
 - [Database Management](#-database-management)
 - [Directory Structure](#-directory-structure)
-- [Contributing](#-contributing)
-- [License](#-license)
+
+---
+
+## 🛠 Tech Stack
+
+Our technology choices are focused on performance, maintainability, and providing a premium user experience:
+
+- **Core**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS (Utility-first, Custom Color Tokens, Glassmorphism, Responsive UI)
+- **State Management**: Zustand (Lightweight, fast, unopinionated state management with `localstorage` persistence for themes)
+- **Animations**: React Spring (Physics-based, fluid micro-animations for Buttons, Modals, and Transitions)
+- **Database Layer**: SQLite (`better-sqlite3` for local dev) & Turso / libSQL (edge-ready production)
 
 ---
 
@@ -39,19 +49,24 @@ It features an edge-ready database connection via **Turso (libSQL)**, a dual-lay
 This repository strictly adheres to **Clean Architecture** and SOLID principles. The separation of concerns is explicitly defined into four layers:
 
 1. **Domain Layer**: Contains enterprise-wide logic and types (`Entities`, `Enums`). Completely independent of any framework.
-2. **Application Layer**: Contains business use cases and interface definitions (`Interfaces`, `DTOs`). Dictates what the application can do.
+2. **Application Layer**: Contains business use cases and interface definitions (`Interfaces`, `DTOs`).
 3. **Infrastructure Layer**: Implements the application interfaces. Handles external concerns like Databases, APIs, and Authentication mechanisms.
-4. **Presentation Layer**: Handles UI and user interactions. Composed of Next.js Views, Tailwind styles, and Presenters that bridge the UI to the Infrastructure.
+4. **Presentation Layer**: 
+   - **Views**: The main container components (`AdminView`, `HomeView`).
+   - **Presenters**: Custom hooks that connect Views to UseCases (handling internal component state and logic).
+   - **Components & Layouts**: Highly decoupled UI elements separated into `ClassicLayout` and `RetroLayout` allowing hot-swapping of complete UI sets based on the active theme.
+
+---
 
 ## ✨ Key Features
 
-- **Decoupled System**: Business logic is isolated from Next.js; migrating to another framework or a microservices backend requires zero changes to the Domain and Application layers.
+- **Dynamic Theming System**: Built-in global theme switcher managed by **Zustand**. Instantly swap the entire application between a clean, modern glassmorphic UI (`classic`) and a bold, 90s zine/cyberpunk aesthetic (`retro`).
+- **Physics-Based Animations**: Every interaction feels alive. Using **React Spring**, the app abandons linear CSS transitions for real physics (springs, tension, friction) applied to modals, buttons, and counters.
+- **Decoupled System**: Business logic is isolated from Next.js. Migrating to another framework or a microservices backend requires zero changes to the Domain and Application layers.
 - **Edge-Ready Data Foundation**: Powered by `@libsql/client`, allowing seamless switching between local SQLite development and distributed Turso Cloud databases.
-- **O(1) Pagination**: Optimized database queries utilizing `LIMIT` and `OFFSET` to smoothly handle millions of records without degrading memory performance.
 - **Dual-Layer Security**: 
   - **Edge Proxy**: Next.js Middleware blocks unauthenticated mutations before they reach the server.
   - **Single Source of Truth**: API routes strictly validate HTTP-Only session cookies against the database.
-- **Native-Like Mobile UX**: Implements `100dvh` styling and `react-spring` physics to prevent layout shifts and provide smooth micro-interactions.
 
 ---
 
@@ -116,22 +131,13 @@ The project includes a robust set of CLI scripts to manage your database schema 
 
 ```text
 quick-queue/
-├── app/                      # Next.js App Router (Pages, API Routes, Layouts)
-├── prompt/                   # AI Assistant context and tasks
-├── public/                   # Static assets and global CSS modules
-└── src/                      # Clean Architecture Core
-    ├── application/          # Use Cases and Repository Interfaces
-    ├── domain/               # Core Types, Entities, and Enums
-    ├── infrastructure/       # DB Drivers (Turso), Auth implementations
-    └── presentation/         # React Components, Views, and Presenters
+├── app/                      # Next.js App Router (Pages, API Routes)
+├── src/                      # Clean Architecture Core
+│   ├── application/          # Use Cases and Repository Interfaces
+│   ├── domain/               # Core Types, Entities, and Enums
+│   ├── infrastructure/       # DB Drivers (Turso), Auth implementations
+│   └── presentation/         # UI Layer (React)
+│       ├── components/       # Shared UI, Admin UI, Home UI (separated by Theme Layouts)
+│       ├── hooks/            # Global hooks (useAppTheme with Zustand)
+│       └── presenters/       # Logic layer connecting UI to Use Cases
 ```
-
----
-
-## 🤝 Contributing
-
-We welcome contributions to Quick Queue! Please adhere to the established Clean Architecture guidelines when submitting Pull Requests. Ensure that imports do not cross boundaries (e.g., Domain layer should never import Next.js specific libraries).
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).

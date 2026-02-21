@@ -3,7 +3,9 @@
 import { QueueItem, QueueStatus } from '@/src/domain/types/queue';
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
 import { AdminClassicLayout } from '@/src/presentation/components/admin/layouts/AdminClassicLayout';
+import { AdminRetroLayout } from '@/src/presentation/components/admin/layouts/AdminRetroLayout';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
+import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useEffect, useState } from 'react';
@@ -45,6 +47,7 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
   const [authChecking, setAuthChecking] = useState(true);
   const [state, actions] = useAdminPresenter(initialViewModel);
   const viewModel = state.viewModel;
+  const { theme } = useAppTheme();
 
   // ─── Check existing session on mount ───
   useEffect(() => {
@@ -110,13 +113,21 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
 
   if (!viewModel) return null;
 
+  const layoutProps = {
+    state,
+    actions,
+    handleLogout,
+    generatePageNumbers,
+    getStatusActions,
+  };
+
   return (
-    <AdminClassicLayout
-      state={state}
-      actions={actions}
-      handleLogout={handleLogout}
-      generatePageNumbers={generatePageNumbers}
-      getStatusActions={getStatusActions}
-    />
+    <>
+      {theme === 'retro' ? (
+        <AdminRetroLayout {...layoutProps} />
+      ) : (
+        <AdminClassicLayout {...layoutProps} />
+      )}
+    </>
   );
 }

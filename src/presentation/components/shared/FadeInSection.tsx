@@ -1,7 +1,9 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
-import { animated, useSpring } from 'react-spring';
+import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { ReactNode } from 'react';
+import { FadeInSectionClassicLayout } from './layouts/FadeInSectionClassicLayout';
+import { FadeInSectionRetroLayout } from './layouts/FadeInSectionRetroLayout';
 
 interface FadeInSectionProps {
   children: ReactNode;
@@ -14,38 +16,12 @@ interface FadeInSectionProps {
  * FadeInSection - Wraps children with a fade + translate entrance animation
  * Triggers once when the component mounts
  */
-export function FadeInSection({
-  children,
-  delay = 0,
-  direction = 'up',
-  className = '',
-}: FadeInSectionProps) {
-  const [isVisible, setIsVisible] = useState(false);
+export function FadeInSection(props: FadeInSectionProps) {
+  const { theme } = useAppTheme();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), delay);
-    return () => clearTimeout(timer);
-  }, [delay]);
+  if (theme === 'retro') {
+    return <FadeInSectionRetroLayout {...props} />;
+  }
 
-  const getTranslate = () => {
-    switch (direction) {
-      case 'up': return isVisible ? 'translateY(0px)' : 'translateY(30px)';
-      case 'down': return isVisible ? 'translateY(0px)' : 'translateY(-30px)';
-      case 'left': return isVisible ? 'translateX(0px)' : 'translateX(30px)';
-      case 'right': return isVisible ? 'translateX(0px)' : 'translateX(-30px)';
-      case 'none': return 'translate(0, 0)';
-    }
-  };
-
-  const spring = useSpring({
-    opacity: isVisible ? 1 : 0,
-    transform: getTranslate(),
-    config: { tension: 120, friction: 14 },
-  });
-
-  return (
-    <animated.div style={spring} className={className}>
-      {children}
-    </animated.div>
-  );
+  return <FadeInSectionClassicLayout {...props} />;
 }

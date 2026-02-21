@@ -2,6 +2,8 @@
 
 import { QueueSkeleton } from '@/src/presentation/components/queue/QueueSkeleton';
 import { QueueClassicLayout } from '@/src/presentation/components/queue/layouts/QueueClassicLayout';
+import { QueueRetroLayout } from '@/src/presentation/components/queue/layouts/QueueRetroLayout';
+import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
@@ -15,6 +17,7 @@ interface QueueViewProps {
 export function QueueView({ initialViewModel }: QueueViewProps) {
   const [state, actions] = useQueuePresenter(initialViewModel);
   const viewModel = state.viewModel;
+  const { theme } = useAppTheme();
 
   // Live clock
   const [currentTime, setCurrentTime] = useState('');
@@ -80,16 +83,24 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
 
   if (!viewModel) return null;
 
+  const layoutProps = {
+    viewModel,
+    currentTime,
+    refreshCountdown,
+    soundEnabled,
+    setSoundEnabled,
+    pulseSpring,
+    mobileTab,
+    setMobileTab,
+  };
+
   return (
-    <QueueClassicLayout
-      viewModel={viewModel}
-      currentTime={currentTime}
-      refreshCountdown={refreshCountdown}
-      soundEnabled={soundEnabled}
-      setSoundEnabled={setSoundEnabled}
-      pulseSpring={pulseSpring}
-      mobileTab={mobileTab}
-      setMobileTab={setMobileTab}
-    />
+    <>
+      {theme === 'retro' ? (
+        <QueueRetroLayout {...layoutProps} />
+      ) : (
+        <QueueClassicLayout {...layoutProps} />
+      )}
+    </>
   );
 }

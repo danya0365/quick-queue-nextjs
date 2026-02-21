@@ -2,6 +2,8 @@
 
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
 import { HomeClassicLayout } from '@/src/presentation/components/home/layouts/HomeClassicLayout';
+import { HomeRetroLayout } from '@/src/presentation/components/home/layouts/HomeRetroLayout';
+import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { useHomePresenter } from '@/src/presentation/presenters/home/useHomePresenter';
@@ -15,6 +17,9 @@ interface HomeViewProps {
 export function HomeView({ initialViewModel }: HomeViewProps) {
   const [state] = useHomePresenter(initialViewModel);
   const viewModel = state.viewModel;
+
+  // Theme switcher state from Zustand
+  const { theme } = useAppTheme();
 
   // Animated gradient rotation
   const [gradientAngle, setGradientAngle] = useState(135);
@@ -87,21 +92,26 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
   if (!viewModel) return null;
 
-  // Eventually we'll add more conditions for different store themes
-  // e.g. if (storeTheme === 'MODERN') return <HomeModernLayout {...props} />
+  const props = {
+    viewModel,
+    gradientAngle,
+    currentTime,
+    soundEnabled,
+    setSoundEnabled,
+    showQR,
+    setShowQR,
+    qrSpring,
+    currentUrl,
+    bigNumberSpring,
+  };
 
   return (
-    <HomeClassicLayout
-      viewModel={viewModel}
-      gradientAngle={gradientAngle}
-      currentTime={currentTime}
-      soundEnabled={soundEnabled}
-      setSoundEnabled={setSoundEnabled}
-      showQR={showQR}
-      setShowQR={setShowQR}
-      qrSpring={qrSpring}
-      currentUrl={currentUrl}
-      bigNumberSpring={bigNumberSpring}
-    />
+    <>
+      {theme === 'retro' ? (
+        <HomeRetroLayout {...props} />
+      ) : (
+        <HomeClassicLayout {...props} />
+      )}
+    </>
   );
 }

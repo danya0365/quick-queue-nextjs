@@ -1,7 +1,9 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
-import { animated, useSpring } from 'react-spring';
+import { useAppTheme } from '@/src/presentation/hooks/useAppTheme';
+import { ReactNode } from 'react';
+import { GlassCardClassicLayout } from './layouts/GlassCardClassicLayout';
+import { GlassCardRetroLayout } from './layouts/GlassCardRetroLayout';
 
 interface GlassCardProps {
   children: ReactNode;
@@ -12,60 +14,12 @@ interface GlassCardProps {
   id?: string;
 }
 
-/**
- * GlassCard - A glassmorphism card with hover animations
- * ⚠️ background/borderColor ใช้ CSS class (ไม่ใช้ react-spring)
- *    เพราะ react-spring cache CSS variable ทำให้ dark mode พัง
- */
-export function GlassCard({
-  children,
-  className = '',
-  hoverScale = 1.02,
-  glowColor = 'rgba(124, 58, 237, 0.2)',
-  onClick,
-  id,
-}: GlassCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
+export function GlassCard(props: GlassCardProps) {
+  const { theme } = useAppTheme();
 
-  // ✅ Only animate transform & boxShadow via spring
-  // ❌ Do NOT put background/borderColor in spring (breaks dark mode)
-  const spring = useSpring({
-    transform: isPressed
-      ? 'scale(0.98)'
-      : isHovered
-        ? `scale(${hoverScale})`
-        : 'scale(1)',
-    boxShadow: isHovered
-      ? `0 8px 32px ${glowColor}`
-      : '0 2px 8px rgba(0, 0, 0, 0.06)',
-    config: { tension: 300, friction: 20 },
-  });
+  if (theme === 'retro') {
+    return <GlassCardRetroLayout {...props} />;
+  }
 
-  return (
-    <animated.div
-      style={spring}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setIsPressed(false);
-      }}
-      onMouseDown={() => onClick && setIsPressed(true)}
-      onMouseUp={() => setIsPressed(false)}
-      onClick={onClick}
-      className={`
-        rounded-xl
-        border
-        backdrop-blur-md
-        transition-colors duration-200
-        bg-[var(--glass-bg)]
-        ${isHovered ? 'border-[var(--glass-border)]' : 'border-border'}
-        ${onClick ? 'cursor-pointer' : ''}
-        ${className}
-      `}
-      id={id}
-    >
-      {children}
-    </animated.div>
-  );
+  return <GlassCardClassicLayout {...props} />;
 }
