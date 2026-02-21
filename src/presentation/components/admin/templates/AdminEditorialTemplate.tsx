@@ -284,8 +284,8 @@ export function AdminEditorialTemplate({
           <table className="w-full text-left font-bold border-collapse whitespace-nowrap sm:whitespace-normal min-w-max sm:min-w-0">
             <thead className="bg-[#f0f0f0] border-b-[2px] sm:border-b-[4px] border-black text-black text-[8px] sm:text-xs uppercase tracking-widest">
               <tr>
-                <th className="p-2 sm:p-4 border-l-[2px] sm:border-l-[4px] border-black w-12 sm:w-24">หมายเลข</th>
-                <th className="p-2 sm:p-4 border-b-[2px] sm:border-b-[4px] border-black border-l-[2px] sm:border-l-[4px]">ข้อมูล</th>
+                <th className="p-2 sm:p-4 w-12 sm:w-24">หมายเลข</th>
+                <th className="p-2 sm:p-4 border-l-[2px] sm:border-l-[4px] border-black">ข้อมูล</th>
               </tr>
             </thead>
             <tbody className="text-[10px] sm:text-sm">
@@ -293,7 +293,7 @@ export function AdminEditorialTemplate({
                  const statusActions = getStatusActions(item);
                  return (
                   <tr key={item.id} className="border-b-[2px] sm:border-b-[4px] border-black hover:bg-gray-100 transition-colors last:border-b-0 group">
-                    <td className="p-2 sm:p-4 border-l-[2px] sm:border-l-[4px] border-black font-black text-2xl sm:text-4xl tabular-nums tracking-tighter">
+                    <td className="p-2 sm:p-4 font-black text-2xl sm:text-4xl tabular-nums tracking-tighter">
                       {item.queueNumber.toString().padStart(2, '0')}
                     </td>
                     <td className="p-0 border-l-[2px] sm:border-l-[4px] border-black align-top">
@@ -352,7 +352,7 @@ export function AdminEditorialTemplate({
               })}
               {items.length === 0 && (
                 <tr>
-                  <td colSpan={2} className="p-16 text-center text-gray-400 font-black uppercase text-2xl border-l-[4px] border-black">
+                  <td colSpan={2} className="p-16 text-center text-gray-400 font-black uppercase text-2xl">
                     ไม่พบข้อมูลคิว
                   </td>
                 </tr>
