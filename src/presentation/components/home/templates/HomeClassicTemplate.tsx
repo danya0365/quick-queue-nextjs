@@ -17,6 +17,7 @@ export interface HomeClassicTemplateProps {
   setShowQR: (show: boolean) => void;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
   onItemClick: (item: QueueItem) => void;
+  onRequestQueue: () => void;
 }
 
 export function HomeClassicTemplate({
@@ -29,6 +30,7 @@ export function HomeClassicTemplate({
   setShowQR,
   bigNumberSpring,
   onItemClick,
+  onRequestQueue,
 }: HomeClassicTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentQueueNumber || 0;
@@ -114,6 +116,14 @@ export function HomeClassicTemplate({
                   <span className="mr-1.5">📱</span>
                   <span className="hidden sm:inline">สแกนคิว</span>
                   <span className="sm:hidden">คิว</span>
+                </button>
+                <button
+                  onClick={onRequestQueue}
+                  className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center"
+                >
+                  <span className="mr-1.5">📝</span>
+                  <span className="hidden sm:inline">ขอบัตรคิว</span>
+                  <span className="sm:hidden">ขอบัตรคิว</span>
                 </button>
               </div>
             </div>

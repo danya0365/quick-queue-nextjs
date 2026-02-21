@@ -3,6 +3,7 @@
 import { QueueItem, QueueStatus } from '@/src/domain/types/queue';
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
+import { PendingRequestsSection, RejectReasonModal } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { AdminClassicTemplate } from '@/src/presentation/components/admin/templates/AdminClassicTemplate';
 import { AdminEditorialTemplate } from '@/src/presentation/components/admin/templates/AdminEditorialTemplate';
 import { AdminRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/AdminRetroTechMagazineTemplate';
@@ -122,6 +123,8 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
     getStatusActions,
   };
 
+  const pendingRequests = viewModel.pendingRequests || [];
+
   return (
     <>
       {template === 'retroTechMagazine' && (
@@ -133,6 +136,21 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
       {template === 'classic' && (
         <AdminClassicTemplate {...layoutProps} />
       )}
+
+      {/* Reject Reason Modal */}
+      <RejectReasonModal
+        isOpen={state.isRejectModalOpen}
+        onClose={actions.closeRejectModal}
+        onReject={(reason) => {
+          if (state.selectedRequestId) {
+            actions.rejectRequest(state.selectedRequestId, reason);
+          }
+        }}
+      />
     </>
   );
 }
+
+// Re-export for use in templates
+export { PendingRequestsSection };
+

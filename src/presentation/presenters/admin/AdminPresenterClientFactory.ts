@@ -6,12 +6,14 @@
 'use client';
 
 import { ApiQueueItemRepository } from '@/src/infrastructure/repositories/api/ApiQueueItemRepository';
+import { ApiQueueRequestRepository } from '@/src/infrastructure/repositories/api/ApiQueueRequestRepository';
 import { AdminPresenter } from './AdminPresenter';
 
 export class AdminPresenterClientFactory {
   static create(): AdminPresenter {
     const repository = new ApiQueueItemRepository();
-    return new AdminPresenter(repository);
+    const requestRepository = new ApiQueueRequestRepository();
+    return new AdminPresenter(repository, requestRepository);
   }
 }
 

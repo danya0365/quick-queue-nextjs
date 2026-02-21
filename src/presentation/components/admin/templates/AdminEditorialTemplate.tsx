@@ -2,6 +2,7 @@ import { QueueItem, QueueStatus, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { PendingRequestsSection } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useState } from 'react';
@@ -49,6 +50,7 @@ export function AdminEditorialTemplate({
   const totalPages = viewModel?.totalPages || 1;
   const currentPage = viewModel?.currentPage || 1;
   const totalItems = viewModel?.totalItems || 0;
+  const pendingRequests = viewModel?.pendingRequests || [];
 
   const selectedItem = state.selectedItemId ? items.find((i) => i.id === state.selectedItemId) : null;
 
@@ -176,6 +178,15 @@ export function AdminEditorialTemplate({
             <h3 className="font-black text-xl uppercase tracking-widest mb-2 border-b-[4px] border-white pb-2 inline-block">เกิดข้อผิดพลาด</h3>
             <p className="font-bold">{state.error}</p>
           </div>
+        )}
+
+        {/* ─── Pending Queue Requests ─── */}
+        {pendingRequests.length > 0 && (
+          <PendingRequestsSection
+            requests={pendingRequests}
+            onApprove={actions.approveRequest}
+            onReject={actions.openRejectModal}
+          />
         )}
 
         {/* ─── STATS ─── */}

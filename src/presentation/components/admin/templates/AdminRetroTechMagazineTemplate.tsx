@@ -2,6 +2,7 @@ import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { PendingRequestsSection } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useState } from 'react';
 import { animated, useSpring } from 'react-spring';
@@ -62,6 +63,7 @@ export function AdminRetroTechMagazineTemplate({
   const totalPages = viewModel.totalPages || 1;
   const currentPage = viewModel.currentPage || 1;
   const totalItems = viewModel.totalItems || 0;
+  const pendingRequests = viewModel.pendingRequests || [];
 
   const selectedItem = state.selectedItemId
     ? items.find((i) => i.id === state.selectedItemId)
@@ -157,6 +159,15 @@ export function AdminRetroTechMagazineTemplate({
             ))}
           </animated.div>
         </div>
+
+        {/* ─── Pending Queue Requests ─── */}
+        {pendingRequests.length > 0 && (
+          <PendingRequestsSection
+            requests={pendingRequests}
+            onApprove={actions.approveRequest}
+            onReject={actions.openRejectModal}
+          />
+        )}
 
         {/* ─── Main Content ─── */}
         <div className="bg-white border-[4px] sm:border-8 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] sm:shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-3 sm:p-6 flex flex-col min-h-[400px] sm:min-h-[500px]">

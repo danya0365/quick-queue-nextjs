@@ -1,16 +1,18 @@
 /**
  * AdminPresenter
- * Handles business logic for the Admin page (CRUD + Auth gate)
+ * Handles business logic for the Admin page (CRUD + Auth gate + Queue Requests)
  * Receives repository via dependency injection
  */
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
+import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
 import {
-  CreateQueueItemData,
-  QueueItem,
-  QueueStats,
-  QueueStatus,
-  UpdateQueueItemData,
+    CreateQueueItemData,
+    QueueItem,
+    QueueRequest,
+    QueueStats,
+    QueueStatus,
+    UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -23,10 +25,15 @@ export interface AdminViewModel {
   currentPage: number;
   perPage: number;
   totalPages: number;
+  // Pending queue requests
+  pendingRequests: QueueRequest[];
 }
 
 export class AdminPresenter {
-  constructor(private readonly repository: IQueueItemRepository) {}
+  constructor(
+    private readonly repository: IQueueItemRepository,
+    private readonly requestRepository?: IQueueRequestRepository,
+  ) {}
 
   /**
    * Get admin view model (paginated)
@@ -37,10 +44,11 @@ export class AdminPresenter {
     status?: string
   ): Promise<AdminViewModel> {
     try {
-      const [paginated, stats, nextQueueNumber] = await Promise.all([
+      const [paginated, stats, nextQueueNumber, pendingRequests] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
+        this.requestRepository ? this.requestRepository.getPending() : Promise.resolve([]),
       ]);
 
       return {
@@ -51,6 +59,7 @@ export class AdminPresenter {
         currentPage: paginated.page,
         perPage: paginated.perPage,
         totalPages: Math.ceil(paginated.total / paginated.perPage),
+        pendingRequests,
       };
     } catch (error) {
       console.error('Error getting admin view model:', error);
@@ -115,5 +124,21 @@ export class AdminPresenter {
    */
   async markCancelled(id: string): Promise<QueueItem> {
     return await this.repository.update(id, { status: QueueStatus.CANCELLED });
+  }
+
+  /**
+   * Approve a queue request
+   */
+  async approveRequest(id: string): Promise<QueueRequest> {
+    if (!this.requestRepository) throw new Error('Request repository not configured');
+    return await this.requestRepository.approve(id);
+  }
+
+  /**
+   * Reject a queue request
+   */
+  async rejectRequest(id: string, reason: string): Promise<QueueRequest> {
+    if (!this.requestRepository) throw new Error('Request repository not configured');
+    return await this.requestRepository.reject(id, reason);
   }
 }

@@ -130,6 +130,59 @@ export const DEFAULT_SHOP_CONFIG: ShopConfig = {
   },
 };
 
+// ─── Status Enums: Queue Requests ───
+export enum RequestStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+}
+
+export const REQUEST_STATUS_CONFIG: Record<
+  RequestStatus,
+  { label: string; color: string; bgColor: string; icon: string }
+> = {
+  [RequestStatus.PENDING]: {
+    label: 'รอการอนุมัติ',
+    color: 'text-amber-600 dark:text-amber-400',
+    bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+    icon: '⏳',
+  },
+  [RequestStatus.APPROVED]: {
+    label: 'อนุมัติแล้ว',
+    color: 'text-emerald-600 dark:text-emerald-400',
+    bgColor: 'bg-emerald-100 dark:bg-emerald-900/30',
+    icon: '✅',
+  },
+  [RequestStatus.REJECTED]: {
+    label: 'ถูกปฏิเสธ',
+    color: 'text-red-600 dark:text-red-400',
+    bgColor: 'bg-red-100 dark:bg-red-900/30',
+    icon: '❌',
+  },
+};
+
+// ─── Master Data: Queue Request Entity ───
+export interface QueueRequest {
+  id: string;
+  trackingCode: string;
+  customerName: string;
+  serviceType: ServiceType;
+  note?: string;
+  status: RequestStatus;
+  rejectReason?: string;
+  queueItemId?: string;
+  ipAddress?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── DTOs: Queue Request ───
+export interface CreateQueueRequestData {
+  customerName: string;
+  serviceType: ServiceType;
+  note?: string;
+}
+
 // ─── Static Data: Navigation Items ───
 export interface NavItem {
   label: string;
@@ -149,6 +202,12 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'เช็คคิว',
     href: '/queue',
     icon: '📋',
+    requiresAuth: false,
+  },
+  {
+    label: 'ขอบัตรคิว',
+    href: '/track',
+    icon: '🔍',
     requiresAuth: false,
   },
   {

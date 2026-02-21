@@ -2,6 +2,7 @@ import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { PendingRequestsSection } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { AnimatedButton } from '@/src/presentation/components/shared/AnimatedButton';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
@@ -34,6 +35,7 @@ export function AdminClassicTemplate({
   const totalPages = viewModel.totalPages || 1;
   const currentPage = viewModel.currentPage || 1;
   const totalItems = viewModel.totalItems || 0;
+  const pendingRequests = viewModel.pendingRequests || [];
 
   const selectedItem = state.selectedItemId
     ? items.find((i) => i.id === state.selectedItemId)
@@ -99,6 +101,17 @@ export function AdminClassicTemplate({
           </GlassCard>
         </div>
       </FadeInSection>
+
+      {/* ─── Pending Queue Requests ─── */}
+      {pendingRequests.length > 0 && (
+        <FadeInSection delay={150} direction="up">
+          <PendingRequestsSection
+            requests={pendingRequests}
+            onApprove={actions.approveRequest}
+            onReject={actions.openRejectModal}
+          />
+        </FadeInSection>
+      )}
 
       {/* ─── Filter Tabs ─── */}
       <FadeInSection delay={200} direction="up">

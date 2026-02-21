@@ -2,6 +2,7 @@
 
 import { QueueItem } from '@/src/domain/types/queue';
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
+import { RequestQueueModal } from '@/src/presentation/components/home/RequestQueueModal';
 import { HomeClassicTemplate } from '@/src/presentation/components/home/templates/HomeClassicTemplate';
 import { HomeEditorialTemplate } from '@/src/presentation/components/home/templates/HomeEditorialTemplate';
 import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
@@ -58,6 +59,9 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   // Queue Item Detail Modal
   const [selectedItem, setSelectedItem] = useState<QueueItem | null>(null);
 
+  // Request Queue Modal
+  const [showRequestModal, setShowRequestModal] = useState(false);
+
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
   useEffect(() => {
@@ -105,6 +109,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     setShowQR,
     bigNumberSpring,
     onItemClick: setSelectedItem,
+    onRequestQueue: () => setShowRequestModal(true),
   };
 
   return (
@@ -121,6 +126,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
       )}
       <QRModal isOpen={showQR} onClose={() => setShowQR(false)} url={currentUrl} />
       <QueueItemDetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} item={selectedItem} />
+      <RequestQueueModal isOpen={showRequestModal} onClose={() => setShowRequestModal(false)} />
     </>
   );
 }

@@ -35,6 +35,9 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
           <Link href="/queue" className="px-3 sm:px-6 py-2 border-r-4 border-black hover:bg-[#FF00FF] hover:text-white transition-colors flex items-center justify-center">
             <span className="transform skew-x-6 block">QUEUE</span>
           </Link>
+          <Link href="/track" className="px-3 sm:px-6 py-2 border-r-4 border-black hover:bg-[#FF00FF] hover:text-white transition-colors flex items-center justify-center">
+            <span className="transform skew-x-6 block">TRACK</span>
+          </Link>
           <Link href="/admin" className="px-3 sm:px-6 py-2 hover:bg-[#39FF14] transition-colors flex items-center justify-center">
             <span className="transform skew-x-6 block">ADMIN</span>
           </Link>
