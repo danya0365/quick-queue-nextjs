@@ -36,7 +36,7 @@ export function AdminRetroTechMagazineTemplate({
 
   return (
     <div
-      className="min-h-full font-sans p-4 sm:p-8 overflow-y-auto selection:bg-[#FF00FF] selection:text-white"
+      className="min-h-full font-sans p-2 sm:p-8 overflow-y-auto selection:bg-[#FF00FF] selection:text-white pb-24 sm:pb-8"
       style={{
         backgroundColor: '#f4f4f0',
         backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)',
@@ -45,33 +45,33 @@ export function AdminRetroTechMagazineTemplate({
       }}
       id="admin-retro-layout"
     >
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-8">
         {/* ─── Header ─── */}
-        <header className="flex flex-col sm:flex-row justify-between items-end border-b-8 border-black pb-4 gap-4">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-[4px] sm:border-b-8 border-black pb-4 gap-4">
           <div>
-            <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none text-black">
+            <h1 className="text-3xl sm:text-6xl font-black uppercase tracking-tighter leading-none text-black">
               ผู้ดูแลระบบ
-              <span className="block text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] stroke-black" style={{ WebkitTextStroke: '1px black' }}>
+              <span className="block text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] stroke-black" style={{ WebkitTextStroke: '1px black' }}>
                 แผงควบคุม
               </span>
             </h1>
           </div>
-          <div className="flex gap-4 border-4 border-black bg-white p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-2">
+          <div className="flex flex-wrap gap-2 sm:gap-4 border-[3px] sm:border-4 border-black bg-white p-2 shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform sm:-skew-x-2">
             <button
               onClick={actions.openCreateModal}
-              className="bg-[#39FF14] text-black px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
+              className="bg-[#39FF14] text-black px-2 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-base font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all flex-1 sm:flex-none text-center"
             >
               + สร้างคิว
             </button>
             <button
               onClick={actions.openClearAllModal}
-              className="bg-[#FF00FF] text-white px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
+              className="bg-[#FF00FF] text-white px-2 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-base font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all flex-1 sm:flex-none text-center"
             >
               ล้างข้อมูล
             </button>
             <button
               onClick={handleLogout}
-              className="bg-black text-white px-4 py-2 font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all"
+              className="bg-black text-white px-2 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-base font-bold uppercase tracking-wider border-2 border-black hover:-translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all shrink-0"
             >
               ออก
             </button>
@@ -79,7 +79,7 @@ export function AdminRetroTechMagazineTemplate({
         </header>
 
         {/* ─── Stats Grid ─── */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4">
           <RetroStatBox label="รวม" value={stats?.totalItems || 0} color="#FFFFFF" />
           <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
           <RetroStatBox label="เรียกคิว" value={stats?.inProgressItems || 0} color="#00FFFF" />
@@ -88,7 +88,7 @@ export function AdminRetroTechMagazineTemplate({
         </div>
 
         {/* ─── Main Content ─── */}
-        <div className="bg-white border-8 border-black shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-6 flex flex-col min-h-[500px]">
+        <div className="bg-white border-[4px] sm:border-8 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] sm:shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-3 sm:p-6 flex flex-col min-h-[400px] sm:min-h-[500px]">
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
             {[
@@ -113,71 +113,85 @@ export function AdminRetroTechMagazineTemplate({
           </div>
 
           {/* Table Container */}
-          <div className="flex-1 overflow-x-auto border-4 border-black mb-4 bg-gray-50">
+          <div className="flex-1 overflow-x-auto border-[4px] sm:border-8 border-black mb-4 bg-gray-50">
             {items.length === 0 ? (
               <div className="p-12 text-center text-xl font-black uppercase tracking-widest text-gray-400">
                 ไม่พบข้อมูลคิว
               </div>
             ) : (
-              <table className="w-full text-left border-collapse min-w-[700px]">
+              <table className="w-full text-left border-collapse min-w-full">
                 <thead>
-                  <tr className="bg-black text-white font-bold uppercase tracking-wider">
-                    <th className="p-3 border-r-2 border-white/20 whitespace-nowrap">หมายเลข</th>
-                    <th className="p-3 border-r-2 border-white/20">ชื่อ / บริการ</th>
-                    <th className="p-3 border-r-2 border-white/20">สถานะ</th>
-                    <th className="p-3 text-right">จัดการ</th>
+                  <tr className="bg-black text-white font-bold uppercase tracking-wider text-[10px] sm:text-sm">
+                    <th className="p-2 sm:p-3 w-16 sm:w-24 border-r-[2px] sm:border-r-[4px] border-white text-center">คิว</th>
+                    <th className="p-2 sm:p-3">ข้อมูล</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-[10px] sm:text-sm">
                   {items.map((item, idx) => {
                     const statusConfig = QUEUE_STATUS_CONFIG[item.status];
                     const serviceConfig = SERVICE_TYPE_CONFIG[item.serviceType];
                     const statusActions = getStatusActions(item);
                     return (
-                      <tr key={item.id} className={`border-b-2 border-black hover:bg-[#00FFFF]/20 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
-                        <td className="p-3 border-r-2 border-black font-black text-2xl tabular-nums">
+                      <tr key={item.id} className={`border-b-[4px] border-black hover:bg-[#00FFFF]/20 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'} group`}>
+                        <td className="p-2 sm:p-4 border-r-[4px] border-black font-black text-3xl sm:text-5xl tabular-nums text-center align-middle">
                           {item.queueNumber.toString().padStart(2, '0')}
                         </td>
-                        <td className="p-3 border-r-2 border-black">
-                          <div className="font-bold text-lg uppercase">{item.customerName}</div>
-                          <div className="text-xs font-bold uppercase bg-black text-white inline-block px-1 mt-1">
-                            {serviceConfig.label}
-                          </div>
-                          {item.note && <div className="text-xs font-mono mt-1 opacity-70">หมายเหตุ: {item.note}</div>}
-                        </td>
-                        <td className="p-3 border-r-2 border-black whitespace-nowrap">
-                          <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${
-                            item.status === QueueStatus.IN_PROGRESS ? 'bg-[#39FF14] text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]' : 'bg-white text-black'
-                          }`}>
-                            {statusConfig.label}
-                          </span>
-                        </td>
-                        <td className="p-3 text-right">
-                          <div className="flex justify-end gap-2">
-                            {statusActions.map((sa, i) => {
-                              // Map Tailwind colors back to generic tech zine names for custom colors
-                              let btnColor = 'bg-white hover:bg-gray-200';
-                              if (sa.color.includes('blue')) btnColor = 'bg-[#00FFFF] hover:bg-[#00CCCC]';
-                              if (sa.color.includes('emerald') || sa.color.includes('green')) btnColor = 'bg-[#39FF14] hover:bg-[#32CC12]';
-                              if (sa.color.includes('red')) btnColor = 'bg-[#FF00FF] text-white hover:bg-[#CC00CC]';
+                        <td className="p-0 align-top">
+                           {/* Data wrapper */}
+                           <div className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between gap-4 h-full relative overflow-hidden">
                               
-                              return (
-                                <button
-                                  key={i}
-                                  onClick={sa.action}
-                                  className={`${btnColor} text-black px-2 py-1 text-xs font-bold uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgba(0,0,0,1)] transition-all whitespace-nowrap`}
-                                >
-                                  {sa.label}
-                                </button>
-                              );
-                            })}
-                            <button
-                               onClick={() => actions.openDeleteModal(item.id)}
-                               className="bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:translate-y-[1px] hover:shadow-[1px_1px_0_0_rgba(0,0,0,1)] transition-all"
-                            >
-                              ลบ
-                            </button>
-                          </div>
+                              {/* Left side: Info */}
+                              <div className="flex flex-col z-10 space-y-2">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <div className="font-black text-lg sm:text-2xl uppercase">{item.customerName}</div>
+                                  <span className={`px-2 py-0.5 border-2 border-black font-black uppercase text-[10px] sm:text-xs tracking-widest ${
+                                    item.status === QueueStatus.IN_PROGRESS ? 'bg-[#39FF14] text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]' : 'bg-white text-black'
+                                  }`}>
+                                    {statusConfig.label}
+                                  </span>
+                                </div>
+                                
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest bg-black text-[#00FFFF] inline-block px-1.5 py-0.5 border-[2px] border-black">
+                                    SVC: {serviceConfig.label}
+                                  </div>
+                                  {item.note && (
+                                     <div className="text-[10px] sm:text-xs font-bold bg-white border-[2px] border-black px-1.5 py-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)] flex items-center gap-1">
+                                       <span className="bg-black text-white px-1">NOTE</span>
+                                       <span className="opacity-80">{item.note}</span>
+                                     </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Right side: Actions */}
+                              <div className="flex flex-row sm:flex-col justify-end sm:justify-start gap-2 z-10 shrink-0">
+                                <div className="flex flex-wrap gap-2 w-full justify-end">
+                                  {statusActions.map((sa, i) => {
+                                    let btnColor = 'bg-white hover:bg-gray-200';
+                                    if (sa.color.includes('blue')) btnColor = 'bg-[#00FFFF] hover:bg-[#00CCCC]';
+                                    if (sa.color.includes('emerald') || sa.color.includes('green')) btnColor = 'bg-[#39FF14] hover:bg-[#32CC12]';
+                                    if (sa.color.includes('red')) btnColor = 'bg-[#FF00FF] text-white hover:bg-[#CC00CC]';
+                                    
+                                    return (
+                                      <button
+                                        key={i}
+                                        onClick={sa.action}
+                                        className={`${btnColor} text-black px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest border-[3px] border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all text-center min-w-[70px] sm:min-w-0`}
+                                      >
+                                        {sa.label}
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    onClick={() => actions.openDeleteModal(item.id)}
+                                    className="bg-black text-[#FF00FF] hover:text-white hover:bg-red-600 px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest border-[3px] border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all text-center min-w-[70px] sm:min-w-0"
+                                  >
+                                    ลบ
+                                  </button>
+                                </div>
+                              </div>
+                           </div>
                         </td>
                       </tr>
                     );
