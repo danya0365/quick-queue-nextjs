@@ -51,8 +51,20 @@ export function TemplateSwitcher() {
     currentTemplate: template,
   };
 
+  const getBottomPosition = () => {
+    switch (template) {
+      case 'retroTechMagazine':
+        return 'bottom-22 sm:bottom-24'; // Retro footer is taller
+      case 'editorial':
+        return 'bottom-18 sm:bottom-24'; // Editorial footer
+      case 'classic':
+      default:
+        return 'bottom-24 sm:bottom-18'; // Classic footer + mobile nav consideration
+    }
+  };
+
   return (
-    <div ref={dropdownRef} className="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 z-[100]">
+    <div ref={dropdownRef} className={`fixed right-6 sm:right-8 z-[100] transition-all duration-300 ${getBottomPosition()}`}>
       {template === 'retroTechMagazine' && (
         <TemplateSwitcherRetroTechMagazineTemplate {...commonProps} />
       )}
