@@ -5,6 +5,7 @@ import { HomeClassicTemplate } from '@/src/presentation/components/home/template
 import { HomeEditorialTemplate } from '@/src/presentation/components/home/templates/HomeEditorialTemplate';
 import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
 import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
+import { QRModal } from '@/src/presentation/components/shared/QRModal';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
@@ -51,11 +52,6 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
 
   // QR Code Modal
   const [showQR, setShowQR] = useState(false);
-  const qrSpring = useSpring({
-    opacity: showQR ? 1 : 0,
-    transform: showQR ? 'scale(1)' : 'scale(0.9)',
-    config: { tension: 300, friction: 25 },
-  });
 
   // Get current URL for QR Code
   const [currentUrl, setCurrentUrl] = useState('');
@@ -102,8 +98,6 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
     setSoundEnabled,
     showQR,
     setShowQR,
-    qrSpring,
-    currentUrl,
     bigNumberSpring,
   };
 
@@ -119,6 +113,7 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
       {template === 'classic' && (
         <HomeClassicTemplate {...layoutProps} />
       )}
+      <QRModal isOpen={showQR} onClose={() => setShowQR(false)} url={currentUrl} />
     </>
   );
 }

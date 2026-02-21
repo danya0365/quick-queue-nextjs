@@ -1,6 +1,5 @@
 import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
-import { QRCodeSVG } from 'qrcode.react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeEditorialTemplateProps {
@@ -11,8 +10,6 @@ export interface HomeEditorialTemplateProps {
   setSoundEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
   showQR: boolean;
   setShowQR: (show: boolean) => void;
-  qrSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
-  currentUrl: string;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
 }
 
@@ -23,8 +20,6 @@ export function HomeEditorialTemplate({
   setSoundEnabled,
   showQR,
   setShowQR,
-  qrSpring,
-  currentUrl,
   bigNumberSpring,
 }: HomeEditorialTemplateProps) {
   const stats = viewModel.stats;
@@ -164,46 +159,6 @@ export function HomeEditorialTemplate({
 
         </div>
       </div>
-
-      {/* ─── QR Modal ─── */}
-      {showQR && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/95 backdrop-blur-sm"
-          onClick={() => setShowQR(false)}
-        >
-          <animated.div
-            style={qrSpring}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white p-12 border-[8px] border-black flex flex-col items-center max-w-lg w-full relative shadow-[24px_24px_0_0_rgba(0,0,0,1)]"
-          >
-            <button
-              onClick={() => setShowQR(false)}
-              className="absolute -top-6 -right-6 bg-black text-white w-14 h-14 rounded-full border-[6px] border-white font-black text-2xl hover:scale-110 transition-transform shadow-[4px_4px_0_0_rgba(0,0,0,1)] flex items-center justify-center"
-            >
-              X
-            </button>
-            <h3 className="text-5xl font-black uppercase text-black mb-4 tracking-tighter w-full text-center border-b-[6px] border-black pb-6">
-              DIGITAL TICKET
-            </h3>
-            <p className="text-sm font-bold text-gray-500 mb-10 text-center uppercase tracking-widest">
-              SCAN TO JOIN THE QUEUE REMOTELY
-            </p>
-            <div className="bg-white p-6 border-[6px] border-black">
-              <QRCodeSVG
-                value={currentUrl}
-                size={280}
-                bgColor={"#ffffff"}
-                fgColor={"#000000"}
-                level={"H"}
-                includeMargin={false}
-              />
-            </div>
-            <p className="mt-10 text-xs font-bold bg-black text-white px-6 py-3 uppercase tracking-widest truncate w-full text-center border-[4px] border-black">
-              {currentUrl}
-            </p>
-          </animated.div>
-        </div>
-      )}
     </div>
   );
 }

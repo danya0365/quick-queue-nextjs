@@ -5,7 +5,6 @@ import { FadeInSection } from '@/src/presentation/components/shared/FadeInSectio
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
-import { QRCodeSVG } from 'qrcode.react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeClassicTemplateProps {
@@ -16,8 +15,6 @@ export interface HomeClassicTemplateProps {
   setSoundEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
   showQR: boolean;
   setShowQR: (show: boolean) => void;
-  qrSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
-  currentUrl: string;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
 }
 
@@ -29,8 +26,6 @@ export function HomeClassicTemplate({
   setSoundEnabled,
   showQR,
   setShowQR,
-  qrSpring,
-  currentUrl,
   bigNumberSpring,
 }: HomeClassicTemplateProps) {
   const stats = viewModel.stats;
@@ -259,47 +254,6 @@ export function HomeClassicTemplate({
           </div>
         </GlassCard>
       </FadeInSection>
-
-      {/* ─── QR Code Modal ─── */}
-      {showQR && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-          onClick={() => setShowQR(false)}
-        >
-          <animated.div
-            style={qrSpring}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center max-w-sm w-full relative"
-          >
-            <button
-              onClick={() => setShowQR(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-xl"
-            >
-              ✕
-            </button>
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">
-              📱
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-1">สแกนเพื่อรับคิว</h3>
-            <p className="text-sm text-gray-500 mb-6 text-center">
-              ใช้กล้องมือถือสแกน QR Code เพื่อเช็คคิวของคุณแบบเรียลไทม์
-            </p>
-            <div className="bg-white p-4 rounded-xl border-2 border-gray-100 shadow-inner">
-              <QRCodeSVG
-                value={currentUrl}
-                size={200}
-                bgColor={"#ffffff"}
-                fgColor={"#000000"}
-                level={"H"}
-                includeMargin={false}
-              />
-            </div>
-            <p className="mt-6 text-xs text-gray-400 font-mono bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-              {currentUrl}
-            </p>
-          </animated.div>
-        </div>
-      )}
     </div>
   );
 }

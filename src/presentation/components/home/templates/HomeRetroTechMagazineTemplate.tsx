@@ -1,6 +1,5 @@
 import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
-import { QRCodeSVG } from 'qrcode.react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeRetroTechMagazineTemplateProps {
@@ -11,8 +10,6 @@ export interface HomeRetroTechMagazineTemplateProps {
   setSoundEnabled: (enabled: boolean | ((prev: boolean) => boolean)) => void;
   showQR: boolean;
   setShowQR: (show: boolean) => void;
-  qrSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
-  currentUrl: string;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
 }
 
@@ -23,8 +20,6 @@ export function HomeRetroTechMagazineTemplate({
   setSoundEnabled,
   showQR,
   setShowQR,
-  qrSpring,
-  currentUrl,
   bigNumberSpring,
 }: HomeRetroTechMagazineTemplateProps) {
   const stats = viewModel.stats;
@@ -176,46 +171,6 @@ export function HomeRetroTechMagazineTemplate({
 
         </div>
       </div>
-
-      {/* ─── QR Modal ─── */}
-      {showQR && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={() => setShowQR(false)}
-        >
-          <animated.div
-            style={qrSpring}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-[#39FF14] p-8 border-8 border-black shadow-[16px_16px_0_0_rgba(0,0,0,1)] flex flex-col items-center max-w-sm w-full relative transform rotate-1"
-          >
-            <button
-              onClick={() => setShowQR(false)}
-              className="absolute -top-5 -right-5 bg-[#FF00FF] text-white w-12 h-12 rounded-full border-4 border-black font-black text-xl hover:scale-110 transition-transform shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
-            >
-              X
-            </button>
-            <h3 className="text-3xl font-black uppercase text-black mb-2 bg-white px-4 border-4 border-black transform -rotate-2">
-              SCAN ME
-            </h3>
-            <p className="text-sm font-bold text-black mb-6 text-center uppercase">
-              Get your virtual queue ticket instantly
-            </p>
-            <div className="bg-white p-4 border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
-              <QRCodeSVG
-                value={currentUrl}
-                size={220}
-                bgColor={"#ffffff"}
-                fgColor={"#000000"}
-                level={"H"}
-                includeMargin={false}
-              />
-            </div>
-            <p className="mt-6 text-xs font-bold bg-black text-white px-4 py-2 uppercase tracking-widest truncate w-full text-center">
-              {currentUrl}
-            </p>
-          </animated.div>
-        </div>
-      )}
     </div>
   );
 }

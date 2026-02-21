@@ -11,6 +11,8 @@ export interface QueueEditorialTemplateProps {
   pulseSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
   mobileTab: 'in_progress' | 'waiting' | 'completed';
   setMobileTab: (tab: 'in_progress' | 'waiting' | 'completed') => void;
+  showQR: boolean;
+  setShowQR: (show: boolean) => void;
 }
 
 export function QueueEditorialTemplate({
@@ -22,6 +24,8 @@ export function QueueEditorialTemplate({
   pulseSpring,
   mobileTab,
   setMobileTab,
+  showQR,
+  setShowQR,
 }: QueueEditorialTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentServingNumber || 0;
@@ -58,14 +62,22 @@ export function QueueEditorialTemplate({
                 {currentTime}
               </div>
             </div>
-            <button
-              onClick={() => setSoundEnabled((prev) => !prev)}
-              className={`px-1.5 py-1 sm:px-8 sm:py-3 font-black uppercase border-[2px] sm:border-[6px] border-black hover:bg-black hover:text-white transition-all text-[6px] sm:text-sm tracking-widest whitespace-nowrap ${
-                soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
-              }`}
-            >
-              {soundEnabled ? 'AUDIO' : 'MUTED'}
-            </button>
+            <div className="flex flex-row gap-1 sm:gap-4 w-auto">
+              <button
+                onClick={() => setSoundEnabled((prev) => !prev)}
+                className={`px-1.5 py-1 sm:px-8 sm:py-3 font-black uppercase border-[2px] sm:border-[6px] border-black hover:bg-black hover:text-white transition-all text-[6px] sm:text-sm tracking-widest whitespace-nowrap ${
+                  soundEnabled ? 'bg-black text-white' : 'bg-white text-black'
+                }`}
+              >
+                {soundEnabled ? 'AUDIO' : 'MUTED'}
+              </button>
+              <button
+                onClick={() => setShowQR(true)}
+                className="px-1.5 py-1 sm:px-10 sm:py-3 font-black uppercase border-[2px] sm:border-[6px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap"
+              >
+                SCAN QR
+              </button>
+            </div>
           </div>
         </header>
 
