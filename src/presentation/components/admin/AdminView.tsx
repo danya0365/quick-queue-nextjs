@@ -2,9 +2,10 @@
 
 import { QueueItem, QueueStatus } from '@/src/domain/types/queue';
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
-import { AdminClassicTemplate } from '@/src/presentation/components/admin/templates/AdminClassicTemplate';
-import { AdminRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/AdminRetroTechMagazineTemplate';
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
+import { AdminClassicTemplate } from '@/src/presentation/components/admin/templates/AdminClassicTemplate';
+import { AdminEditorialTemplate } from '@/src/presentation/components/admin/templates/AdminEditorialTemplate';
+import { AdminRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/AdminRetroTechMagazineTemplate';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
@@ -123,9 +124,13 @@ export function AdminView({ initialViewModel }: AdminViewProps) {
 
   return (
     <>
-      {template === 'retroTechMagazine' ? (
+      {template === 'retroTechMagazine' && (
         <AdminRetroTechMagazineTemplate {...layoutProps} />
-      ) : (
+      )}
+      {template === 'editorial' && (
+        <AdminEditorialTemplate {...layoutProps} />
+      )}
+      {template === 'classic' && (
         <AdminClassicTemplate {...layoutProps} />
       )}
     </>

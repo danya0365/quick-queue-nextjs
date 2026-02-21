@@ -43,7 +43,7 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
       </main>
 
       {/* ─── Retro Footer ─── */}
-      <footer className="border-t-8 border-black bg-black text-white px-6 py-4 font-bold uppercase text-xs sm:text-sm text-center shrink-0 z-50 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <footer className="border-t-8 border-black bg-black text-white px-6 py-4 font-bold uppercase text-xs sm:text-sm text-center shrink-0 flex flex-col sm:flex-row justify-between items-center gap-2">
         <p className="tracking-widest opacity-80">© 199X QUICK QUEUE SYSTEMS // VER 1.0.0</p>
         <div className="flex items-center gap-2">
           <span>//</span>

@@ -3,6 +3,7 @@
 import { AppTemplate, useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { useEffect, useRef, useState } from 'react';
 import { TemplateSwitcherClassicTemplate } from './templates/TemplateSwitcherClassicTemplate';
+import { TemplateSwitcherEditorialTemplate } from './templates/TemplateSwitcherEditorialTemplate';
 import { TemplateSwitcherRetroTechMagazineTemplate } from './templates/TemplateSwitcherRetroTechMagazineTemplate';
 
 export type TemplateOption = { id: AppTemplate; label: string; };
@@ -39,6 +40,7 @@ export function TemplateSwitcher() {
   const templates: TemplateOption[] = [
     { id: 'classic', label: 'Classic Mode' },
     { id: 'retroTechMagazine', label: 'Retro Mode' },
+    { id: 'editorial', label: 'Editorial Mode' },
   ];
 
   const commonProps = {
@@ -51,9 +53,13 @@ export function TemplateSwitcher() {
 
   return (
     <div ref={dropdownRef} className="fixed bottom-16 sm:bottom-20 right-4 sm:right-6 z-[100]">
-      {template === 'retroTechMagazine' ? (
+      {template === 'retroTechMagazine' && (
         <TemplateSwitcherRetroTechMagazineTemplate {...commonProps} />
-      ) : (
+      )}
+      {template === 'editorial' && (
+        <TemplateSwitcherEditorialTemplate {...commonProps} />
+      )}
+      {template === 'classic' && (
         <TemplateSwitcherClassicTemplate {...commonProps} />
       )}
     </div>

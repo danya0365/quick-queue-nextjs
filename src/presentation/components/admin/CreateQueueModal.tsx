@@ -2,6 +2,7 @@
 
 import { CreateQueueItemData, ServiceType } from '@/src/domain/types/queue';
 import { CreateQueueClassicTemplate } from '@/src/presentation/components/admin/templates/CreateQueueClassicTemplate';
+import { CreateQueueEditorialTemplate } from '@/src/presentation/components/admin/templates/CreateQueueEditorialTemplate';
 import { CreateQueueRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/CreateQueueRetroTechMagazineTemplate';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { FormEvent, useEffect, useState } from 'react';
@@ -73,6 +74,20 @@ export function CreateQueueModal({
 
       {template === 'retroTechMagazine' ? (
         <CreateQueueRetroTechMagazineTemplate
+          onClose={onClose}
+          nextQueueNumber={nextQueueNumber}
+          customerName={customerName}
+          setCustomerName={setCustomerName}
+          serviceType={serviceType}
+          setServiceType={setServiceType}
+          note={note}
+          setNote={setNote}
+          isSubmitting={isSubmitting}
+          handleSubmit={handleSubmit}
+          modalSpring={modalSpring}
+        />
+      ) : template === 'editorial' ? (
+        <CreateQueueEditorialTemplate
           onClose={onClose}
           nextQueueNumber={nextQueueNumber}
           customerName={customerName}

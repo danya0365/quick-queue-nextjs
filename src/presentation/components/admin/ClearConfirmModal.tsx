@@ -1,6 +1,7 @@
 'use client';
 
 import { ClearConfirmClassicTemplate } from '@/src/presentation/components/admin/templates/ClearConfirmClassicTemplate';
+import { ClearConfirmEditorialTemplate } from '@/src/presentation/components/admin/templates/ClearConfirmEditorialTemplate';
 import { ClearConfirmRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/ClearConfirmRetroTechMagazineTemplate';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { animated, useSpring } from 'react-spring';
@@ -41,6 +42,8 @@ export function ClearConfirmModal({
       {/* Modal */}
       {template === 'retroTechMagazine' ? (
         <ClearConfirmRetroTechMagazineTemplate onClose={onClose} onConfirm={onConfirm} modalSpring={modalSpring} />
+      ) : template === 'editorial' ? (
+        <ClearConfirmEditorialTemplate onClose={onClose} onConfirm={onConfirm} modalSpring={modalSpring} />
       ) : (
         <ClearConfirmClassicTemplate onClose={onClose} onConfirm={onConfirm} modalSpring={modalSpring} />
       )}

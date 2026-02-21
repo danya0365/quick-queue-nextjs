@@ -4,6 +4,7 @@ import { useSoundStore } from '@/src/presentation/hooks/useQueueSoundAlert';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { useEffect, useState } from 'react';
 import { AudioInteractionClassicTemplate } from './templates/AudioInteractionClassicTemplate';
+import { AudioInteractionEditorialTemplate } from './templates/AudioInteractionEditorialTemplate';
 import { AudioInteractionRetroTechMagazineTemplate } from './templates/AudioInteractionRetroTechMagazineTemplate';
 
 export function AudioInteractionOverlay() {
@@ -46,11 +47,9 @@ export function AudioInteractionOverlay() {
 
   return (
     <>
-      {template === 'retroTechMagazine' ? (
-        <AudioInteractionRetroTechMagazineTemplate />
-      ) : (
-        <AudioInteractionClassicTemplate />
-      )}
+      {template === 'retroTechMagazine' && <AudioInteractionRetroTechMagazineTemplate />}
+      {template === 'editorial' && <AudioInteractionEditorialTemplate />}
+      {template === 'classic' && <AudioInteractionClassicTemplate />}
     </>
   );
 }

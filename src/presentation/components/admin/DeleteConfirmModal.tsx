@@ -1,6 +1,7 @@
 'use client';
 
 import { DeleteConfirmClassicTemplate } from '@/src/presentation/components/admin/templates/DeleteConfirmClassicTemplate';
+import { DeleteConfirmEditorialTemplate } from '@/src/presentation/components/admin/templates/DeleteConfirmEditorialTemplate';
 import { DeleteConfirmRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/DeleteConfirmRetroTechMagazineTemplate';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { animated, useSpring } from 'react-spring';
@@ -45,6 +46,14 @@ export function DeleteConfirmModal({
 
       {template === 'retroTechMagazine' ? (
         <DeleteConfirmRetroTechMagazineTemplate
+          onClose={onClose}
+          onConfirm={onConfirm}
+          customerName={customerName}
+          queueNumber={queueNumber}
+          modalSpring={modalSpring}
+        />
+      ) : template === 'editorial' ? (
+        <DeleteConfirmEditorialTemplate
           onClose={onClose}
           onConfirm={onConfirm}
           customerName={customerName}

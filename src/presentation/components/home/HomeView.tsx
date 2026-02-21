@@ -2,6 +2,7 @@
 
 import { HomeSkeleton } from '@/src/presentation/components/home/HomeSkeleton';
 import { HomeClassicTemplate } from '@/src/presentation/components/home/templates/HomeClassicTemplate';
+import { HomeEditorialTemplate } from '@/src/presentation/components/home/templates/HomeEditorialTemplate';
 import { HomeRetroTechMagazineTemplate } from '@/src/presentation/components/home/templates/HomeRetroTechMagazineTemplate';
 import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
@@ -109,9 +110,13 @@ export function HomeView({ initialViewModel }: HomeViewProps) {
   return (
     <>
       <AudioInteractionOverlay />
-      {template === 'retroTechMagazine' ? (
+      {template === 'retroTechMagazine' && (
         <HomeRetroTechMagazineTemplate {...layoutProps} />
-      ) : (
+      )}
+      {template === 'editorial' && (
+        <HomeEditorialTemplate {...layoutProps} />
+      )}
+      {template === 'classic' && (
         <HomeClassicTemplate {...layoutProps} />
       )}
     </>

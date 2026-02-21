@@ -1,6 +1,7 @@
 'use client';
 
 import { MainClassicTemplate } from '@/src/presentation/components/layout/templates/MainClassicTemplate';
+import { MainEditorialTemplate } from '@/src/presentation/components/layout/templates/MainEditorialTemplate';
 import { MainRetroTechMagazineTemplate } from '@/src/presentation/components/layout/templates/MainRetroTechMagazineTemplate';
 import { TemplateSwitcher } from '@/src/presentation/components/layout/TemplateSwitcher';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
@@ -20,9 +21,13 @@ export function MainTemplate({ children }: MainTemplateProps) {
 
   return (
     <>
-      {template === 'retroTechMagazine' ? (
+      {template === 'retroTechMagazine' && (
         <MainRetroTechMagazineTemplate>{children}</MainRetroTechMagazineTemplate>
-      ) : (
+      )}
+      {template === 'editorial' && (
+        <MainEditorialTemplate>{children}</MainEditorialTemplate>
+      )}
+      {template === 'classic' && (
         <MainClassicTemplate>{children}</MainClassicTemplate>
       )}
 

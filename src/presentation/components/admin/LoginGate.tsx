@@ -1,6 +1,7 @@
 'use client';
 
 import { LoginGateClassicTemplate } from '@/src/presentation/components/admin/templates/LoginGateClassicTemplate';
+import { LoginGateEditorialTemplate } from '@/src/presentation/components/admin/templates/LoginGateEditorialTemplate';
 import { LoginGateRetroTechMagazineTemplate } from '@/src/presentation/components/admin/templates/LoginGateRetroTechMagazineTemplate';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { FormEvent, useState } from 'react';
@@ -77,9 +78,13 @@ export function LoginGate({ onLogin }: LoginGateProps) {
 
   return (
     <>
-      {template === 'retroTechMagazine' ? (
+      {template === 'retroTechMagazine' && (
         <LoginGateRetroTechMagazineTemplate {...layoutProps} />
-      ) : (
+      )}
+      {template === 'editorial' && (
+        <LoginGateEditorialTemplate {...layoutProps} />
+      )}
+      {template === 'classic' && (
         <LoginGateClassicTemplate {...layoutProps} />
       )}
     </>

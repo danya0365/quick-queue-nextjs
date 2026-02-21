@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type AppTemplate = 'classic' | 'retroTechMagazine';
+export type AppTemplate = 'classic' | 'retroTechMagazine' | 'editorial';
 
 interface AppTemplateState {
   template: AppTemplate;
@@ -15,7 +15,11 @@ export const useTemplate = create<AppTemplateState>()(
       template: 'classic', // โทนค่าเริ่มต้น
       setTemplate: (template) => set({ template }),
       toggleTemplate: () =>
-        set((state) => ({ template: state.template === 'classic' ? 'retroTechMagazine' : 'classic' })),
+        set((state) => {
+          const templates: AppTemplate[] = ['classic', 'retroTechMagazine', 'editorial'];
+          const nextIndex = (templates.indexOf(state.template) + 1) % templates.length;
+          return { template: templates[nextIndex] };
+        }),
     }),
     {
       name: 'app-template-storage', // บันทึก Theme ลง localStorage เพื่อจำค่าไว้
