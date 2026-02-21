@@ -71,7 +71,7 @@ export function HomeRetroTechMagazineTemplate({
                   soundEnabled ? 'bg-[#39FF14] text-black' : 'bg-gray-200 text-gray-500'
                 }`}
               >
-                {soundEnabled ? 'VOL ON' : 'VOL OFF'}
+                {soundEnabled ? 'BEEP ON' : 'MUTE'}
               </button>
               <button
                 onClick={() => setShowQR(true)}
