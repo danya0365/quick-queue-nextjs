@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import { useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 
@@ -12,6 +13,7 @@ export function FooterClassicTemplate() {
   });
 
   const currentYear = new Date().getFullYear();
+  const { displayVersion } = useAppVersion();
 
   return (
     <footer
@@ -26,7 +28,7 @@ export function FooterClassicTemplate() {
       <div className="flex items-center gap-2 text-xs text-muted">
         <span>© {currentYear} Quick Queue</span>
         <span className="hidden sm:inline">•</span>
-        <span className="hidden sm:inline">Powered by Next.js</span>
+        <span className="hidden sm:inline">{displayVersion}</span>
       </div>
 
       <a

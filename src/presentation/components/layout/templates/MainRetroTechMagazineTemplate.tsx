@@ -1,3 +1,4 @@
+import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import Link from 'next/link';
 
 export interface MainRetroTechMagazineTemplateProps {
@@ -5,6 +6,9 @@ export interface MainRetroTechMagazineTemplateProps {
 }
 
 export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazineTemplateProps) {
+  const currentYear = new Date().getFullYear();
+  const { displayVersion } = useAppVersion();
+
   return (
     <div
       className="
@@ -44,7 +48,7 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
 
       {/* ─── Retro Footer ─── */}
       <footer className="border-t-8 border-black bg-black text-white px-6 py-4 font-bold uppercase text-xs sm:text-sm text-center shrink-0 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <p className="tracking-widest opacity-80">© 199X QUICK QUEUE SYSTEMS // VER 1.0.0</p>
+        <p className="tracking-widest opacity-80">© {currentYear} QUICK QUEUE // {displayVersion}</p>
         <div className="flex items-center gap-2">
           <span>//</span>
           <a 
