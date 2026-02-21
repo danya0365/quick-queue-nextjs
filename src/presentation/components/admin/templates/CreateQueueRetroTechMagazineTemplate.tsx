@@ -37,7 +37,7 @@ export function CreateQueueRetroTechMagazineTemplate({
         relative w-full max-w-lg
         bg-white border-8 border-black
         shadow-[12px_12px_0_0_rgba(0,0,0,1)]
-        overflow-hidden
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       {/* Header */}

@@ -36,7 +36,8 @@ export function CreateQueueEditorialTemplate({
       className="
         relative w-full max-w-md
         bg-white border-[6px] border-black text-black
-        font-serif overflow-hidden shadow-[8px_8px_0_0_#000]
+        font-serif shadow-[8px_8px_0_0_#000]
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       {/* Header */}

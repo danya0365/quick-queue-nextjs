@@ -18,7 +18,7 @@ export function ClearConfirmClassicTemplate({
         relative w-full max-w-sm
         bg-surface border border-border
         rounded-2xl shadow-xl
-        overflow-hidden
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       <div className="p-6">

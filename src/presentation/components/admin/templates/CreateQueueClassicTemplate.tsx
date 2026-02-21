@@ -37,7 +37,7 @@ export function CreateQueueClassicTemplate({
         relative w-full max-w-md
         bg-surface border border-border
         rounded-2xl shadow-xl
-        overflow-hidden
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       {/* Header */}

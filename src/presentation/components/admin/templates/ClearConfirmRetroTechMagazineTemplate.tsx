@@ -19,6 +19,7 @@ export function ClearConfirmRetroTechMagazineTemplate({
         bg-black border-4 border-white
         p-8 shadow-[8px_8px_0_0_rgba(255,0,255,1)]
         text-center
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       <div className="absolute top-0 left-0 w-3 h-3 bg-white"></div>

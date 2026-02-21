@@ -24,6 +24,7 @@ export function DeleteConfirmClassicTemplate({
         bg-surface border border-border
         rounded-2xl shadow-xl p-6
         text-center
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       <div className="text-5xl mb-4">🗑️</div>

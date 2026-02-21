@@ -19,6 +19,7 @@ export function ClearConfirmEditorialTemplate({
         relative w-full max-w-sm
         bg-black border-[6px] border-red-500 text-white
         font-serif shadow-[8px_8px_0_0_#ef4444]
+        max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
       <div className="px-6 py-4 border-b-[6px] border-red-500 flex justify-between items-center bg-black">
