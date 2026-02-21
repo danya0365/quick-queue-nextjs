@@ -36,12 +36,28 @@ export function AdminRetroTechMagazineTemplate({
     config: { tension: 300, friction: 25 },
   });
 
+  // Infinite marquee for stats (mobile only)
+  const marqueeSpring = useSpring({
+    from: { transform: 'translateX(0%)' },
+    to: { transform: 'translateX(-50%)' },
+    config: { duration: 15000 }, // 15 seconds per loop
+    loop: true,
+  });
+
   const viewModel = state.viewModel;
   if (!viewModel) return null;
 
   const filter = state.statusFilter;
   const stats = viewModel.stats;
   const items = viewModel.items || [];
+
+  const statItems = [
+    { label: 'รวม', value: stats?.totalItems || 0, color: '#FFFFFF' },
+    { label: 'รอคิว', value: stats?.waitingItems || 0, color: '#FF00FF', textColor: 'text-white' },
+    { label: 'เรียกคิว', value: stats?.inProgressItems || 0, color: '#00FFFF' },
+    { label: 'เสร็จ', value: stats?.completedItems || 0, color: '#39FF14' },
+    { label: 'ยกเลิก', value: stats?.cancelledItems || 0, color: '#000000', textColor: 'text-white' },
+  ];
   const nextQ = viewModel.nextQueueNumber || 1;
   const totalPages = viewModel.totalPages || 1;
   const currentPage = viewModel.currentPage || 1;
@@ -113,23 +129,33 @@ export function AdminRetroTechMagazineTemplate({
           </div>
         </header>
 
-        {/* ─── Stats Grid (Horizontal Scroll on Mobile) ─── */}
-        <div className="flex overflow-x-auto sm:grid sm:grid-cols-5 gap-2 sm:gap-4 pb-2 sm:pb-0 snap-x [&::-webkit-scrollbar]:hidden">
-          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
-            <RetroStatBox label="รวม" value={stats?.totalItems || 0} color="#FFFFFF" />
-          </div>
-          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
-            <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
-          </div>
-          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
-            <RetroStatBox label="เรียกคิว" value={stats?.inProgressItems || 0} color="#00FFFF" />
-          </div>
-          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
-             <RetroStatBox label="เสร็จ" value={stats?.completedItems || 0} color="#39FF14" />
-          </div>
-          <div className="min-w-[110px] shrink-0 sm:min-w-0 sm:shrink snap-start">
-            <RetroStatBox label="ยกเลิก" value={stats?.cancelledItems || 0} color="#000000" textColor="text-white" />
-          </div>
+        {/* ─── Stats Grid (Desktop) ─── */}
+        <div className="hidden sm:grid sm:grid-cols-5 gap-4">
+          {statItems.map((stat, i) => (
+            <RetroStatBox key={`desktop-${i}`} {...stat} />
+          ))}
+        </div>
+
+        {/* ─── Infinite Carousel (Mobile) ─── */}
+        <div className="sm:hidden overflow-hidden w-full pb-2 relative -mx-2 px-2">
+          {/* Fade edges to look better when scrolling */}
+          <div className="absolute top-0 bottom-0 left-0 w-4 bg-[#f4f4f0] z-10" style={{ maskImage: 'linear-gradient(to right, black, transparent)', WebkitMaskImage: 'linear-gradient(to right, black, transparent)' }}></div>
+          <div className="absolute top-0 bottom-0 right-0 w-4 bg-[#f4f4f0] z-10" style={{ maskImage: 'linear-gradient(to left, black, transparent)', WebkitMaskImage: 'linear-gradient(to left, black, transparent)' }}></div>
+          
+          <animated.div
+            style={marqueeSpring}
+            className="flex flex-nowrap w-max"
+          >
+            {[statItems, statItems].map((list, listIdx) => (
+              <div key={`list-${listIdx}`} className="flex gap-2 pr-2">
+                {list.map((stat, i) => (
+                  <div key={`${listIdx}-${i}`} className="min-w-[110px]">
+                    <RetroStatBox {...stat} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </animated.div>
         </div>
 
         {/* ─── Main Content ─── */}
