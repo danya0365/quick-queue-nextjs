@@ -1,3 +1,4 @@
+import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
 import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import Link from 'next/link';
 
@@ -23,7 +24,7 @@ export function MainEditorialTemplate({ children }: MainEditorialTemplateProps) 
       {/* ─── Editorial Header ─── */}
       <nav className="border-b-[3px] sm:border-b-[6px] border-black flex flex-row justify-between items-center px-2 sm:px-12 py-2 sm:py-5 shrink-0 z-50 gap-2 sm:gap-0">
         <Link href="/" className="text-sm sm:text-5xl font-black uppercase tracking-tighter hover:bg-black hover:text-white transition-colors px-1 sm:px-2 text-center whitespace-nowrap overflow-hidden text-ellipsis">
-          QUEUE.EDITION
+          {DEFAULT_SHOP_CONFIG.shopName}
         </Link>
         
         <div className="flex font-bold uppercase text-[8px] sm:text-sm border-[2px] sm:border-[6px] border-black bg-white shrink-0">

@@ -1,3 +1,4 @@
+import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
 import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import Link from 'next/link';
 
@@ -28,7 +29,7 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
       {/* ─── Retro Navbar ─── */}
       <nav className="border-b-8 border-black bg-white flex flex-row justify-between items-center px-4 sm:px-8 py-3 shrink-0 z-50">
         <Link href="/" className="text-2xl sm:text-3xl font-black uppercase tracking-tighter hover:text-[#FF00FF] transition-colors">
-          Q_RETRO
+          {DEFAULT_SHOP_CONFIG.shopName}
         </Link>
         
         <div className="flex font-bold uppercase text-xs sm:text-sm border-4 border-black bg-[#00FFFF] shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-6 z-10">
