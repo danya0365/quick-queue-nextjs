@@ -77,11 +77,64 @@ export class TursoQueueRequestRepository implements IQueueRequestRepository {
     return result.rows.length > 0 ? mapRowToQueueRequest(result.rows[0]) : null;
   }
 
-  async getPending(): Promise<QueueRequest[]> {
-    const result = await this.db.execute(
-      "SELECT * FROM queue_requests WHERE status = 'pending' ORDER BY created_at ASC"
-    );
-    return result.rows.map(mapRowToQueueRequest);
+  async getPending(limit?: number, offset?: number, search?: string, serviceType?: string): Promise<QueueRequest[]> {
+    const db = this.db;
+    let query = `
+      SELECT * FROM queue_requests
+      WHERE status = 'pending'
+    `;
+    const params: any[] = [];
+
+    if (serviceType && serviceType !== 'all') {
+      query += ` AND service_type = ?`;
+      params.push(serviceType);
+    }
+
+    if (search) {
+      query += ` AND (customer_name LIKE ? OR tracking_code LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    query += ` ORDER BY created_at ASC`;
+
+    if (limit !== undefined) {
+      query += ` LIMIT ?`;
+      params.push(limit);
+      if (offset !== undefined) {
+        query += ` OFFSET ?`;
+        params.push(offset);
+      }
+    }
+
+    const { rows } = await db.execute({
+      sql: query,
+      args: params,
+    });
+    return rows.map(mapRowToQueueRequest);
+  }
+
+  async getPendingCount(search?: string, serviceType?: string): Promise<number> {
+    const db = this.db;
+    let query = `SELECT COUNT(*) as count FROM queue_requests WHERE status = 'pending'`;
+    const params: any[] = [];
+
+    if (serviceType && serviceType !== 'all') {
+      query += ` AND service_type = ?`;
+      params.push(serviceType);
+    }
+
+    if (search) {
+      query += ` AND (customer_name LIKE ? OR tracking_code LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    const { rows } = await db.execute({
+      sql: query,
+      args: params,
+    });
+
+    if (rows.length === 0) return 0;
+    return Number(rows[0].count);
   }
 
   async approve(id: string): Promise<QueueRequest> {

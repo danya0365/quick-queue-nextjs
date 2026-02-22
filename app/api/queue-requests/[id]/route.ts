@@ -7,8 +7,6 @@ import { requireAuth } from '@/src/infrastructure/auth/session';
 import { getQueueRequestRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const repository = getQueueRequestRepository();
-
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -27,6 +25,7 @@ export async function PUT(
       );
     }
 
+    const repository = getQueueRequestRepository();
     if (body.action === 'approve') {
       const result = await repository.approve(id);
       return NextResponse.json(result);

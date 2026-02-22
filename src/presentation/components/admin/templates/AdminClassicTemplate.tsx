@@ -107,6 +107,7 @@ export function AdminClassicTemplate({
         <FadeInSection delay={150} direction="up">
           <PendingRequestsSection
             requests={pendingRequests}
+            totalCount={viewModel.pendingCount}
             onApprove={actions.approveRequest}
             onReject={actions.openRejectModal}
           />

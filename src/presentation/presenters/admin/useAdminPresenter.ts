@@ -100,7 +100,7 @@ export function useAdminPresenter(
     const s = status ?? statusFilterRef.current;
 
     try {
-      const newViewModel = await presenter.getViewModel(p, PER_PAGE, s === 'all' ? undefined : s);
+      const newViewModel = await presenter.loadData(p, PER_PAGE, s === 'all' ? undefined : s);
       if (isMountedRef.current) {
         setViewModel(newViewModel);
       }

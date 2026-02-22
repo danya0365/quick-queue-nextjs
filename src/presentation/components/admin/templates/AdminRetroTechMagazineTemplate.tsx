@@ -161,14 +161,13 @@ export function AdminRetroTechMagazineTemplate({
         </div>
 
         {/* ─── Pending Queue Requests ─── */}
-        {pendingRequests.length > 0 && (
-          <PendingRequestsSection
-            requests={pendingRequests}
-            onApprove={actions.approveRequest}
-            onReject={actions.openRejectModal}
-          />
-        )}
-
+        {/* Pending Requests Section */}
+      <PendingRequestsSection 
+        requests={viewModel.pendingRequests} 
+        totalCount={viewModel.pendingCount}
+        onApprove={actions.approveRequest}
+        onReject={actions.openRejectModal}
+      />
         {/* ─── Main Content ─── */}
         <div className="bg-white border-[4px] sm:border-8 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] sm:shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-3 sm:p-6 flex flex-col min-h-[400px] sm:min-h-[500px]">
           {/* Filters */}

@@ -7,12 +7,13 @@
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
 import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
 import {
-    CreateQueueItemData,
-    QueueItem,
-    QueueRequest,
-    QueueStats,
-    QueueStatus,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  QueueItem,
+  QueueRequest,
+  QueueStats,
+  QueueStatus,
+  ShopConfig,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -20,13 +21,15 @@ export interface AdminViewModel {
   items: QueueItem[];
   stats: QueueStats;
   nextQueueNumber: number;
-  // Pagination info
   totalItems: number;
   currentPage: number;
   perPage: number;
   totalPages: number;
-  // Pending queue requests
+  shopConfig: ShopConfig;
+  isLoading: boolean;
+  error: string | null;
   pendingRequests: QueueRequest[];
+  pendingCount: number;
 }
 
 export class AdminPresenter {
@@ -38,18 +41,29 @@ export class AdminPresenter {
   /**
    * Get admin view model (paginated)
    */
-  async getViewModel(
+  async loadData(
     page: number = 1,
     perPage: number = 20,
     status?: string
   ): Promise<AdminViewModel> {
     try {
-      const [paginated, stats, nextQueueNumber, pendingRequests] = await Promise.all([
+      const [paginated, stats, nextQueueNumber, pendingRequests, pendingCount] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
-        this.requestRepository ? this.requestRepository.getPending() : Promise.resolve([]),
+        this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
+        this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
       ]);
+
+      const defaultShopConfig: ShopConfig = {
+        shopName: 'Quick Queue',
+        shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
+        maxQueuePerDay: 100,
+        operatingHours: {
+          open: '09:00',
+          close: '18:00',
+        }
+      };
 
       return {
         items: paginated.data,
@@ -59,7 +73,11 @@ export class AdminPresenter {
         currentPage: paginated.page,
         perPage: paginated.perPage,
         totalPages: Math.ceil(paginated.total / paginated.perPage),
+        shopConfig: defaultShopConfig,
+        isLoading: false,
+        error: null,
         pendingRequests,
+        pendingCount,
       };
     } catch (error) {
       console.error('Error getting admin view model:', error);

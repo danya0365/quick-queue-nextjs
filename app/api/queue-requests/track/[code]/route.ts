@@ -6,7 +6,6 @@
 import { getQueueRequestRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const repository = getQueueRequestRepository();
 
 export async function GET(
   _request: NextRequest,
@@ -22,6 +21,7 @@ export async function GET(
       );
     }
 
+    const repository = getQueueRequestRepository();
     const queueRequest = await repository.getByTrackingCode(code.toUpperCase());
 
     if (!queueRequest) {

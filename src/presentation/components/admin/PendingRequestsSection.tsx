@@ -7,11 +7,12 @@ import { animated, useSpring } from 'react-spring';
 
 interface PendingRequestsSectionProps {
   requests: QueueRequest[];
+  totalCount: number;
   onApprove: (id: string) => Promise<void>;
   onReject: (id: string) => void;
 }
 
-export function PendingRequestsSection({ requests, onApprove, onReject }: PendingRequestsSectionProps) {
+export function PendingRequestsSection({ requests, totalCount, onApprove, onReject }: PendingRequestsSectionProps) {
   const { template } = useTemplate();
   const [approvingId, setApprovingId] = useState<string | null>(null);
 
@@ -34,8 +35,13 @@ export function PendingRequestsSection({ requests, onApprove, onReject }: Pendin
       <div className="border-[3px] sm:border-[6px] border-amber-500 p-3 sm:p-6 bg-amber-50">
         <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2 sm:pb-3 border-b-[3px] sm:border-b-[4px] border-amber-500">
           <h3 className="text-lg sm:text-2xl font-black uppercase tracking-tight text-amber-800">
-            ⏳ ขอบัตรคิว ({requests.length})
+            ⏳ ขอบัตรคิว ({totalCount > 0 ? totalCount : requests.length})
           </h3>
+          {totalCount > requests.length && (
+            <a href="/admin/pending-requests" className="text-xs sm:text-sm font-bold uppercase tracking-widest text-amber-800 hover:text-black hover:underline underline-offset-4 decoration-[2px] transition-colors">
+              ดูทั้งหมด ({totalCount}) ↗
+            </a>
+          )}
         </div>
         <div className="space-y-2 sm:space-y-3">
           {requests.map((req) => {
@@ -75,8 +81,13 @@ export function PendingRequestsSection({ requests, onApprove, onReject }: Pendin
       <div className="border-4 border-[#FF00FF] shadow-[6px_6px_0_0_rgba(255,0,255,0.5)] p-4 sm:p-6 bg-white">
         <div className="flex items-center justify-between mb-4 pb-3 border-b-4 border-[#FF00FF]">
           <h3 className="text-xl sm:text-2xl font-black uppercase bg-[#FF00FF] text-white px-3 py-1">
-            ⏳ PENDING ({requests.length})
+            ⏳ PENDING ({totalCount > 0 ? totalCount : requests.length})
           </h3>
+          {totalCount > requests.length && (
+            <a href="/admin/pending-requests" className="text-xs sm:text-sm font-black uppercase text-black hover:bg-[#FF00FF] hover:text-white border-2 border-transparent hover:border-black px-2 py-1 transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] bg-[#00FFFF]">
+              VIEW ALL_ ↗
+            </a>
+          )}
         </div>
         <div className="space-y-3">
           {requests.map((req) => {
@@ -116,8 +127,13 @@ export function PendingRequestsSection({ requests, onApprove, onReject }: Pendin
     <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800 rounded-xl p-3 sm:p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm sm:text-base font-bold text-amber-800 dark:text-amber-300">
-          ⏳ ขอบัตรคิวรอการอนุมัติ ({requests.length})
+          ⏳ ขอบัตรคิวรอการอนุมัติ ({totalCount > 0 ? totalCount : requests.length})
         </h3>
+        {totalCount > requests.length && (
+          <a href="/admin/pending-requests" className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors bg-primary/10 px-3 py-1.5 rounded-full">
+            ดูทั้งหมด ({totalCount}) →
+          </a>
+        )}
       </div>
       <div className="space-y-2">
         {requests.map((req) => {

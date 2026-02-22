@@ -181,14 +181,13 @@ export function AdminEditorialTemplate({
         )}
 
         {/* ─── Pending Queue Requests ─── */}
-        {pendingRequests.length > 0 && (
-          <PendingRequestsSection
-            requests={pendingRequests}
-            onApprove={actions.approveRequest}
-            onReject={actions.openRejectModal}
-          />
-        )}
-
+        {/* Pending Requests Section */}
+      <PendingRequestsSection 
+        requests={viewModel.pendingRequests} 
+        totalCount={viewModel.pendingCount}
+        onApprove={actions.approveRequest}
+        onReject={actions.openRejectModal}
+      />
         {/* ─── STATS ─── */}
         <section className="font-sans uppercase">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-4">

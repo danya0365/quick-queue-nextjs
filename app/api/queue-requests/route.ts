@@ -9,7 +9,6 @@ import { requireAuth } from '@/src/infrastructure/auth/session';
 import { getQueueRequestRepository } from '@/src/infrastructure/repositories/RepositoryFactory';
 import { NextRequest, NextResponse } from 'next/server';
 
-const repository = getQueueRequestRepository();
 
 export async function POST(request: NextRequest) {
   try {
@@ -51,6 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Also check DB-level rate limit
+    const repository = getQueueRequestRepository();
     const recentCount = await repository.countByIpRecent(ip, 10);
     if (recentCount >= 5) {
       return NextResponse.json(
@@ -78,13 +78,39 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const { errorResponse } = await requireAuth(request);
+    const { errorResponse } = await requireAuth(req); // Use req instead of request
     if (errorResponse) return errorResponse;
 
-    const requests = await repository.getPending();
-    return NextResponse.json(requests);
+    const url = new URL(req.url);
+    const limitParam = url.searchParams.get('limit');
+    const offsetParam = url.searchParams.get('offset');
+    const searchParam = url.searchParams.get('search');
+    const serviceTypeParam = url.searchParams.get('serviceType');
+    
+    let limit: number | undefined;
+    let offset: number | undefined;
+    let search: string | undefined = searchParam || undefined;
+    let serviceType: string | undefined = serviceTypeParam || undefined;
+    
+    if (limitParam !== null) {
+      limit = parseInt(limitParam, 10);
+      if (isNaN(limit)) limit = undefined;
+    }
+    
+    if (offsetParam !== null) {
+      offset = parseInt(offsetParam, 10);
+      if (isNaN(offset)) offset = undefined;
+    }
+
+    const repository = getQueueRequestRepository();
+    const [requests, totalCount] = await Promise.all([
+      repository.getPending(limit, offset, search, serviceType),
+      repository.getPendingCount(search, serviceType)
+    ]);
+    
+    return NextResponse.json({ requests, totalCount });
   } catch (error) {
     console.error('GET /api/queue-requests error:', error);
     return NextResponse.json(

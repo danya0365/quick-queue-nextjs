@@ -29,7 +29,7 @@ export default async function AdminPage() {
   const presenter = createServerAdminPresenter();
 
   try {
-    const viewModel = await presenter.getViewModel();
+    const viewModel = await presenter.loadData();
     return <AdminView initialViewModel={viewModel} />;
   } catch (error) {
     console.error('Error fetching admin data:', error);

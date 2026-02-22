@@ -5,8 +5,8 @@
  */
 
 import {
-    CreateQueueRequestData,
-    QueueRequest,
+  CreateQueueRequestData,
+  QueueRequest,
 } from '@/src/domain/types/queue';
 
 export interface IQueueRequestRepository {
@@ -28,7 +28,8 @@ export interface IQueueRequestRepository {
   /**
    * Get all pending requests (admin)
    */
-  getPending(): Promise<QueueRequest[]>;
+  getPending(limit?: number, offset?: number, search?: string, serviceType?: string): Promise<QueueRequest[]>;
+  getPendingCount(search?: string, serviceType?: string): Promise<number>;
 
   /**
    * Approve a request → create queue_item and link
