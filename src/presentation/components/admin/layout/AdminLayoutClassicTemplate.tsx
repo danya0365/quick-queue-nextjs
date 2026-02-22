@@ -1,10 +1,10 @@
+import { useAdminLayoutStore } from '@/src/presentation/hooks/useAdminLayoutStore';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAdminLayout } from './AdminLayoutContext';
 
 export function AdminLayoutClassicTemplate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { isSidebarOpen, setIsSidebarOpen, toggleSidebar, setIsLogoutModalOpen } = useAdminLayout();
+  const { isSidebarOpen, setIsSidebarOpen, toggleSidebar, setIsLogoutModalOpen } = useAdminLayoutStore();
 
   const navItems = [
     { label: 'แผงควบคุม', href: '/admin', icon: '⚙️' },

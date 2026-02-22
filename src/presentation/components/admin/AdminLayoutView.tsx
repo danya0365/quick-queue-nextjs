@@ -1,15 +1,16 @@
 'use client';
 
 import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
-import { useTemplate } from '@/src/presentation/hooks/useTemplate';
-import { ReactNode, useEffect, useState } from 'react';
+import { useAdminLayoutStore } from '@/src/presentation/hooks/useAdminLayoutStore';
+import { useAdminLayoutPresenter } from '@/src/presentation/presenters/admin/useAdminLayoutPresenter';
+import { ReactNode } from 'react';
 import { AdminLayoutClassicTemplate } from './layout/AdminLayoutClassicTemplate';
-import { AdminLayoutProvider, useAdminLayout } from './layout/AdminLayoutContext';
 import { AdminLayoutEditorialTemplate } from './layout/AdminLayoutEditorialTemplate';
 import { AdminLayoutRetroTechMagazineTemplate } from './layout/AdminLayoutRetroTechMagazineTemplate';
 
 function AdminLayoutModalContainer({ children, template }: { children: ReactNode, template: string }) {
-  const { isLogoutModalOpen, setIsLogoutModalOpen, handleLogout } = useAdminLayout();
+  const { isLogoutModalOpen, setIsLogoutModalOpen } = useAdminLayoutStore();
+  const { handleLogout } = useAdminLayoutPresenter();
 
   return (
     <>
@@ -113,34 +114,10 @@ interface AdminLayoutViewProps {
 }
 
 export function AdminLayoutView({ children }: AdminLayoutViewProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authChecking, setAuthChecking] = useState(true);
-  const { template } = useTemplate();
-
-  // ─── Check existing session on mount ───
-  useEffect(() => {
-    async function checkSession() {
-      try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-          setIsAuthenticated(true);
-        }
-      } catch {
-        // No session
-      } finally {
-        setAuthChecking(false);
-      }
-    }
-    checkSession();
-  }, []);
-
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    setIsAuthenticated(false);
-  };
+  const presenter = useAdminLayoutPresenter();
 
   // ─── Auth checking spinner ───
-  if (authChecking) {
+  if (presenter.authChecking) {
     return (
       <div className="flex-1 flex items-center justify-center h-screen w-full bg-background">
         <div className="text-center">
@@ -152,27 +129,25 @@ export function AdminLayoutView({ children }: AdminLayoutViewProps) {
   }
 
   // ─── Auth Gate ───
-  if (!isAuthenticated) {
+  if (!presenter.isAuthenticated) {
     return (
       <div className="h-screen w-full bg-background">
-        <LoginGate onLogin={() => setIsAuthenticated(true)} />
+        <LoginGate onLogin={presenter.handleLogin} />
       </div>
     );
   }
 
   return (
-    <AdminLayoutProvider onLogout={handleLogout}>
-      <AdminLayoutModalContainer template={template}>
-        {template === 'retroTechMagazine' && (
-          <AdminLayoutRetroTechMagazineTemplate>{children}</AdminLayoutRetroTechMagazineTemplate>
-        )}
-        {template === 'editorial' && (
-          <AdminLayoutEditorialTemplate>{children}</AdminLayoutEditorialTemplate>
-        )}
-        {template === 'classic' && (
-          <AdminLayoutClassicTemplate>{children}</AdminLayoutClassicTemplate>
-        )}
-      </AdminLayoutModalContainer>
-    </AdminLayoutProvider>
+    <AdminLayoutModalContainer template={presenter.template}>
+      {presenter.template === 'retroTechMagazine' && (
+        <AdminLayoutRetroTechMagazineTemplate>{children}</AdminLayoutRetroTechMagazineTemplate>
+      )}
+      {presenter.template === 'editorial' && (
+        <AdminLayoutEditorialTemplate>{children}</AdminLayoutEditorialTemplate>
+      )}
+      {presenter.template === 'classic' && (
+        <AdminLayoutClassicTemplate>{children}</AdminLayoutClassicTemplate>
+      )}
+    </AdminLayoutModalContainer>
   );
 }
