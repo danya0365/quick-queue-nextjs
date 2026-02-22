@@ -41,18 +41,23 @@ export function RequestQueueEditorialTemplate({
   // ─── Success state ───
   if (successCode) {
     return (
-      <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
-        <div className="bg-white border-[6px] border-black p-8 text-center font-serif text-black shadow-[8px_8px_0_0_#000]">
-          <div className="flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
-          <h2 className="text-3xl font-black uppercase mb-2 tracking-tighter">ส่งคำขอสำเร็จ!</h2>
-          <p className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">กรุณาจดรหัสติดตามของคุณ</p>
-          <div className="bg-black text-white p-6 mb-6">
-            <div className="text-xs font-bold uppercase tracking-widest mb-2 opacity-60">รหัสติดตาม</div>
-            <div className="text-5xl font-black tracking-[0.3em] font-mono">{successCode}</div>
+      <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-lg">
+        <div className="bg-white border-[6px] md:border-[8px] border-black p-8 md:p-12 text-center font-serif text-black shadow-[12px_12px_0_0_rgba(0,0,0,0.05)]">
+          <div className="flex justify-center mb-8 relative">
+            <div className="absolute w-24 h-24 border-[3px] border-black rounded-full animate-ping opacity-20"></div>
+            <CheckCircle2 className="w-20 h-20 text-black z-10 bg-white" strokeWidth={1.5} />
           </div>
-          <p className="text-[10px] font-bold uppercase tracking-widest mb-6 opacity-60">ใช้รหัสนี้ที่หน้า &quot;ขอบัตรคิว&quot; เพื่อเช็คสถานะ</p>
-          <button onClick={onClose} className="w-full py-4 bg-white text-black font-black uppercase tracking-widest border-[4px] border-black hover:bg-black hover:text-white transition-colors">
-            ปิด
+          <div className="font-bold uppercase tracking-widest text-xs md:text-sm border-b-[3px] border-black pb-2 mb-4 inline-block">สถานะการทำรายการ</div>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none mb-6">ส่งคำขอ<br/>สำเร็จ</h2>
+          
+          <div className="bg-gray-100 border-[3px] border-black p-6 md:p-8 mb-8 mt-8 relative">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-4 py-1 text-[10px] sm:text-xs font-black uppercase tracking-widest border-[3px] border-black whitespace-nowrap">รหัสติดตามของคุณ</div>
+             <div className="text-5xl md:text-6xl font-black tracking-[0.2em] lg:tracking-[0.3em] font-sans text-center mt-2 break-all">{successCode}</div>
+          </div>
+          
+          <p className="text-xs font-bold uppercase tracking-widest mb-8 opacity-60 border-t-[2px] border-gray-200 pt-4 px-4 leading-relaxed">กรุณาจดรหัสเพื่อใช้ในหน้า &quot;เช็คสถานะ&quot; <br className="hidden sm:block" /> เพื่อตรวจสอบคิวของคุณ</p>
+          <button onClick={onClose} className="w-full py-5 bg-black text-white font-black uppercase tracking-widest border-[4px] border-black hover:bg-white hover:text-black transition-colors text-lg active:translate-y-1">
+            รับทราบ — ดำเนินการต่อ
           </button>
         </div>
       </animated.div>

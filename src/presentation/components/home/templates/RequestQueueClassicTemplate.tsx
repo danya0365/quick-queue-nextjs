@@ -42,17 +42,29 @@ export function RequestQueueClassicTemplate({
   if (successCode) {
     return (
       <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
-        <div className="bg-surface border border-border rounded-2xl p-8 text-center shadow-2xl">
-          <div className="text-emerald-500 flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">ส่งคำขอสำเร็จ!</h2>
-          <p className="text-sm text-muted mb-6">กรุณาจดรหัสติดตามของคุณ</p>
-          <div className="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 mb-6">
-            <div className="text-xs font-bold uppercase tracking-widest text-muted mb-2">รหัสติดตาม</div>
-            <div className="text-5xl font-black tracking-[0.3em] text-primary font-mono">{successCode}</div>
+        <div className="bg-surface border border-border rounded-2xl p-8 sm:p-10 text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+          
+          <div className="mx-auto w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mb-6 ring-8 ring-emerald-50 dark:ring-emerald-900/10">
+            <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <p className="text-xs text-muted mb-6">ใช้รหัสนี้ที่หน้า &quot;ขอบัตรคิว&quot; เพื่อเช็คสถานะ</p>
-          <button onClick={onClose} className="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-md active:scale-95">
-            ปิด
+          
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">ส่งคำขอสำเร็จ!</h2>
+          <p className="text-base text-muted mb-8">เราได้รับคำขอคิวของคุณเรียบร้อยแล้ว</p>
+          
+          <div className="bg-surface-alt border border-border rounded-xl p-6 mb-8 relative">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted mb-3 flex items-center justify-center gap-2">
+              <span className="w-8 h-px bg-border"></span>
+              รหัสติดตาม
+              <span className="w-8 h-px bg-border"></span>
+            </div>
+            <div className="text-4xl sm:text-5xl font-black tracking-[0.2em] text-primary font-mono select-all bg-background py-3 rounded-lg border border-border shadow-inner break-all">{successCode}</div>
+          </div>
+          
+          <p className="text-sm text-muted mb-8 bg-surface inline-block px-4 py-2 rounded-lg border border-border">กรุณาจดรหัสเพื่อใช้เช็คสถานะ</p>
+          
+          <button onClick={onClose} className="w-full py-3.5 bg-foreground text-background font-semibold rounded-xl hover:bg-foreground/90 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)] active:scale-95 text-base sm:text-lg">
+            เข้าใจแล้ว
           </button>
         </div>
       </animated.div>

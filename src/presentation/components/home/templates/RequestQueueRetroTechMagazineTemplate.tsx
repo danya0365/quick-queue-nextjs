@@ -41,17 +41,22 @@ export function RequestQueueRetroTechMagazineTemplate({
   // ─── Success state ───
   if (successCode) {
     return (
-      <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
-        <div className="bg-zinc-900 border-8 border-cyan-400 p-8 text-center text-cyan-400 font-mono shadow-[12px_12px_0_0_rgba(0,255,255,0.5)]">
-          <div className="text-[#39FF14] flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
-          <h2 className="text-3xl font-bold uppercase mb-2 tracking-widest">SUCCESS!</h2>
-          <p className="text-sm font-bold mb-6 opacity-60">กรุณาจดรหัสติดตามของคุณ</p>
-          <div className="bg-black border-4 border-cyan-400 p-6 mb-6">
-            <div className="text-xs uppercase mb-2 opacity-60 font-bold">TRACKING_CODE</div>
-            <div className="text-5xl font-bold tracking-[0.3em] text-[#FF00FF]">{successCode}</div>
+      <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-lg">
+        <div className="bg-white border-8 border-black p-8 sm:p-12 text-center text-black font-sans shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+          <div className="text-[#FF00FF] hover:translate-x-1 hover:translate-y-1 transition-transform flex justify-center mb-6">
+            <div className="bg-black text-[#00FFFF] p-4 border-4 border-black shadow-[4px_4px_0_0_rgba(255,0,255,1)]">
+              <CheckCircle2 className="w-16 h-16" strokeWidth={3} />
+            </div>
           </div>
-          <p className="text-xs font-bold mb-6 opacity-60">ใช้รหัสนี้ที่หน้า &quot;ขอบัตรคิว&quot; เพื่อเช็คสถานะ</p>
-          <button onClick={onClose} className="w-full py-4 bg-transparent text-cyan-400 font-bold uppercase tracking-widest border-4 border-cyan-400 hover:bg-cyan-400 hover:text-black transition-colors text-lg shadow-[6px_6px_0_0_rgba(0,255,255,0.3)] hover:translate-y-1 hover:shadow-none">
+          <h2 className="text-4xl font-black uppercase mb-2 tracking-widest text-black bg-[#39FF14] inline-block px-4 py-2 border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">SUCCESS!</h2>
+          <p className="text-lg font-black mt-6 mb-6 uppercase tracking-widest">กรุณาจดรหัสติดตามของคุณ</p>
+          <div className="bg-black border-8 border-black p-6 mb-6 shadow-[8px_8px_0_0_rgba(0,255,255,1)] relative group">
+            <div className="absolute top-0 left-0 w-full h-full bg-[#00FFFF] opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"></div>
+            <div className="text-sm uppercase mb-2 text-[#00FFFF] font-black tracking-widest">&gt; TRACKING_CODE_</div>
+            <div className="text-5xl lg:text-6xl font-black tracking-[0.2em] text-[#39FF14] font-mono break-all leading-tight">{successCode}</div>
+          </div>
+          <p className="text-sm font-bold mb-8 uppercase tracking-widest bg-[#00FFFF] border-4 border-black inline-block px-4 py-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-default">ใช้รหัสนี้ที่หน้า &quot;เช็คสถานะ&quot;</p>
+          <button onClick={onClose} className="w-full py-4 bg-[#FF00FF] text-white font-black uppercase tracking-widest border-4 border-black hover:bg-black hover:text-[#FF00FF] transition-colors text-2xl shadow-[8px_8px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:border-[#FF00FF]">
             ปิด / CLOSE
           </button>
         </div>
