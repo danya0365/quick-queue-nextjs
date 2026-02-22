@@ -9,6 +9,7 @@ export function AdminLayoutClassicTemplate({ children }: { children: React.React
   const navItems = [
     { label: 'แผงควบคุม', href: '/admin', icon: '⚙️' },
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests', icon: '⏳' },
+    { label: 'จัดการคิว', href: '/admin/queues', icon: '📋' },
   ];
 
   return (

@@ -39,31 +39,46 @@ export class AdminPresenter {
   ) {}
 
   /**
-   * Get admin view model (paginated)
+   * Get dashboard overview data (Stats + Pending Requests only)
    */
-  async loadData(
+  async loadDashboardData(): Promise<Omit<AdminViewModel, 'items' | 'totalItems' | 'currentPage' | 'perPage' | 'totalPages'>> {
+    try {
+      const [stats, pendingRequests, pendingCount] = await Promise.all([
+        this.repository.getStats(),
+        this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
+        this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
+      ]);
+
+      return {
+        stats,
+        // Empty defaults for pagination since it's not used in dashboard
+        nextQueueNumber: stats.totalItems + 1, // Approximation, not critical for dashboard
+        shopConfig: this.getDefaultShopConfig(),
+        isLoading: false,
+        error: null,
+        pendingRequests,
+        pendingCount,
+      };
+    } catch (error) {
+      console.error('Error getting dashboard data:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get dedicated queues page data (Paginated table + Stats)
+   */
+  async loadQueuesData(
     page: number = 1,
     perPage: number = 20,
     status?: string
   ): Promise<AdminViewModel> {
     try {
-      const [paginated, stats, nextQueueNumber, pendingRequests, pendingCount] = await Promise.all([
+      const [paginated, stats, nextQueueNumber] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
-        this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
-        this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
       ]);
-
-      const defaultShopConfig: ShopConfig = {
-        shopName: 'Quick Queue',
-        shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
-        maxQueuePerDay: 100,
-        operatingHours: {
-          open: '09:00',
-          close: '18:00',
-        }
-      };
 
       return {
         items: paginated.data,
@@ -73,16 +88,28 @@ export class AdminPresenter {
         currentPage: paginated.page,
         perPage: paginated.perPage,
         totalPages: Math.ceil(paginated.total / paginated.perPage),
-        shopConfig: defaultShopConfig,
+        shopConfig: this.getDefaultShopConfig(),
         isLoading: false,
         error: null,
-        pendingRequests,
-        pendingCount,
+        pendingRequests: [], // Not needed on queues list page
+        pendingCount: 0,
       };
     } catch (error) {
-      console.error('Error getting admin view model:', error);
+      console.error('Error getting queues listing data:', error);
       throw error;
     }
+  }
+
+  private getDefaultShopConfig(): ShopConfig {
+    return {
+      shopName: 'Quick Queue',
+      shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
+      maxQueuePerDay: 100,
+      operatingHours: {
+        open: '09:00',
+        close: '18:00',
+      }
+    };
   }
 
   /**

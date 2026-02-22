@@ -9,6 +9,7 @@ export function AdminLayoutRetroTechMagazineTemplate({ children }: { children: R
   const navItems = [
     { label: 'CONTROL.PANEL', href: '/admin', icon: '⚡' },
     { label: 'REQ.QUEUE', href: '/admin/pending-requests', icon: '⏳' },
+    { label: 'MNG.QUEUE', href: '/admin/queues', icon: '📋' },
   ];
 
   return (

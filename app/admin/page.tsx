@@ -29,7 +29,16 @@ export default async function AdminPage() {
   const presenter = createServerAdminPresenter();
 
   try {
-    const viewModel = await presenter.loadData();
+    const dashboardData = await presenter.loadDashboardData();
+    // Reconstruct a full AdminViewModel to pass down safely with empty array fallbacks
+    const viewModel = {
+      ...dashboardData,
+      items: [],
+      totalItems: dashboardData.stats.totalItems,
+      currentPage: 1,
+      perPage: 20,
+      totalPages: 1,
+    };
     return <AdminView initialViewModel={viewModel} />;
   } catch (error) {
     console.error('Error fetching admin data:', error);

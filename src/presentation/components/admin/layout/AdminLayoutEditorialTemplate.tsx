@@ -9,6 +9,7 @@ export function AdminLayoutEditorialTemplate({ children }: { children: React.Rea
   const navItems = [
     { label: 'แผงควบคุม', href: '/admin' },
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests' },
+    { label: 'จัดการคิว', href: '/admin/queues' },
   ];
 
   return (

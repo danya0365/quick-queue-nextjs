@@ -54,6 +54,7 @@ const PER_PAGE = 20;
 
 export function useAdminPresenter(
   initialViewModel?: AdminViewModel,
+  mode: 'dashboard' | 'queues' = 'queues',
   presenterOverride?: AdminPresenter
 ): [AdminPresenterState, AdminPresenterActions] {
   const presenter = useMemo(
@@ -100,7 +101,13 @@ export function useAdminPresenter(
     const s = status ?? statusFilterRef.current;
 
     try {
-      const newViewModel = await presenter.loadData(p, PER_PAGE, s === 'all' ? undefined : s);
+      let newViewModel: AdminViewModel;
+      if (mode === 'dashboard') {
+        newViewModel = await presenter.loadDashboardData() as AdminViewModel;
+      } else {
+        newViewModel = await presenter.loadQueuesData(p, PER_PAGE, s === 'all' ? undefined : s);
+      }
+      
       if (isMountedRef.current) {
         setViewModel(newViewModel);
       }
