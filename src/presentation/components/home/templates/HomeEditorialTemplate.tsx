@@ -1,5 +1,6 @@
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
+import { Edit3 } from 'lucide-react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeEditorialTemplateProps {
@@ -73,9 +74,9 @@ export function HomeEditorialTemplate({
               </button>
               <button
                 onClick={onRequestQueue}
-                className="px-1.5 py-1 sm:px-10 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap"
+                className="px-1.5 py-1 sm:px-10 sm:py-4 font-black uppercase border-[2px] sm:border-[6px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors text-[6px] sm:text-sm tracking-widest whitespace-nowrap flex items-center gap-1 sm:gap-2"
               >
-                📝 ขอบัตรคิว
+                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> ขอบัตรคิว
               </button>
             </div>
           </div>

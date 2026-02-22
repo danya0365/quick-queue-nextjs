@@ -1,4 +1,5 @@
 import { ServiceType } from '@/src/domain/types/queue';
+import { CheckCircle2, ClipboardList, Crown, Edit3, Lock, Send, Zap } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -42,7 +43,7 @@ export function RequestQueueClassicTemplate({
     return (
       <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
         <div className="bg-surface border border-border rounded-2xl p-8 text-center shadow-2xl">
-          <div className="text-6xl mb-4">✅</div>
+          <div className="text-emerald-500 flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
           <h2 className="text-2xl font-bold text-foreground mb-2">ส่งคำขอสำเร็จ!</h2>
           <p className="text-sm text-muted mb-6">กรุณาจดรหัสติดตามของคุณ</p>
           <div className="bg-primary/10 dark:bg-primary/20 rounded-xl p-6 mb-6">
@@ -73,7 +74,7 @@ export function RequestQueueClassicTemplate({
       {/* Header */}
       <div className="px-6 py-4 border-b border-border flex items-center justify-between">
         <div>
-          <h2 className="text-foreground font-bold text-lg flex items-center gap-2">📝 ขอบัตรคิว</h2>
+          <h2 className="text-foreground font-bold text-lg flex items-center gap-2"><Edit3 className="w-5 h-5" /> ขอบัตรคิว</h2>
         </div>
         <button
           type="button"
@@ -131,9 +132,9 @@ export function RequestQueueClassicTemplate({
           </label>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { value: ServiceType.GENERAL, label: '📋 ทั่วไป' },
-              { value: ServiceType.EXPRESS, label: '⚡ ด่วน' },
-              { value: ServiceType.VIP, label: '👑 VIP' },
+              { value: ServiceType.GENERAL, label: <span className="flex items-center justify-center gap-1.5"><ClipboardList className="w-4 h-4" /> ทั่วไป</span> },
+              { value: ServiceType.EXPRESS, label: <span className="flex items-center justify-center gap-1.5"><Zap className="w-4 h-4" /> ด่วน</span> },
+              { value: ServiceType.VIP, label: <span className="flex items-center justify-center gap-1.5"><Crown className="w-4 h-4" /> VIP</span> },
             ].map((option) => (
               <button
                 key={option.value}
@@ -189,7 +190,7 @@ export function RequestQueueClassicTemplate({
 
         <div className="bg-surface-alt border border-border rounded-xl p-4 mt-2">
           <label className="block text-sm font-medium text-foreground mb-2 flex items-center gap-1.5">
-            🔒 ยืนยันตัวตน <span className="text-red-500">*</span>
+            <Lock className="w-4 h-4" /> ยืนยันตัวตน <span className="text-red-500">*</span>
           </label>
           {challenge ? (
             <div className="flex items-center gap-3">
@@ -203,8 +204,8 @@ export function RequestQueueClassicTemplate({
         </div>
 
         <button type="submit" disabled={isSubmitting || !customerName.trim() || !challengeAnswer}
-          className="w-full mt-4 py-3.5 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
-          {isSubmitting ? 'กำลังส่ง...' : '📨 ส่งขอบัตรคิว'}
+          className="w-full mt-4 py-3.5 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          {isSubmitting ? 'กำลังส่ง...' : <><Send className="w-5 h-5" /> ส่งขอบัตรคิว</>}
         </button>
       </form>
     </animated.div>

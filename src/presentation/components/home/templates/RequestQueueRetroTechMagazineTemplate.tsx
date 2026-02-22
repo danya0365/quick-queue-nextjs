@@ -1,4 +1,5 @@
 import { ServiceType } from '@/src/domain/types/queue';
+import { CheckCircle2 } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -42,7 +43,7 @@ export function RequestQueueRetroTechMagazineTemplate({
     return (
       <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
         <div className="bg-zinc-900 border-8 border-cyan-400 p-8 text-center text-cyan-400 font-mono shadow-[12px_12px_0_0_rgba(0,255,255,0.5)]">
-          <div className="text-6xl mb-4 text-[#39FF14]">✅</div>
+          <div className="text-[#39FF14] flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
           <h2 className="text-3xl font-bold uppercase mb-2 tracking-widest">SUCCESS!</h2>
           <p className="text-sm font-bold mb-6 opacity-60">กรุณาจดรหัสติดตามของคุณ</p>
           <div className="bg-black border-4 border-cyan-400 p-6 mb-6">

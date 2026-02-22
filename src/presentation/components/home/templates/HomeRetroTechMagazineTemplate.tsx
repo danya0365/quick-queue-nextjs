@@ -1,5 +1,6 @@
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
+import { Edit3 } from 'lucide-react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeRetroTechMagazineTemplateProps {
@@ -80,9 +81,9 @@ export function HomeRetroTechMagazineTemplate({
               </button>
               <button
                 onClick={onRequestQueue}
-                className="px-4 py-2 bg-[#39FF14] hover:bg-[#FF00FF] hover:text-white transition-colors text-black"
+                className="px-4 py-2 bg-[#39FF14] hover:bg-[#FF00FF] hover:text-white transition-colors text-black flex items-center gap-2"
               >
-                📝 ขอบัตรคิว
+                <Edit3 className="w-5 h-5" /> ขอบัตรคิว
               </button>
             </div>
           </div>

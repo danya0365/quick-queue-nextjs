@@ -1,4 +1,5 @@
 import { QueueRequest, REQUEST_STATUS_CONFIG, RequestStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { ClipboardList, Search } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -107,7 +108,7 @@ export function TrackEditorialTemplate({
     return (
       <div className="border-[3px] sm:border-[6px] border-black mt-4 sm:mt-6">
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-black text-white">
-          <h3 className="text-sm sm:text-lg font-black uppercase tracking-widest">📋 ประวัติคำขอ ({entries.length})</h3>
+          <h3 className="text-sm sm:text-lg font-black uppercase tracking-widest flex items-center gap-2"><ClipboardList className="w-5 h-5 sm:w-6 sm:h-6" /> ประวัติคำขอ ({entries.length})</h3>
           <button onClick={clearAll} className="text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">ล้าง</button>
         </div>
         <div className="divide-y-[2px] sm:divide-y-[3px] divide-black">
@@ -145,8 +146,8 @@ export function TrackEditorialTemplate({
             maxLength={6} placeholder="กรอกรหัส 6 หลัก"
             className="flex-1 min-w-0 px-3 sm:px-6 py-3 sm:py-5 border-[3px] sm:border-[6px] border-black font-black text-lg sm:text-3xl tracking-[0.1em] sm:tracking-[0.2em] text-center uppercase focus:outline-none w-full" />
           <button type="submit" disabled={loading}
-            className="px-4 sm:px-8 py-3 sm:py-5 bg-black text-white font-black uppercase tracking-widest border-[3px] sm:border-[6px] border-black hover:bg-white hover:text-black transition-colors text-sm sm:text-lg disabled:opacity-40 whitespace-nowrap active:scale-95 shrink-0">
-            {loading ? '...' : '🔍 ค้นหา'}
+            className="px-4 sm:px-8 py-3 sm:py-5 bg-black text-white font-black uppercase tracking-widest border-[3px] sm:border-[6px] border-black hover:bg-white hover:text-black transition-colors text-sm sm:text-lg disabled:opacity-40 whitespace-nowrap active:scale-95 shrink-0 flex items-center justify-center gap-2">
+            {loading ? '...' : <><Search className="w-5 h-5 sm:w-6 sm:h-6" /> ค้นหา</>}
           </button>
         </form>
 

@@ -1,5 +1,6 @@
 import { AnimatedButton } from '@/src/presentation/components/shared/AnimatedButton';
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
+import { AlertTriangle } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -91,8 +92,8 @@ export function LoginGateClassicTemplate({
               </div>
 
               {error && (
-                <div className="text-red-500 text-sm bg-red-500/10 px-3 py-2 rounded-lg">
-                  ⚠️ {error}
+                <div className="text-red-500 text-sm bg-red-500/10 px-3 py-2 rounded-lg flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 shrink-0" /> {error}
                 </div>
               )}
 

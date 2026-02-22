@@ -1,4 +1,5 @@
 import { ServiceType } from '@/src/domain/types/queue';
+import { CheckCircle2, Lock } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -42,7 +43,7 @@ export function RequestQueueEditorialTemplate({
     return (
       <animated.div style={modalSpring} onClick={(e) => e.stopPropagation()} className="relative z-10 w-full max-w-md">
         <div className="bg-white border-[6px] border-black p-8 text-center font-serif text-black shadow-[8px_8px_0_0_#000]">
-          <div className="text-6xl mb-4">✅</div>
+          <div className="flex justify-center mb-4"><CheckCircle2 className="w-16 h-16" /></div>
           <h2 className="text-3xl font-black uppercase mb-2 tracking-tighter">ส่งคำขอสำเร็จ!</h2>
           <p className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">กรุณาจดรหัสติดตามของคุณ</p>
           <div className="bg-black text-white p-6 mb-6">
@@ -184,8 +185,8 @@ export function RequestQueueEditorialTemplate({
         </div>
 
         <div className="bg-gray-100 border-[4px] border-black p-4 mt-2">
-           <label className="block font-black text-sm uppercase tracking-widest mb-2 text-black">
-            🔒 ยืนยันตัวตน <span className="text-red-500">*</span>
+           <label className="block font-black text-sm uppercase tracking-widest mb-2 text-black flex items-center gap-1.5">
+            <Lock className="w-4 h-4" /> ยืนยันตัวตน <span className="text-red-500">*</span>
           </label>
           {challenge ? (
             <div className="flex items-center gap-3">

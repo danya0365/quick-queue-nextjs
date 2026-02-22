@@ -1,4 +1,5 @@
 import { QueueRequest, REQUEST_STATUS_CONFIG, RequestStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { ClipboardList, Hourglass, Search } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -72,7 +73,7 @@ export function TrackClassicTemplate({
         )}
         {result.status === RequestStatus.PENDING && (
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mt-4 text-center">
-            <p className="text-sm font-medium text-amber-700 dark:text-amber-300">⏳ คำขอของคุณกำลังรอการอนุมัติจากผู้ดูแลระบบ</p>
+            <p className="text-sm font-medium text-amber-700 dark:text-amber-300 flex items-center justify-center gap-2"><Hourglass className="w-4 h-4" /> คำขอของคุณกำลังรอการอนุมัติจากผู้ดูแลระบบ</p>
           </div>
         )}
       </animated.div>
@@ -85,7 +86,7 @@ export function TrackClassicTemplate({
     return (
       <div className="bg-surface rounded-2xl border border-border overflow-hidden mt-4 sm:mt-6">
         <div className="flex items-center justify-between px-4 sm:px-5 py-2.5 sm:py-3 border-b border-border">
-          <h3 className="text-sm font-bold text-foreground">📋 ประวัติคำขอ ({entries.length})</h3>
+          <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5"><ClipboardList className="w-4 h-4" /> ประวัติคำขอ ({entries.length})</h3>
           <button onClick={clearAll} className="text-[10px] sm:text-xs text-muted hover:text-red-500 font-medium transition-colors">ล้างทั้งหมด</button>
         </div>
         <div className="divide-y divide-border">
@@ -113,7 +114,7 @@ export function TrackClassicTemplate({
     <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-5 overflow-y-auto w-full absolute inset-0">
       <div className="max-w-[600px] mx-auto w-full space-y-4 sm:space-y-6 flex flex-col pt-12">
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">📋 ขอบัตรคิว</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground flex justify-center items-center gap-2"><ClipboardList className="w-8 h-8 sm:w-10 sm:h-10" /> ขอบัตรคิว</h1>
           <p className="text-sm text-muted mt-2">กรอกรหัสติดตามเพื่อเช็คสถานะคำขอของคุณ</p>
         </div>
 
@@ -123,8 +124,8 @@ export function TrackClassicTemplate({
             maxLength={6} placeholder="กรอกรหัส 6 หลัก"
             className="flex-1 min-w-0 px-4 py-3 sm:py-4 rounded-xl border-2 border-border bg-background text-foreground font-bold text-lg sm:text-2xl tracking-widest sm:tracking-[0.2em] text-center uppercase focus:outline-none focus:ring-2 focus:ring-primary w-full" />
           <button type="submit" disabled={loading}
-            className="px-5 sm:px-8 py-3 sm:py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors disabled:opacity-40 whitespace-nowrap active:scale-95 shrink-0">
-            {loading ? '...' : '🔍 ค้นหา'}
+            className="px-5 sm:px-8 py-3 sm:py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-colors disabled:opacity-40 whitespace-nowrap active:scale-95 shrink-0 flex items-center justify-center gap-2">
+            {loading ? '...' : <><Search className="w-5 h-5" /> ค้นหา</>}
           </button>
         </form>
 

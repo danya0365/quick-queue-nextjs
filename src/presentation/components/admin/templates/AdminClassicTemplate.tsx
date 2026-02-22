@@ -9,6 +9,7 @@ import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/w
 import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
 import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
 import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
+import { BarChart2, CheckCircle2, Hourglass, RefreshCw, XCircle } from 'lucide-react';
 
 export interface AdminClassicTemplateProps {
   state: AdminPresenterState;
@@ -30,19 +31,19 @@ export function AdminClassicTemplate({
       <FadeInSection delay={100} direction="up">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
           <GlassCard className="p-2 sm:p-3" glowColor="rgba(124, 58, 237, 0.1)">
-            <AnimatedCounter value={stats?.totalItems || 0} label="ทั้งหมด" icon={<span>📊</span>} color="text-primary" />
+            <AnimatedCounter value={stats?.totalItems || 0} label="ทั้งหมด" icon={<BarChart2 className="w-5 h-5 sm:w-6 sm:h-6" />} color="text-primary" />
           </GlassCard>
           <GlassCard className="p-2 sm:p-3" glowColor="rgba(245, 158, 11, 0.1)">
-            <AnimatedCounter value={stats?.waitingItems || 0} label="รอคิว" icon={<span>⏳</span>} color="text-amber-500" />
+            <AnimatedCounter value={stats?.waitingItems || 0} label="รอคิว" icon={<Hourglass className="w-5 h-5 sm:w-6 sm:h-6" />} color="text-amber-500" />
           </GlassCard>
           <GlassCard className="p-2 sm:p-3" glowColor="rgba(59, 130, 246, 0.1)">
-            <AnimatedCounter value={stats?.inProgressItems || 0} label="กำลังบริการ" icon={<span>🔄</span>} color="text-blue-500" />
+            <AnimatedCounter value={stats?.inProgressItems || 0} label="กำลังบริการ" icon={<RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />} color="text-blue-500" />
           </GlassCard>
           <GlassCard className="p-2 sm:p-3" glowColor="rgba(16, 185, 129, 0.1)">
-            <AnimatedCounter value={stats?.completedItems || 0} label="เสร็จแล้ว" icon={<span>✅</span>} color="text-emerald-500" />
+            <AnimatedCounter value={stats?.completedItems || 0} label="เสร็จแล้ว" icon={<CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />} color="text-emerald-500" />
           </GlassCard>
           <GlassCard className="p-2 sm:p-3 hidden sm:block" glowColor="rgba(239, 68, 68, 0.1)">
-            <AnimatedCounter value={stats?.cancelledItems || 0} label="ยกเลิก" icon={<span>❌</span>} color="text-red-500" />
+            <AnimatedCounter value={stats?.cancelledItems || 0} label="ยกเลิก" icon={<XCircle className="w-5 h-5 sm:w-6 sm:h-6" />} color="text-red-500" />
           </GlassCard>
         </div>
       </FadeInSection>

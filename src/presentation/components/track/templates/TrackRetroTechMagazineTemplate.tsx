@@ -1,4 +1,5 @@
 import { QueueRequest, REQUEST_STATUS_CONFIG, RequestStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { Hourglass } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -97,8 +98,9 @@ export function TrackRetroTechMagazineTemplate({
           </div>
         )}
         {result.status === RequestStatus.PENDING && (
-          <div className="bg-[#00FFFF] border-4 border-black p-4 mt-4 text-center shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-            <p className="font-black text-black uppercase tracking-widest">⏳ รอการอนุมัติ_</p>
+          <div className="bg-[#00FFFF] border-4 border-black p-4 mt-4 text-center shadow-[4px_4px_0_0_rgba(0,0,0,1)] flex items-center justify-center gap-2">
+            <Hourglass className="w-5 h-5" />
+            <p className="font-black text-black uppercase tracking-widest">รอการอนุมัติ_</p>
           </div>
         )}
       </animated.div>

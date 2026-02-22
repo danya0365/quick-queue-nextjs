@@ -1,5 +1,6 @@
 import { REQUEST_STATUS_CONFIG, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { PendingRequestsViewModel } from '@/src/presentation/presenters/admin/PendingRequestsPresenter';
+import { CheckCircle2, Mailbox, XCircle } from 'lucide-react';
 
 interface PendingRequestsClassicTemplateProps {
   state: {
@@ -46,7 +47,7 @@ export function PendingRequestsClassicTemplate({
           <option value="all">ทุกบริการ</option>
           {Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => (
             <option key={key} value={key}>
-              {config.icon} {config.label}
+              {config.label}
             </option>
           ))}
         </select>
@@ -57,7 +58,7 @@ export function PendingRequestsClassicTemplate({
         {requests.length === 0 && !loading ? (
           <div className="flex-1 flex items-center justify-center p-8 m-4 border-2 border-dashed border-border rounded-xl">
             <div className="text-center">
-              <div className="text-4xl sm:text-5xl mb-3 opacity-50">📭</div>
+              <div className="mb-3 opacity-50 flex justify-center text-muted"><Mailbox className="w-12 h-12 sm:w-16 sm:h-16" /></div>
               <p className="text-lg font-bold text-foreground">ไม่มีคำขอที่รอการอนุมัติ</p>
               <p className="text-sm text-muted mt-1">อัปเดตล่าสุดเมื่อสักครู่นี้</p>
             </div>
@@ -96,12 +97,12 @@ export function PendingRequestsClassicTemplate({
                     
                     <div className="flex gap-2 shrink-0 md:flex-col lg:flex-row">
                       <button onClick={() => actions.approveRequest(req.id)}
-                        className="flex-1 md:flex-none px-4 py-2 sm:py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg text-sm transition-all shadow-sm active:scale-95 text-center">
-                        ✅ อนุมัติ
+                        className="flex-1 md:flex-none px-4 py-2 sm:py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg text-sm transition-all shadow-sm active:scale-95 text-center flex items-center justify-center gap-2">
+                        <CheckCircle2 className="w-4 h-4" /> อนุมัติ
                       </button>
                       <button onClick={() => actions.openRejectModal(req.id)}
-                        className="flex-1 md:flex-none px-4 py-2 sm:py-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg text-sm transition-all shadow-sm active:scale-95 text-center">
-                        ❌ ปฏิเสธ
+                        className="flex-1 md:flex-none px-4 py-2 sm:py-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg text-sm transition-all shadow-sm active:scale-95 text-center flex items-center justify-center gap-2">
+                        <XCircle className="w-4 h-4" /> ปฏิเสธ
                       </button>
                     </div>
                   </div>

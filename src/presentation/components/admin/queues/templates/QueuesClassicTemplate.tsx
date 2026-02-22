@@ -6,6 +6,7 @@ import { FadeInSection } from '@/src/presentation/components/shared/FadeInSectio
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
+import { AlertTriangle, CheckCircle2, ClipboardList, Hourglass, RefreshCw, Trash2, XCircle } from 'lucide-react';
 
 export interface QueuesClassicTemplateProps {
   state: AdminPresenterState;
@@ -62,10 +63,10 @@ export function QueuesClassicTemplate({
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
           {[
             { key: 'all', label: 'ทั้งหมด', count: stats?.totalItems || 0 },
-            { key: QueueStatus.WAITING, label: '⏳ รอคิว', count: stats?.waitingItems || 0 },
-            { key: QueueStatus.IN_PROGRESS, label: '🔄 กำลังบริการ', count: stats?.inProgressItems || 0 },
-            { key: QueueStatus.COMPLETED, label: '✅ เสร็จ', count: stats?.completedItems || 0 },
-            { key: QueueStatus.CANCELLED, label: '❌ ยกเลิก', count: stats?.cancelledItems || 0 },
+            { key: QueueStatus.WAITING, label: <span className="flex items-center gap-1"><Hourglass className="w-3.5 h-3.5" /> รอคิว</span>, count: stats?.waitingItems || 0 },
+            { key: QueueStatus.IN_PROGRESS, label: <span className="flex items-center gap-1"><RefreshCw className="w-3.5 h-3.5" /> กำลังบริการ</span>, count: stats?.inProgressItems || 0 },
+            { key: QueueStatus.COMPLETED, label: <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> เสร็จ</span>, count: stats?.completedItems || 0 },
+            { key: QueueStatus.CANCELLED, label: <span className="flex items-center gap-1"><XCircle className="w-3.5 h-3.5" /> ยกเลิก</span>, count: stats?.cancelledItems || 0 },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -143,7 +144,7 @@ export function QueuesClassicTemplate({
           <div className="flex-1 overflow-y-auto">
             {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                <div className="text-5xl mb-3">📋</div>
+                <div className="mb-3 text-muted flex justify-center"><ClipboardList className="w-12 h-12" /></div>
                 <p className="text-muted font-medium">ไม่มีรายการ</p>
                 <p className="text-muted-light text-sm mt-1">
                   {filter === 'all' ? 'เริ่มต้นด้วยการเพิ่มคิวใหม่' : 'ไม่มีรายการในหมวดนี้'}
@@ -242,7 +243,7 @@ export function QueuesClassicTemplate({
                           "
                           title="ลบ"
                         >
-                          🗑️
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -282,7 +283,7 @@ export function QueuesClassicTemplate({
       {state.error && (
         <div className="fixed bottom-20 right-6 bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg z-40 animate-slide-up">
           <div className="flex items-center gap-2">
-            <span>⚠️</span>
+            <AlertTriangle className="w-4 h-4 shrink-0" />
             <span className="text-sm">{state.error}</span>
             <button onClick={() => actions.setError(null)} className="ml-2 hover:opacity-80">✕</button>
           </div>

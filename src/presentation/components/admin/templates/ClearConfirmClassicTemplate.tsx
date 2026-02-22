@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import { animated } from 'react-spring';
 
 export interface ClearConfirmClassicTemplateProps {
@@ -22,8 +23,8 @@ export function ClearConfirmClassicTemplate({
       "
     >
       <div className="p-6">
-        <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center text-2xl mb-4 mx-auto">
-          ⚠️
+        <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-4 mx-auto">
+          <AlertTriangle className="w-6 h-6" />
         </div>
         <h3 className="text-lg font-bold text-foreground text-center mb-2">
           ยืนยันการล้างคิวทั้งหมด?

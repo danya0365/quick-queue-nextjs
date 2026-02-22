@@ -1,3 +1,4 @@
+import { Trash2 } from 'lucide-react';
 import { animated } from 'react-spring';
 
 export interface DeleteConfirmClassicTemplateProps {
@@ -27,7 +28,7 @@ export function DeleteConfirmClassicTemplate({
         max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
       "
     >
-      <div className="text-5xl mb-4">🗑️</div>
+      <div className="mb-4 flex justify-center text-muted"><Trash2 className="w-12 h-12" /></div>
       <h2 className="text-foreground font-bold text-lg mb-2">ยืนยันการลบ</h2>
       <p className="text-muted text-sm mb-6">
         ต้องการลบคิว <strong className="text-foreground">#{queueNumber}</strong> ({customerName}) หรือไม่?

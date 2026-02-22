@@ -5,6 +5,7 @@ import { FadeInSection } from '@/src/presentation/components/shared/FadeInSectio
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
+import { BarChart2, CheckCircle2, ClipboardList, Clock, Edit3, Hourglass, RefreshCw, Smartphone, Timer, Volume2, VolumeX } from 'lucide-react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeClassicTemplateProps {
@@ -87,12 +88,12 @@ export function HomeClassicTemplate({
               </p>
 
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-start">
-                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20">
-                  <span className="mr-1.5">⏱</span>
+                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20 flex items-center">
+                  <span className="mr-1.5"><Timer className="w-4 h-4" /></span>
                   รอประมาณ <strong>{waitTime}</strong> นาที
                 </div>
-                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20">
-                  <span className="mr-1.5">🕐</span>
+                <div className="bg-white/15 backdrop-blur-sm rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-xs sm:text-sm border border-white/20 flex items-center">
+                  <span className="mr-1.5"><Clock className="w-4 h-4" /></span>
                   {currentTime}
                 </div>
                 {/* Sound Toggle */}
@@ -105,7 +106,7 @@ export function HomeClassicTemplate({
                   }`}
                   title={soundEnabled ? 'ปิดเสียงประกาศ' : 'เปิดเสียงประกาศ'}
                 >
-                  <span className="mr-1.5">{soundEnabled ? '🔊' : '🔇'}</span>
+                  <span className="mr-1">{soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}</span>
                   <span className="hidden sm:inline">{soundEnabled ? 'เสียงเปิด' : 'เสียงปิด'}</span>
                 </button>
                 {/* QR Code Trigger Button */}
@@ -113,7 +114,7 @@ export function HomeClassicTemplate({
                   onClick={() => setShowQR(true)}
                   className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center"
                 >
-                  <span className="mr-1.5">📱</span>
+                  <span className="mr-1.5"><Smartphone className="w-4 h-4" /></span>
                   <span className="hidden sm:inline">สแกนคิว</span>
                   <span className="sm:hidden">คิว</span>
                 </button>
@@ -121,7 +122,7 @@ export function HomeClassicTemplate({
                   onClick={onRequestQueue}
                   className="bg-white hover:bg-white/90 text-primary rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold shadow-lg transition-all active:scale-95 flex items-center"
                 >
-                  <span className="mr-1.5">📝</span>
+                  <span className="mr-1.5"><Edit3 className="w-4 h-4" /></span>
                   <span className="hidden sm:inline">ขอบัตรคิว</span>
                   <span className="sm:hidden">ขอบัตรคิว</span>
                 </button>
@@ -138,7 +139,7 @@ export function HomeClassicTemplate({
             <AnimatedCounter
               value={stats?.totalItems || 0}
               label="คิวทั้งหมด"
-              icon={<span>📊</span>}
+              icon={<BarChart2 className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-primary"
               id="stat-total"
             />
@@ -148,7 +149,7 @@ export function HomeClassicTemplate({
             <AnimatedCounter
               value={stats?.waitingItems || 0}
               label="รอคิว"
-              icon={<span>⏳</span>}
+              icon={<Hourglass className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-amber-500"
               id="stat-waiting"
             />
@@ -158,7 +159,7 @@ export function HomeClassicTemplate({
             <AnimatedCounter
               value={stats?.inProgressItems || 0}
               label="กำลังให้บริการ"
-              icon={<span>🔄</span>}
+              icon={<RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-blue-500"
               id="stat-in-progress"
             />
@@ -168,7 +169,7 @@ export function HomeClassicTemplate({
             <AnimatedCounter
               value={stats?.completedItems || 0}
               label="เสร็จแล้ว"
-              icon={<span>✅</span>}
+              icon={<CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-emerald-500"
               id="stat-completed"
             />
@@ -181,9 +182,9 @@ export function HomeClassicTemplate({
         <GlassCard className="h-full flex flex-col overflow-hidden">
           {/* List Header */}
           <div className="flex items-center justify-between px-3 sm:px-5 py-2 sm:py-3 border-b border-border">
-            <h2 className="text-foreground font-semibold text-sm">
-              📋 รายการคิวล่าสุด
-            </h2>
+            <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
+            <ClipboardList className="w-5 h-5 sm:w-6 sm:h-6" /> สถานะคิว
+            </h1>
             <AnimatedButton variant="ghost" size="sm">
               ดูทั้งหมด
             </AnimatedButton>
@@ -232,7 +233,12 @@ export function HomeClassicTemplate({
                         />
 
                         {/* Info */}
-                        <div className="flex-1 min-w-0">
+                        <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(245, 158, 11, 0.1)">
+            <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+              <Hourglass className="w-4 h-4" />
+              <h3 className="text-foreground font-semibold text-sm">รอคิว</h3>
+            </div>
+            <div className="flex-1 min-w-0 p-4">
                           <div className="flex items-center gap-2">
                             <span className="text-foreground font-medium text-sm truncate">
                               {item.customerName}
@@ -245,11 +251,12 @@ export function HomeClassicTemplate({
                             />
                           </div>
                           {item.note && (
-                            <p className="text-muted text-xs mt-0.5 truncate">
-                              {item.note}
-                            </p>
+                            <div className="text-xs text-muted bg-surface-alt px-3 py-1.5 rounded-full border border-border flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" /> {currentTime}
+            </div>
                           )}
                         </div>
+                        </GlassCard>
 
                         {/* Status */}
                         <StatusBadge

@@ -216,7 +216,7 @@ export const NAV_ITEMS: NavItem[] = [
     requiresAuth: false,
   },
   {
-    label: 'ขอบัตรคิว',
+    label: 'เช็คบัตรคิว',
     href: '/track',
     icon: React.createElement(Search, { className: 'w-full h-full' }),
     requiresAuth: false,
