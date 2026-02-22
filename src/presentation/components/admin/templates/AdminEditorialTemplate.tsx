@@ -6,12 +6,10 @@ import { PendingRequestsSection } from '@/src/presentation/components/admin/Pend
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useState } from 'react';
-import { animated, useSpring } from 'react-spring';
 
 export interface AdminEditorialTemplateProps {
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  handleLogout: () => Promise<void>;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
   getStatusActions: (item: QueueItem) => { label: string; action: () => void; color: string }[];
 }
@@ -19,26 +17,12 @@ export interface AdminEditorialTemplateProps {
 export function AdminEditorialTemplate({
   state,
   actions,
-  handleLogout,
   generatePageNumbers,
   getStatusActions,
 }: AdminEditorialTemplateProps) {
   const { template } = useTemplate();
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-
-  // Logout modal springs
-  const overlaySpring = useSpring({
-    opacity: isLogoutModalOpen ? 1 : 0,
-    config: { tension: 300, friction: 25 },
-  });
-
-  const modalSpring = useSpring({
-    opacity: isLogoutModalOpen ? 1 : 0,
-    transform: isLogoutModalOpen ? 'scale(1) translateY(0px)' : 'scale(0.95) translateY(20px)',
-    config: { tension: 300, friction: 25 },
-  });
 
   const viewModel = state.viewModel;
   const isEditorial = template === 'editorial';
@@ -107,69 +91,6 @@ export function AdminEditorialTemplate({
 
   return (
     <div className="min-h-full font-serif bg-white text-black selection:bg-black selection:text-white pb-20">
-      
-      {/* ─── Editorial Sticky Action Bar ─── */}
-      <div className="sticky top-0 z-40 bg-white border-b-[3px] sm:border-b-[8px] border-black flex flex-row sm:items-center sm:justify-between px-0 sm:px-12">
-        {/* Main Row / Primary Actions */}
-        <div className="px-4 py-3 sm:py-4 flex justify-between items-center w-full">
-          <h1 className="text-xl sm:text-5xl font-black uppercase tracking-tighter shrink-0 mr-4">
-            จัดการ<span className="bg-black text-white px-1 sm:px-2 ml-0.5 sm:ml-1">คิว</span>
-          </h1>
-          
-          <div className="flex gap-2 sm:gap-4 items-center flex-1 justify-end">
-            {state.loading && (
-              <span className="font-bold uppercase tracking-widest bg-black text-white px-2 py-1 sm:px-3 animate-pulse text-[8px] sm:text-xs">
-                <span className="sm:hidden">โหลด</span>
-                <span className="hidden sm:inline">กำลังอัปเดต</span>
-              </span>
-            )}
-            <button
-              onClick={() => actions.loadData()}
-              className="w-8 h-8 sm:w-10 sm:h-10 border-[2px] sm:border-[4px] border-black flex items-center justify-center font-black active:bg-black active:text-white sm:hover:bg-black sm:hover:text-white transition-colors text-xs sm:text-base shrink-0"
-              title="Refresh"
-            >
-              ↺
-            </button>
-            <button
-              onClick={actions.openCreateModal}
-              className="px-3 py-1.5 sm:px-6 sm:py-2.5 bg-black text-white border-[2px] sm:border-[4px] border-black font-black uppercase tracking-widest text-[10px] sm:text-sm active:scale-95 transition-transform sm:hover:bg-white sm:hover:text-black shrink-0"
-            >
-              <span className="sm:hidden">+ สร้างคิว</span>
-              <span className="hidden sm:inline">+ สร้างคิวใหม่</span>
-            </button>
-            <div className="relative shrink-0">
-              <button 
-                onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                className="w-8 h-8 sm:w-10 sm:h-10 border-[2px] sm:border-[4px] border-black flex items-center justify-center font-black bg-white active:bg-black active:text-white sm:hover:bg-black sm:hover:text-white transition-colors text-xs sm:text-base shrink-0"
-              >
-                ⋮
-              </button>
-              {isMoreMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 border-[3px] border-black bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex flex-col z-50 w-32 sm:w-48 overflow-hidden divide-y-[2px] sm:divide-y-[3px] divide-black">
-                  <button
-                    onClick={() => {
-                      setIsMoreMenuOpen(false);
-                      actions.openClearAllModal();
-                    }}
-                    className="px-4 py-3 sm:py-4 text-red-600 font-black uppercase tracking-widest text-[10px] sm:text-sm hover:bg-gray-100 text-left transition-colors whitespace-nowrap"
-                  >
-                    ล้างข้อมูลทั้งหมด
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsMoreMenuOpen(false);
-                      setIsLogoutModalOpen(true);
-                    }}
-                    className="px-4 py-3 sm:py-4 text-black font-black uppercase tracking-widest text-[10px] sm:text-sm hover:bg-gray-100 text-left transition-colors whitespace-nowrap"
-                  >
-                    ออกจากระบบ
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="max-w-[1400px] mx-auto p-4 sm:p-8 space-y-4 sm:space-y-8">
         {/* ─── Error Banner ─── */}
@@ -447,65 +368,7 @@ export function AdminEditorialTemplate({
         />
       )}
 
-      {/* ─── Logout Confirm Modal ─── */}
-      {isLogoutModalOpen && (
-        <animated.div
-          style={overlaySpring}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        >
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsLogoutModalOpen(false)} />
 
-          {/* Modal */}
-          <animated.div
-            style={modalSpring}
-            onClick={(e) => e.stopPropagation()}
-            className="
-              relative w-full max-w-sm
-              bg-white border-[6px] border-black text-black
-              font-serif shadow-[8px_8px_0_0_#000]
-              max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
-            "
-          >
-            <div className="px-6 py-4 border-b-[6px] border-black flex justify-between items-center bg-white">
-              <h2 className="text-3xl font-black uppercase tracking-tighter text-black flex items-center gap-2">
-                EXIT
-              </h2>
-              <button
-                onClick={() => setIsLogoutModalOpen(false)}
-                className="w-10 h-10 border-[4px] border-black text-black font-black flex items-center justify-center hover:bg-black hover:text-white transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="p-6 font-sans">
-              <h3 className="text-xl font-bold uppercase mb-2">ต้องการออกจากระบบ?</h3>
-              <p className="text-sm font-bold opacity-80 mb-6 uppercase">
-                คุณกำลังจะออกจากระบบจัดการคิว
-              </p>
-              
-              <div className="flex gap-4 border-t-[6px] border-black pt-6">
-                <button
-                  onClick={() => setIsLogoutModalOpen(false)}
-                  className="flex-1 px-4 py-4 font-black uppercase text-sm border-[4px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors"
-                >
-                  ยกเลิก
-                </button>
-                <button
-                  onClick={() => {
-                    setIsLogoutModalOpen(false);
-                    handleLogout();
-                  }}
-                  className="flex-1 px-4 py-4 font-black uppercase text-sm border-[4px] border-black bg-black text-white hover:bg-white hover:text-black transition-colors"
-                >
-                  ตกลง
-                </button>
-              </div>
-            </div>
-          </animated.div>
-        </animated.div>
-      )}
 
     </div>
   );

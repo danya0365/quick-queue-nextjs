@@ -14,14 +14,12 @@ interface PendingRequestsRetroTechMagazineTemplateProps {
     approveRequest: (id: string) => Promise<void>;
     openRejectModal: (id: string) => void;
   };
-  handleLogout: () => void;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
 }
 
 export function PendingRequestsRetroTechMagazineTemplate({
   state: { viewModel },
   actions,
-  handleLogout,
   generatePageNumbers,
 }: PendingRequestsRetroTechMagazineTemplateProps) {
   const { requests, totalCount, currentPage, totalPages } = viewModel;
@@ -29,25 +27,6 @@ export function PendingRequestsRetroTechMagazineTemplate({
 
   return (
     <div className="min-h-full font-sans p-2 sm:p-4 md:p-8 bg-[#00FFFF] text-black">
-      {/* ─── Header ─── */}
-      <header className="border-4 sm:border-8 border-black pb-2 sm:pb-4 bg-white p-3 sm:p-6 mb-4 sm:mb-8 shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter text-black" style={{ WebkitTextStroke: '1px sm:2px black' }}>
-            PENDING<br /><span className="text-[#FF00FF]">REQUESTS_</span>
-          </h1>
-          <p className="font-bold text-xs uppercase tracking-widest mt-2 px-2 bg-black text-[#00FFFF] inline-block border-2 border-black">
-            คำขอบัตรคิวที่รอการอนุมัติทั้งหมด ({totalCount})
-          </p>
-        </div>
-        <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-           <a href="/admin" className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border-4 border-black font-bold uppercase hover:bg-black hover:text-[#00FFFF] transition-colors text-center text-xs sm:text-sm bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
-            &lt; BACK
-          </a>
-          <button onClick={handleLogout} className="flex-1 sm:flex-none px-3 sm:px-4 py-2 border-4 border-black font-bold uppercase bg-[#FF00FF] text-white hover:bg-black transition-colors text-center text-xs sm:text-sm shadow-[2px_2px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
-            PWR_OFF
-          </button>
-        </div>
-      </header>
 
       {/* ─── Filters ─── */}
       <div className="flex flex-col sm:flex-row gap-4 mb-4 sm:mb-8 font-sans">

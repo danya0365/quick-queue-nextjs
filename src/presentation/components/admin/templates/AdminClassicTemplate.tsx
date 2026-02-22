@@ -3,7 +3,6 @@ import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConf
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
 import { PendingRequestsSection } from '@/src/presentation/components/admin/PendingRequestsSection';
-import { AnimatedButton } from '@/src/presentation/components/shared/AnimatedButton';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
@@ -13,7 +12,6 @@ import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/p
 export interface AdminClassicTemplateProps {
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  handleLogout: () => Promise<void>;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
   getStatusActions: (item: QueueItem) => { label: string; action: () => void; color: string }[];
 }
@@ -21,7 +19,6 @@ export interface AdminClassicTemplateProps {
 export function AdminClassicTemplate({
   state,
   actions,
-  handleLogout,
   generatePageNumbers,
   getStatusActions,
 }: AdminClassicTemplateProps) {
@@ -43,45 +40,6 @@ export function AdminClassicTemplate({
 
   return (
     <div className="h-full flex flex-col p-3 sm:p-6 gap-3 sm:gap-4 overflow-y-auto" id="admin-classic-layout">
-      {/* ─── Header Row ─── */}
-      <FadeInSection delay={0} direction="up">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
-              ⚙️ จัดการคิว
-            </h1>
-            <p className="text-muted text-xs sm:text-sm mt-0.5">จัดการรายการคิวแบบเรียลไทม์</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <AnimatedButton
-              variant="primary"
-              size="sm"
-              onClick={actions.openCreateModal}
-              icon={<span>➕</span>}
-              id="add-queue-btn"
-            >
-              เพิ่มคิว
-            </AnimatedButton>
-            <button
-              onClick={actions.openClearAllModal}
-              title="ล้างคิวทั้งหมด"
-              className="px-3 py-1.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-sm font-medium transition-all duration-200"
-            >
-              ล้างคิว
-            </button>
-            <AnimatedButton
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              icon={<span>🚪</span>}
-            >
-              ออก
-            </AnimatedButton>
-          </div>
-        </div>
-      </FadeInSection>
-
-      {/* ─── Stats ─── */}
       <FadeInSection delay={100} direction="up">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
           <GlassCard className="p-2 sm:p-3" glowColor="rgba(124, 58, 237, 0.1)">

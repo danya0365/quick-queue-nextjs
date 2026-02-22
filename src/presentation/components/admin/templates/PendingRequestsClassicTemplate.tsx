@@ -14,14 +14,12 @@ interface PendingRequestsClassicTemplateProps {
     approveRequest: (id: string) => Promise<void>;
     openRejectModal: (id: string) => void;
   };
-  handleLogout: () => void;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
 }
 
 export function PendingRequestsClassicTemplate({
   state: { viewModel, loading },
   actions,
-  handleLogout,
   generatePageNumbers,
 }: PendingRequestsClassicTemplateProps) {
   const { requests, totalCount, currentPage, totalPages } = viewModel;
@@ -29,25 +27,7 @@ export function PendingRequestsClassicTemplate({
 
   return (
     <div className="min-h-full bg-background p-4 sm:p-6 lg:p-8 text-foreground max-w-5xl mx-auto">
-      {/* ─── Header ─── */}
-      <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            คำขอบัตรคิวที่รอการอนุมัติ
-          </h1>
-          <p className="text-sm sm:text-base text-muted mt-1">
-            ทั้งหมด {totalCount} รายการ
-          </p>
-        </div>
-        <div className="flex gap-3 w-full sm:w-auto">
-          <a href="/admin" className="flex-1 sm:flex-none px-4 py-2 border border-border rounded-xl font-medium text-sm hover:bg-surface-alt transition-colors shadow-sm bg-surface text-center flex items-center justify-center">
-            ← กลับหน้าหลัก
-          </a>
-          <button onClick={handleLogout} className="flex-1 sm:flex-none px-4 py-2 bg-primary/10 text-primary font-bold rounded-xl text-sm hover:bg-primary/20 transition-colors shadow-sm">
-            ออกจากระบบ
-          </button>
-        </div>
-      </header>
+
 
       {/* ─── Filters ─── */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">

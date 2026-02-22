@@ -10,7 +10,6 @@ import { animated, useSpring } from 'react-spring';
 export interface AdminRetroTechMagazineTemplateProps {
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  handleLogout: () => Promise<void>;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
   getStatusActions: (item: QueueItem) => { label: string; action: () => void; color: string }[];
 }
@@ -18,24 +17,10 @@ export interface AdminRetroTechMagazineTemplateProps {
 export function AdminRetroTechMagazineTemplate({
   state,
   actions,
-  handleLogout,
   generatePageNumbers,
   getStatusActions,
 }: AdminRetroTechMagazineTemplateProps) {
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
-
-  // Logout modal springs
-  const overlaySpring = useSpring({
-    opacity: isLogoutModalOpen ? 1 : 0,
-    config: { tension: 300, friction: 25 },
-  });
-
-  const modalSpring = useSpring({
-    opacity: isLogoutModalOpen ? 1 : 0,
-    transform: isLogoutModalOpen ? 'scale(1) translateY(0px)' : 'scale(0.95) translateY(20px)',
-    config: { tension: 300, friction: 25 },
-  });
 
   // Infinite marquee for stats (mobile only)
   const marqueeSpring = useSpring({
@@ -81,55 +66,7 @@ export function AdminRetroTechMagazineTemplate({
       id="admin-retro-layout"
     >
       <div className="max-w-7xl mx-auto space-y-4 sm:space-y-8">
-        {/* ─── Header ─── */}
-        <header className="flex flex-row justify-between items-start sm:items-end border-b-[4px] sm:border-b-8 border-black pb-4 gap-4">
-          <div>
-            <h1 className="text-3xl sm:text-6xl font-black uppercase tracking-tighter leading-none text-black">
-              ผู้ดูแลระบบ
-              <span className="block text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] stroke-black" style={{ WebkitTextStroke: '1px black' }}>
-                แผงควบคุม
-              </span>
-            </h1>
-          </div>
-          <div className="flex gap-2 sm:gap-4 relative self-end sm:self-auto">
-            <button
-              onClick={actions.openCreateModal}
-              className="bg-[#39FF14] text-black px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-black uppercase tracking-widest border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all flex-1 sm:flex-none text-center transform sm:-skew-x-2"
-            >
-              + สร้างคิว
-            </button>
-            <button
-              onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-              className="bg-white text-black w-10 h-10 sm:w-14 sm:h-auto sm:px-4 flex items-center justify-center font-black uppercase tracking-widest border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all text-xl shrink-0 transform sm:-skew-x-2"
-            >
-              ⋮
-            </button>
 
-            {/* Dropdown Menu */}
-            {isMoreMenuOpen && (
-              <div className="absolute top-full right-0 mt-3 border-[4px] border-black bg-white shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-col z-50 w-48 overflow-hidden transform sm:-skew-x-2">
-                <button
-                  onClick={() => {
-                    setIsMoreMenuOpen(false);
-                    actions.openClearAllModal();
-                  }}
-                  className="px-4 py-3 sm:py-4 bg-white hover:bg-[#FF00FF] hover:text-white text-black font-black uppercase tracking-widest text-[10px] sm:text-sm text-left transition-colors border-b-[4px] border-black whitespace-nowrap"
-                >
-                  ล้างข้อมูล
-                </button>
-                <button
-                  onClick={() => {
-                    setIsMoreMenuOpen(false);
-                    setIsLogoutModalOpen(true);
-                  }}
-                  className="px-4 py-3 sm:py-4 bg-white hover:bg-black hover:text-[#00FFFF] text-black font-black uppercase tracking-widest text-[10px] sm:text-sm text-left transition-colors whitespace-nowrap"
-                >
-                  ออก
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
 
         {/* ─── Stats Grid (Desktop) ─── */}
         <div className="hidden sm:grid sm:grid-cols-5 gap-4">
@@ -333,68 +270,7 @@ export function AdminRetroTechMagazineTemplate({
         </div>
       )}
 
-      {/* ─── Logout Confirm Modal ─── */}
-      {isLogoutModalOpen && (
-        <animated.div
-          style={overlaySpring}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-        >
-          {/* Overlay */}
-          <div className="absolute inset-0" onClick={() => setIsLogoutModalOpen(false)} />
 
-          {/* Modal */}
-          <animated.div
-            style={modalSpring}
-            onClick={(e) => e.stopPropagation()}
-            className="
-              relative w-full max-w-sm
-              bg-white border-[6px] sm:border-8 border-black text-black
-              font-sans shadow-[8px_8px_0_0_#FF00FF] sm:shadow-[12px_12px_0_0_#FF00FF]
-              max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden
-              transform sm:-skew-x-2
-            "
-          >
-            <div className="px-6 py-4 border-b-[6px] border-black flex justify-between items-center bg-black text-[#00FFFF]">
-              <h2 className="text-3xl font-black uppercase tracking-tighter flex items-center gap-2 transform sm:skew-x-2">
-                SYS.EXIT
-              </h2>
-              <button
-                onClick={() => setIsLogoutModalOpen(false)}
-                className="w-10 h-10 border-[4px] border-[#00FFFF] text-[#00FFFF] font-black flex items-center justify-center hover:bg-[#00FFFF] hover:text-black transition-colors transform sm:skew-x-2"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="p-6 bg-white text-black">
-              <div className="transform sm:skew-x-2">
-                <h3 className="text-xl sm:text-2xl font-black uppercase mb-2 leading-tight">ต้องการออกจาก<br/>ระบบแผงควบคุม?</h3>
-                <p className="text-sm font-bold opacity-80 mb-6 uppercase tracking-widest bg-black text-white px-2 py-1 inline-block">
-                  สิ้นสุดเซสชันปัจจุบัน
-                </p>
-                
-                <div className="flex gap-4 border-t-[4px] border-black pt-6">
-                  <button
-                    onClick={() => setIsLogoutModalOpen(false)}
-                    className="flex-1 px-4 py-3 sm:py-4 font-black uppercase text-sm border-[4px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none"
-                  >
-                    ยกเลิก
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsLogoutModalOpen(false);
-                      handleLogout();
-                    }}
-                    className="flex-1 px-4 py-3 sm:py-4 font-black uppercase text-sm border-[4px] border-black bg-[#39FF14] text-black hover:bg-black hover:text-[#39FF14] transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none"
-                  >
-                    ตกลง
-                  </button>
-                </div>
-              </div>
-            </div>
-          </animated.div>
-        </animated.div>
-      )}
 
       {/* ─── Modals (Existing standard modals remain, retro styles can be added later if needed) ─── */}
       <CreateQueueModal

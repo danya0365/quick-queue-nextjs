@@ -1,11 +1,10 @@
 'use client';
 
 import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton';
-import { LoginGate } from '@/src/presentation/components/admin/LoginGate';
 import { RejectReasonModal } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { usePendingRequestsPresenter } from '@/src/presentation/presenters/admin/usePendingRequestsPresenter';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // Templates
 import { PendingRequestsClassicTemplate } from '@/src/presentation/components/admin/templates/PendingRequestsClassicTemplate';
@@ -41,51 +40,16 @@ function generatePageNumbers(current: number, total: number): (number | '...')[]
 }
 
 export function PendingRequestsView() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authChecking, setAuthChecking] = useState(true);
   const [state, actions] = usePendingRequestsPresenter();
   const viewModel = state.viewModel;
   const { template } = useTemplate();
 
-  // Check auth and load data
+  // Load data
   useEffect(() => {
-    async function init() {
-      try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-          setIsAuthenticated(true);
-          await actions.loadData(1, 10);
-        }
-      } catch {
-        // No session
-      } finally {
-        setAuthChecking(false);
-      }
-    }
-    init();
+    actions.loadData(1, 10);
   }, []);
 
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    setIsAuthenticated(false);
-  };
 
-  // Auth checking spinner
-  if (authChecking) {
-    return (
-      <div className="flex-1 flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
-          <p className="text-muted text-sm">ตรวจสอบเซสชัน...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Auth Gate
-  if (!isAuthenticated) {
-    return <LoginGate onLogin={() => { setIsAuthenticated(true); actions.loadData(); }} />;
-  }
 
   // Loading
   if (state.loading && viewModel.requests.length === 0) {
@@ -95,7 +59,6 @@ export function PendingRequestsView() {
   const layoutProps = {
     state,
     actions,
-    handleLogout,
     generatePageNumbers,
   };
 

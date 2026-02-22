@@ -14,14 +14,12 @@ interface PendingRequestsEditorialTemplateProps {
     approveRequest: (id: string) => Promise<void>;
     openRejectModal: (id: string) => void;
   };
-  handleLogout: () => void;
   generatePageNumbers: (current: number, total: number) => (number | '...')[];
 }
 
 export function PendingRequestsEditorialTemplate({
   state: { viewModel },
   actions,
-  handleLogout,
   generatePageNumbers,
 }: PendingRequestsEditorialTemplateProps) {
   const { requests, totalCount, currentPage, totalPages } = viewModel;
@@ -30,32 +28,6 @@ export function PendingRequestsEditorialTemplate({
   return (
     <div className="min-h-full font-serif p-2 sm:p-4 md:p-8 bg-gray-100 text-black selection:bg-black selection:text-white">
       {/* ─── Header ─── */}
-      <header className="border-[4px] sm:border-[8px] border-black bg-white p-4 sm:p-8 mb-4 sm:mb-8 shadow-[8px_8px_0_0_rgba(0,0,0,0.05)] flex flex-col md:flex-row items-start md:items-end justify-between gap-6 relative overflow-hidden">
-        <div className="absolute -top-10 -right-10 text-[150px] opacity-5 font-black uppercase leading-none select-none tracking-tighter">
-          PEND<br />ING.
-        </div>
-        <div className="relative z-10 w-full md:w-auto border-b-[4px] md:border-b-0 border-black pb-4 md:pb-0">
-          <div className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-2 opacity-60 flex items-center gap-2">
-            <span className="w-2 h-2 bg-black rounded-full inline-block"></span>
-            MANAGE REQUESTS
-          </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">
-            คำขอบัตรคิว
-          </h1>
-          <p className="font-bold text-sm uppercase tracking-widest mt-4">
-            รอการอนุมัติทั้งหมด <span className="bg-black text-white px-2 py-0.5">{totalCount}</span> รายการ
-          </p>
-        </div>
-        <div className="flex gap-3 w-full md:w-auto relative z-10">
-           <a href="/admin" className="flex-1 md:flex-none px-4 sm:px-6 py-3 border-[3px] border-black font-bold uppercase hover:bg-black hover:text-white transition-colors text-center text-xs sm:text-sm tracking-widest">
-            กลับ
-          </a>
-          <button onClick={handleLogout} className="flex-1 md:flex-none px-4 sm:px-6 py-3 border-[3px] border-black bg-black text-white font-bold uppercase hover:bg-white hover:text-black transition-colors text-center text-xs sm:text-sm tracking-widest">
-            ออกจากระบบ
-          </button>
-        </div>
-      </header>
-
       {/* ─── Filters ─── */}
       <div className="flex flex-col sm:flex-row gap-4 mb-4 sm:mb-8 font-sans">
         <input
