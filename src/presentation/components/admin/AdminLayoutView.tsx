@@ -10,7 +10,7 @@ import { AdminLayoutRetroTechMagazineTemplate } from './layout/AdminLayoutRetroT
 
 function AdminLayoutModalContainer({ children, template }: { children: ReactNode, template: string }) {
   const { isLogoutModalOpen, setIsLogoutModalOpen } = useAdminLayoutStore();
-  const { handleLogout } = useAdminLayoutPresenter();
+  const [, { handleLogout }] = useAdminLayoutPresenter();
 
   return (
     <>
@@ -114,10 +114,10 @@ interface AdminLayoutViewProps {
 }
 
 export function AdminLayoutView({ children }: AdminLayoutViewProps) {
-  const presenter = useAdminLayoutPresenter();
+  const [state, actions] = useAdminLayoutPresenter();
 
   // ─── Auth checking spinner ───
-  if (presenter.authChecking) {
+  if (state.authChecking) {
     return (
       <div className="flex-1 flex items-center justify-center h-screen w-full bg-background">
         <div className="text-center">
@@ -129,23 +129,23 @@ export function AdminLayoutView({ children }: AdminLayoutViewProps) {
   }
 
   // ─── Auth Gate ───
-  if (!presenter.isAuthenticated) {
+  if (!state.isAuthenticated) {
     return (
       <div className="h-screen w-full bg-background">
-        <LoginGate onLogin={presenter.handleLogin} />
+        <LoginGate onLogin={actions.handleLogin} />
       </div>
     );
   }
 
   return (
-    <AdminLayoutModalContainer template={presenter.template}>
-      {presenter.template === 'retroTechMagazine' && (
+    <AdminLayoutModalContainer template={state.template}>
+      {state.template === 'retroTechMagazine' && (
         <AdminLayoutRetroTechMagazineTemplate>{children}</AdminLayoutRetroTechMagazineTemplate>
       )}
-      {presenter.template === 'editorial' && (
+      {state.template === 'editorial' && (
         <AdminLayoutEditorialTemplate>{children}</AdminLayoutEditorialTemplate>
       )}
-      {presenter.template === 'classic' && (
+      {state.template === 'classic' && (
         <AdminLayoutClassicTemplate>{children}</AdminLayoutClassicTemplate>
       )}
     </AdminLayoutModalContainer>

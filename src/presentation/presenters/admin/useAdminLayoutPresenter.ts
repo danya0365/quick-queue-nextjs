@@ -1,43 +1,58 @@
+import { ApiAuthRepository } from '@/src/infrastructure/repositories/api/ApiAuthRepository';
 import { useAdminLayoutStore } from '@/src/presentation/hooks/useAdminLayoutStore';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { AdminLayoutPresenter } from './AdminLayoutPresenter';
 
-export function useAdminLayoutPresenter() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authChecking, setAuthChecking] = useState(true);
+export interface AdminLayoutState {
+  template: string;
+  isAuthenticated: boolean;
+  authChecking: boolean;
+}
+
+export interface AdminLayoutActions {
+  handleLogin: () => void;
+  handleLogout: () => Promise<void>;
+  checkSession: () => Promise<void>;
+}
+
+export function useAdminLayoutPresenter(): [AdminLayoutState, AdminLayoutActions] {
   const { template } = useTemplate();
 
-  useEffect(() => {
-    async function checkSession() {
-      try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-          setIsAuthenticated(true);
-        }
-      } catch {
-        // No session
-      } finally {
-        setAuthChecking(false);
-      }
-    }
-    checkSession();
+  const presenter = useMemo(() => {
+    return new AdminLayoutPresenter(new ApiAuthRepository());
   }, []);
 
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    setIsAuthenticated(false);
-    useAdminLayoutStore.getState().setIsLogoutModalOpen(false);
+  const [viewModel, setViewModel] = useState(presenter.getInitialViewModel());
+
+  useEffect(() => {
+    presenter.bind((newState) => {
+      setViewModel(newState);
+    });
+  }, [presenter]);
+
+  const actions: AdminLayoutActions = {
+    checkSession: async () => {
+      await presenter.checkSession();
+    },
+    handleLogout: async () => {
+      await presenter.logout();
+      useAdminLayoutStore.getState().setIsLogoutModalOpen(false);
+    },
+    handleLogin: () => {
+      presenter.setAuthenticated(true);
+    },
   };
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
+  useEffect(() => {
+    actions.checkSession();
+  }, [presenter]);
 
-  return {
+  const state: AdminLayoutState = {
     template,
-    isAuthenticated,
-    authChecking,
-    handleLogin,
-    handleLogout,
+    isAuthenticated: viewModel.isAuthenticated,
+    authChecking: viewModel.authChecking,
   };
+
+  return [state, actions];
 }

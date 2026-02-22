@@ -4,7 +4,7 @@ import { AdminSkeleton } from '@/src/presentation/components/admin/AdminSkeleton
 import { RejectReasonModal } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { usePendingRequestsPresenter } from '@/src/presentation/presenters/admin/usePendingRequestsPresenter';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Templates
 import { PendingRequestsClassicTemplate } from '@/src/presentation/components/admin/templates/PendingRequestsClassicTemplate';
@@ -49,10 +49,14 @@ export function PendingRequestsView() {
     actions.loadData(1, 10);
   }, []);
 
+  const isFirstLoad = useRef(true);
 
+  if (!state.loading) {
+    isFirstLoad.current = false;
+  }
 
   // Loading
-  if (state.loading && viewModel.requests.length === 0) {
+  if (state.loading && isFirstLoad.current) {
     return <AdminSkeleton />;
   }
 
