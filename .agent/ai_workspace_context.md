@@ -104,7 +104,10 @@ graph TB
 - **Queue Item Detail Modal** — คลิกรายการคิวเพื่อดูรายละเอียด
 
 ### 3. ระบบ Template หลายรูปแบบ (Multi-Template System)
-- **3 Templates**: Classic, Editorial, RetroTechMagazine
+- **3 Templates Mood & Tone**:
+  1. **Classic Mode**: เน้นความทันสมัย สะอาดตา ใช้งานง่าย (Modern UI / Apple-like) ใช้ความโค้งมน (rounded corners), แสงเงาที่นุ่มนวล (soft shadows), และ Glassmorphism เข้ากับสี Primary/Accent ที่เป็นมิตร
+  2. **Editorial Mode**: เน้นความเรียบหรู คอนทราสต์จัดจ้าน อารมณ์นิตยสาร (Minimalist / Brutalism) ใช้โทนสีขาว-ดำเป็นหลัก, ขอบเส้นที่คมชัดและหนา (thick dark borders), การผสมผสานระหว่างฟอนต์ Serif (หัวเรื่อง) และ Sans-serif (เนื้อหา) แบบตัวหนา
+  3. **RetroTechMagazine Mode**: สไตล์ Y2K หรือ Cyberpunk ยุค 90s/00s ใช้สีสะท้อนแสง (Neon/Cyber: ขาว, ดำ, Cyan, Magenta, Lime Green), ฟอนต์ Mono, กรอบสี่เหลี่ยมแข็งๆ พร้อม Hard Shadows (solid color offset), องค์ประกอบ UI แนว Terminal/Console
 - **สลับได้ทันที** ผ่าน TemplateSwitcher (ใช้ Zustand persist ลง localStorage)
 - **ทุก component มีเวอร์ชันของแต่ละ Template** — แยก file ชัดเจน เช่น `HomeClassicTemplate.tsx`, `HomeEditorialTemplate.tsx`, `HomeRetroTechMagazineTemplate.tsx`
 
