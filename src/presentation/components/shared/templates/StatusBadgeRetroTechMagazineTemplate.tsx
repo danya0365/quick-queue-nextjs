@@ -3,7 +3,7 @@ import { animated, useSpring } from 'react-spring';
 
 export interface StatusBadgeRetroTechMagazineTemplateProps {
   label: string;
-  icon?: string;
+  icon?: React.ReactNode;
   colorClass?: string;
   bgClass?: string;
   pulsing?: boolean;

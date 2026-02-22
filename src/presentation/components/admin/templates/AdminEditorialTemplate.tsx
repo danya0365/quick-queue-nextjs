@@ -1,6 +1,12 @@
 import { PendingRequestsSection } from '@/src/presentation/components/admin/PendingRequestsSection';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 
+// Widgets
+import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/widgets/PerformanceInsightsWidget';
+import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
+import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
+import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
+
 export interface AdminEditorialTemplateProps {
   state: AdminPresenterState;
   actions: AdminPresenterActions;
@@ -56,6 +62,22 @@ export function AdminEditorialTemplate({
               <div className="text-[10px] sm:text-sm font-black tracking-widest opacity-60 group-hover:opacity-100">ยกเลิก</div>
               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1 sm:mt-2 text-black/50 group-hover:text-white">{stats?.cancelledItems || 0}</div>
             </div>
+          </div>
+        </section>
+
+        {/* ─── DASHBOARD WIDGETS ─── */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px]">
+            <ServiceTypeBreakdown stats={stats} variant="editorial" />
+          </div>
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px]">
+            <PerformanceInsightsWidget performance={viewModel.performance} variant="editorial" />
+          </div>
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] overflow-hidden lg:col-span-2">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="editorial" />
+          </div>
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] lg:col-span-4">
+            <QuickActionsWidget variant="editorial" />
           </div>
         </section>
 

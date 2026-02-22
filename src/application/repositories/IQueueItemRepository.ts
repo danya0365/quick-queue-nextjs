@@ -6,6 +6,7 @@
 
 import {
     CreateQueueItemData,
+    PerformanceInsights,
     QueueItem,
     QueueStats,
     UpdateQueueItemData,
@@ -53,6 +54,16 @@ export interface IQueueItemRepository {
    * Get queue statistics
    */
   getStats(): Promise<QueueStats>;
+
+  /**
+   * Get recent activity
+   */
+  getRecentActivity(limit: number): Promise<QueueItem[]>;
+
+  /**
+   * Get performance insights
+   */
+  getPerformanceInsights(): Promise<PerformanceInsights>;
 
   /**
    * Get the next queue number

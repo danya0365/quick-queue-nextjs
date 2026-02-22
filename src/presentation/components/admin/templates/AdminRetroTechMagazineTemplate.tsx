@@ -2,6 +2,12 @@ import { PendingRequestsSection } from '@/src/presentation/components/admin/Pend
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { animated, useSpring } from 'react-spring';
 
+// Widgets
+import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/widgets/PerformanceInsightsWidget';
+import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
+import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
+import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
+
 export interface AdminRetroTechMagazineTemplateProps {
   state: AdminPresenterState;
   actions: AdminPresenterActions;
@@ -84,6 +90,26 @@ export function AdminRetroTechMagazineTemplate({
         onApprove={actions.approveRequest}
         onReject={actions.openRejectModal}
       />
+
+      {/* ─── DASHBOARD WIDGETS ─── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 w-full max-w-7xl mx-auto mt-4 sm:mt-8 pb-8">
+        <RetroWidgetBox color="#FFF000" label="สัดส่วนคิว">
+          <ServiceTypeBreakdown stats={stats} variant="retro" />
+        </RetroWidgetBox>
+        <RetroWidgetBox color="#00FFFF" label="เวลาเฉลี่ย">
+          <PerformanceInsightsWidget performance={viewModel.performance} variant="retro" />
+        </RetroWidgetBox>
+        <div className="lg:col-span-2">
+          <RetroWidgetBox color="#FF00FF" label="ความเคลื่อนไหวล่าสุด" textColor="text-white">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="retro" />
+          </RetroWidgetBox>
+        </div>
+        <div className="lg:col-span-4">
+          <RetroWidgetBox color="#39FF14" label="เมนูลัด">
+            <QuickActionsWidget variant="retro" />
+          </RetroWidgetBox>
+        </div>
+      </div>
       </div>
       
       {/* ─── Error Toast ─── */}
@@ -106,6 +132,17 @@ function RetroStatBox({ label, value, color, textColor = 'text-black' }: { label
     <div className={`border-[3px] sm:border-4 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] py-1.5 px-2 sm:p-3 flex flex-col items-center justify-center transform hover:scale-105 transition-transform ${textColor}`} style={{ backgroundColor: color }}>
       <div className="text-2xl sm:text-4xl font-black tabular-nums leading-none mb-1 sm:mb-0">{value}</div>
       <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest sm:mt-1 bg-black text-white px-1 leading-none py-0.5">{label}</div>
+    </div>
+  );
+}
+
+function RetroWidgetBox({ children, color, label, textColor = 'text-black' }: { children: React.ReactNode; color: string; label: string; textColor?: string }) {
+  return (
+    <div className={`border-[3px] sm:border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] p-4 sm:p-5 flex flex-col h-full ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black text-white px-2 py-1 mb-4 self-start">{label}</div>
+      <div className="flex-1 bg-white/20 p-2 sm:p-4 rounded border-2 border-black/20">
+        {children}
+      </div>
     </div>
   );
 }
