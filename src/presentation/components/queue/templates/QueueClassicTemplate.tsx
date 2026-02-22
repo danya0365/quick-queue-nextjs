@@ -4,6 +4,7 @@ import { FadeInSection } from '@/src/presentation/components/shared/FadeInSectio
 import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { QueueNumberBadge, StatusBadge } from '@/src/presentation/components/shared/StatusBadge';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
+import { CheckCircle2, ClipboardList, Clock, Hourglass, RefreshCw, Timer, Volume2, VolumeX } from 'lucide-react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface QueueClassicTemplateProps {
@@ -46,7 +47,7 @@ export function QueueClassicTemplate({
       <FadeInSection delay={0} direction="up">
         <div className="flex items-center justify-between">
           <h1 className="text-foreground text-lg sm:text-2xl font-bold flex items-center gap-2">
-            📋 สถานะคิว
+            <ClipboardList className="w-5 h-5 sm:w-6 sm:h-6" /> สถานะคิว
           </h1>
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Sound Toggle */}
@@ -59,14 +60,14 @@ export function QueueClassicTemplate({
               }`}
               title={soundEnabled ? 'ปิดเสียงประกาศ' : 'เปิดเสียงประกาศ'}
             >
-              <span className="mr-1">{soundEnabled ? '🔊' : '🔇'}</span>
+              <span className="mr-1">{soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}</span>
               <span className="hidden sm:inline">{soundEnabled ? 'เสียงเปิด' : 'เสียงปิด'}</span>
             </button>
             <span className="text-muted text-xs hidden sm:inline">
               อัพเดทอัตโนมัติใน {refreshCountdown}s
             </span>
-            <div className="text-xs text-muted bg-surface-alt px-3 py-1.5 rounded-full border border-border">
-              🕐 {currentTime}
+            <div className="text-xs text-muted bg-surface-alt px-3 py-1.5 rounded-full border border-border flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" /> {currentTime}
             </div>
           </div>
         </div>
@@ -94,13 +95,13 @@ export function QueueClassicTemplate({
 
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-3 sm:mt-5">
             <div className="flex items-center gap-2 text-sm text-muted">
-              <span>⏳</span>
+              <span><Hourglass className="w-4 h-4" /></span>
               <span>
                 รอคิวอีก <strong className="text-foreground">{waitingItems.length}</strong> คิว
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted">
-              <span>⏱</span>
+              <span><Timer className="w-4 h-4" /></span>
               <span>
                 ประมาณ <strong className="text-foreground">{waitTime}</strong> นาที
               </span>
@@ -116,7 +117,7 @@ export function QueueClassicTemplate({
             <AnimatedCounter
               value={stats?.waitingItems || 0}
               label="รอคิว"
-              icon={<span>⏳</span>}
+              icon={<Hourglass className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-amber-500"
             />
           </GlassCard>
@@ -124,7 +125,7 @@ export function QueueClassicTemplate({
             <AnimatedCounter
               value={stats?.inProgressItems || 0}
               label="กำลังให้บริการ"
-              icon={<span>🔄</span>}
+              icon={<RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-blue-500"
             />
           </GlassCard>
@@ -132,7 +133,7 @@ export function QueueClassicTemplate({
             <AnimatedCounter
               value={stats?.completedItems || 0}
               label="เสร็จแล้ว"
-              icon={<span>✅</span>}
+              icon={<CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />}
               color="text-emerald-500"
             />
           </GlassCard>
@@ -237,7 +238,7 @@ export function QueueClassicTemplate({
           {/* Waiting */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(245, 158, 11, 0.1)">
             <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-              <span>⏳</span>
+              <Hourglass className="w-4 h-4" />
               <h3 className="text-foreground font-semibold text-sm">รอคิว</h3>
               <span className="ml-auto text-xs bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full font-medium">
                 {waitingItems.length}
@@ -257,7 +258,7 @@ export function QueueClassicTemplate({
           {/* Completed */}
           <GlassCard className="flex flex-col overflow-hidden" glowColor="rgba(16, 185, 129, 0.1)">
             <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-              <span>✅</span>
+              <CheckCircle2 className="w-4 h-4" />
               <h3 className="text-foreground font-semibold text-sm">เสร็จแล้ว</h3>
               <span className="ml-auto text-xs bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full font-medium">
                 {completedItems.length}

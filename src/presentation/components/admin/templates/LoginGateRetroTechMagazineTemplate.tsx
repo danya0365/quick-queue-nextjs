@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
 
@@ -101,8 +102,8 @@ export function LoginGateRetroTechMagazineTemplate({
               </div>
 
               {error && (
-                <div className="text-white font-bold bg-[#FF00FF] border-2 border-white px-4 py-3 uppercase text-sm animate-pulse tracking-widest text-center shadow-[4px_4px_0_0_rgba(255,255,255,1)]">
-                  ⚠ ข้อผิดพลาด: {error}
+                <div className="text-white font-bold bg-[#FF00FF] border-2 border-white px-4 py-3 uppercase text-sm animate-pulse tracking-widest text-center shadow-[4px_4px_0_0_rgba(255,255,255,1)] flex items-center justify-center gap-2">
+                  <AlertTriangle className="w-4 h-4 shrink-0" /> ข้อผิดพลาด: {error}
                 </div>
               )}
 

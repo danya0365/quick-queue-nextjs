@@ -12,6 +12,7 @@ import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert'
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
+import { AlertTriangle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSpring } from 'react-spring';
 
@@ -82,7 +83,7 @@ export function QueueView({ initialViewModel }: QueueViewProps) {
     return (
       <div className="flex-1 flex items-center justify-center h-full">
         <div className="text-center">
-          <div className="text-5xl mb-4">⚠️</div>
+          <div className="text-5xl mb-4 text-red-500 flex justify-center"><AlertTriangle className="w-16 h-16" /></div>
           <p className="text-red-500 font-medium mb-2">เกิดข้อผิดพลาด</p>
           <p className="text-muted text-sm mb-4">{state.error}</p>
           <button

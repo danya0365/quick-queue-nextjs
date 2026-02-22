@@ -1,15 +1,19 @@
 /**
  * AdminPresenter
- * Handles business logic for the Admin page (CRUD + Auth gate)
+ * Handles business logic for the Admin page (CRUD + Auth gate + Queue Requests)
  * Receives repository via dependency injection
  */
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
+import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
 import {
   CreateQueueItemData,
+  PerformanceInsights,
   QueueItem,
+  QueueRequest,
   QueueStats,
   QueueStatus,
+  ShopConfig,
   UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
@@ -18,20 +22,60 @@ export interface AdminViewModel {
   items: QueueItem[];
   stats: QueueStats;
   nextQueueNumber: number;
-  // Pagination info
   totalItems: number;
   currentPage: number;
   perPage: number;
   totalPages: number;
+  shopConfig: ShopConfig;
+  isLoading: boolean;
+  error: string | null;
+  pendingRequests: QueueRequest[];
+  pendingCount: number;
+  recentActivity?: QueueItem[];
+  performance?: PerformanceInsights;
 }
 
 export class AdminPresenter {
-  constructor(private readonly repository: IQueueItemRepository) {}
+  constructor(
+    private readonly repository: IQueueItemRepository,
+    private readonly requestRepository?: IQueueRequestRepository,
+  ) {}
 
   /**
-   * Get admin view model (paginated)
+   * Get dashboard overview data (Stats + Pending Requests only)
    */
-  async getViewModel(
+  async loadDashboardData(): Promise<Omit<AdminViewModel, 'items' | 'totalItems' | 'currentPage' | 'perPage' | 'totalPages'>> {
+    try {
+      const [stats, pendingRequests, pendingCount, recentActivity, performance] = await Promise.all([
+        this.repository.getStats(),
+        this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
+        this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
+        this.repository.getRecentActivity(5),
+        this.repository.getPerformanceInsights(),
+      ]);
+
+      return {
+        stats,
+        // Empty defaults for pagination since it's not used in dashboard
+        nextQueueNumber: stats.totalItems + 1, // Approximation, not critical for dashboard
+        shopConfig: this.getDefaultShopConfig(),
+        isLoading: false,
+        error: null,
+        pendingRequests,
+        pendingCount,
+        recentActivity,
+        performance,
+      };
+    } catch (error) {
+      console.error('Error getting dashboard data:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get dedicated queues page data (Paginated table + Stats)
+   */
+  async loadQueuesData(
     page: number = 1,
     perPage: number = 20,
     status?: string
@@ -51,11 +95,28 @@ export class AdminPresenter {
         currentPage: paginated.page,
         perPage: paginated.perPage,
         totalPages: Math.ceil(paginated.total / paginated.perPage),
+        shopConfig: this.getDefaultShopConfig(),
+        isLoading: false,
+        error: null,
+        pendingRequests: [], // Not needed on queues list page
+        pendingCount: 0,
       };
     } catch (error) {
-      console.error('Error getting admin view model:', error);
+      console.error('Error getting queues listing data:', error);
       throw error;
     }
+  }
+
+  private getDefaultShopConfig(): ShopConfig {
+    return {
+      shopName: 'Quick Queue',
+      shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
+      maxQueuePerDay: 100,
+      operatingHours: {
+        open: '09:00',
+        close: '18:00',
+      }
+    };
   }
 
   /**
@@ -115,5 +176,21 @@ export class AdminPresenter {
    */
   async markCancelled(id: string): Promise<QueueItem> {
     return await this.repository.update(id, { status: QueueStatus.CANCELLED });
+  }
+
+  /**
+   * Approve a queue request
+   */
+  async approveRequest(id: string): Promise<QueueRequest> {
+    if (!this.requestRepository) throw new Error('Request repository not configured');
+    return await this.requestRepository.approve(id);
+  }
+
+  /**
+   * Reject a queue request
+   */
+  async rejectRequest(id: string, reason: string): Promise<QueueRequest> {
+    if (!this.requestRepository) throw new Error('Request repository not configured');
+    return await this.requestRepository.reject(id, reason);
   }
 }

@@ -9,14 +9,15 @@
 'use client';
 
 import {
-  IQueueItemRepository,
-  PaginatedResult,
+    IQueueItemRepository,
+    PaginatedResult,
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
-  CreateQueueItemData,
-  QueueItem,
-  QueueStats,
-  UpdateQueueItemData,
+    CreateQueueItemData,
+    PerformanceInsights,
+    QueueItem,
+    QueueStats,
+    UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -124,6 +125,26 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || 'ไม่สามารถโหลดสถิติได้');
+    }
+
+    return res.json();
+  }
+
+  async getRecentActivity(limit: number): Promise<QueueItem[]> {
+    const res = await fetch(`${this.baseUrl}/recent-activity?limit=${limit}`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดความเคลื่อนไหวได้');
+    }
+
+    return res.json();
+  }
+
+  async getPerformanceInsights(): Promise<PerformanceInsights> {
+    const res = await fetch(`${this.baseUrl}/performance`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดสถิติประสิทธิภาพได้');
     }
 
     return res.json();

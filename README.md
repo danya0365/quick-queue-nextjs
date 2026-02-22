@@ -4,7 +4,7 @@
     A robust, edge-ready Queue Management System built with Clean Architecture and multi-storefront Template Support.
   </p>
   <p>
-    <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js" alt="Next.js"></a>
+    <a href="https://nextjs.org"><img src="https://img.shields.io/badge/Next.js-16.1-black?style=flat-square&logo=next.js" alt="Next.js"></a>
     <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square&logo=typescript" alt="TypeScript"></a>
     <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-38bdf8?style=flat-square&logo=tailwind-css" alt="Tailwind CSS"></a>
     <a href="https://zustand-demo.pmnd.rs/"><img src="https://img.shields.io/badge/State_Management-Zustand-orange?style=flat-square" alt="Zustand"></a>
@@ -17,9 +17,9 @@
 
 ## 📌 Overview
 
-Quick Queue is a modern, full-stack queue management application designed for high scalability, maintainability, and visual excellence. Built on **Next.js 15 (App Router)** and architected around **Clean Architecture** patterns, the system ensures that enterprise business rules remain strictly decoupled from UI and framework-specific implementations.
+Quick Queue is a modern, full-stack queue management application designed for high scalability, maintainability, and visual excellence. Built on **Next.js 16.1 (App Router)** and architected around **Clean Architecture** patterns, the system ensures that enterprise business rules remain strictly decoupled from UI and framework-specific implementations.
 
-The app features a rich, multi-tenant UI system allowing seamless switching between layout templates (such as a "Classic" clean UI and a bold "Retro Tech Magazine" aesthetic). This is powered by **Zustand** for state persistence (handling both **Templates** and **Color Modes**) and **React Spring** for buttery-smooth, physics-based UI animations.
+The app features a rich, multi-tenant UI system allowing seamless switching between 3 distinct layout templates (`Classic`, `Editorial`, and `RetroTechMagazine`). This is powered by **Zustand** for state persistence (handling both **Templates** and **Color Modes**) and **React Spring** for buttery-smooth, physics-based UI animations.
 
 ## 📖 Table of Contents
 
@@ -36,11 +36,11 @@ The app features a rich, multi-tenant UI system allowing seamless switching betw
 
 Our technology choices are focused on performance, maintainability, and providing a premium user experience:
 
-- **Core**: Next.js 15 (App Router), React 19, TypeScript
-- **Styling**: Tailwind CSS (Utility-first, Custom Color Tokens, Glassmorphism, Responsive UI)
-- **State Management**: Zustand (Lightweight, fast, unopinionated state management with `localstorage` persistence for templates and color modes)
-- **Animations**: React Spring (Physics-based, fluid micro-animations for Buttons, Modals, and Transitions)
-- **Database Layer**: SQLite (`better-sqlite3` for local dev) & Turso / libSQL (edge-ready production)
+- **Core**: Next.js 16.1 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4 (Utility-first, Custom Color Tokens, Glassmorphism, Responsive UI)
+- **State Management**: Zustand v5 (Lightweight, fast, unopinionated state management with `localstorage` persistence for templates and color modes)
+- **Animations**: React Spring v10 (Physics-based, fluid micro-animations for Buttons, Modals, and Transitions)
+- **Database Layer**: `@libsql/client` (Local SQLite for dev & Turso Cloud for edge-ready production)
 
 ---
 
@@ -54,13 +54,13 @@ This repository strictly adheres to **Clean Architecture** and SOLID principles.
 4. **Presentation Layer**: 
    - **Views**: The main container components (`AdminView`, `HomeView`).
    - **Presenters**: Custom hooks that connect Views to UseCases (handling internal component state and logic).
-   - **Components & Layouts**: Highly decoupled UI elements separated into `ClassicLayout` and `RetroTechMagazineLayout` allowing hot-swapping of complete UI Templates based on the active config.
+   - **Components & Templates**: Highly decoupled UI elements separated into `ClassicTemplate`, `EditorialTemplate`, and `RetroTechMagazineTemplate` allowing hot-swapping of complete UI Templates based on the active config.
 
 ---
 
 ## ✨ Key Features
 
-- **Storefront Template System**: Built-in global layout switcher managed by **Zustand**. Instantly swap the entire application between a clean, modern glassmorphic template (`classic`) and a bold, typography-heavy aesthetic (`retroTechMagazine`).
+- **Storefront Template System**: Built-in global layout switcher managed by **Zustand**. Instantly swap the entire application between a clean modern interface (`classic`), an elegant minimalist magazine style (`editorial`), and a bold cyberpunk/Y2K aesthetic (`retroTechMagazine`).
 - **Color Mode Support**: Full support for toggling between `Light` and `Dark` color schemes.
 - **Physics-Based Animations**: Every interaction feels alive. Using **React Spring**, the app abandons linear CSS transitions for real physics (springs, tension, friction) applied to modals, buttons, and counters.
 - **Decoupled System**: Business logic is isolated from Next.js. Migrating to another framework or a microservices backend requires zero changes to the Domain and Application layers.
@@ -68,6 +68,7 @@ This repository strictly adheres to **Clean Architecture** and SOLID principles.
 - **Dual-Layer Security**: 
   - **Edge Proxy**: Next.js Middleware blocks unauthenticated mutations before they reach the server.
   - **Single Source of Truth**: API routes strictly validate HTTP-Only session cookies against the database.
+- **Online Queue Request Flow**: Customers can request a queue ticket online, complete dynamic math challenges (Bot mitigation), and track their request status via a randomly generated 6-character code entirely decoupled from internal IDs.
 
 ---
 

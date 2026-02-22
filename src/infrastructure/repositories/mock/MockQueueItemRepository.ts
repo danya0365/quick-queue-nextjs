@@ -10,6 +10,7 @@ import {
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
     CreateQueueItemData,
+    PerformanceInsights,
     QueueItem,
     QueueStats,
     QueueStatus,
@@ -188,6 +189,24 @@ export class MockQueueItemRepository implements IQueueItemRepository {
       inProgressItems,
       completedItems,
       cancelledItems,
+      generalItems: this.items.filter((i) => i.serviceType === ServiceType.GENERAL).length,
+      expressItems: this.items.filter((i) => i.serviceType === ServiceType.EXPRESS).length,
+      vipItems: this.items.filter((i) => i.serviceType === ServiceType.VIP).length,
+    };
+  }
+
+  async getRecentActivity(limit: number): Promise<QueueItem[]> {
+    await this.delay(100);
+    return [...this.items]
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, limit);
+  }
+
+  async getPerformanceInsights(): Promise<PerformanceInsights> {
+    await this.delay(100);
+    return {
+      averageWaitTimeMinutes: 12,
+      averageServiceTimeMinutes: 25,
     };
   }
 

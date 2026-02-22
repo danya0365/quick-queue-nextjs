@@ -1,5 +1,6 @@
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
+import { Edit3 } from 'lucide-react';
 import { animated, SpringValue } from 'react-spring';
 
 export interface HomeRetroTechMagazineTemplateProps {
@@ -12,6 +13,7 @@ export interface HomeRetroTechMagazineTemplateProps {
   setShowQR: (show: boolean) => void;
   bigNumberSpring: { opacity: SpringValue<number>; transform: SpringValue<string> };
   onItemClick: (item: QueueItem) => void;
+  onRequestQueue: () => void;
 }
 
 export function HomeRetroTechMagazineTemplate({
@@ -23,6 +25,7 @@ export function HomeRetroTechMagazineTemplate({
   setShowQR,
   bigNumberSpring,
   onItemClick,
+  onRequestQueue,
 }: HomeRetroTechMagazineTemplateProps) {
   const stats = viewModel.stats;
   const currentQ = viewModel.currentQueueNumber || 0;
@@ -72,9 +75,15 @@ export function HomeRetroTechMagazineTemplate({
               </button>
               <button
                 onClick={() => setShowQR(true)}
-                className="px-4 py-2 bg-[#00FFFF] hover:bg-[#FF00FF] hover:text-white transition-colors text-black"
+                className="px-4 py-2 bg-[#00FFFF] hover:bg-[#FF00FF] hover:text-white transition-colors text-black border-r-4 border-black"
               >
                 ดึงข้อมูลคิว
+              </button>
+              <button
+                onClick={onRequestQueue}
+                className="px-4 py-2 bg-[#39FF14] hover:bg-[#FF00FF] hover:text-white transition-colors text-black flex items-center gap-2"
+              >
+                <Edit3 className="w-5 h-5" /> ขอบัตรคิว
               </button>
             </div>
           </div>

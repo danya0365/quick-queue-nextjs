@@ -30,6 +30,9 @@ export function MainEditorialTemplate({ children }: MainEditorialTemplateProps) 
           <Link href="/queue" className="px-2 sm:px-10 py-1 sm:py-3 border-r-[2px] sm:border-r-[6px] border-black hover:bg-black hover:text-white transition-colors flex items-center justify-center">
             <span>MONITOR</span>
           </Link>
+          <Link href="/track" className="px-2 sm:px-10 py-1 sm:py-3 border-r-[2px] sm:border-r-[6px] border-black hover:bg-black hover:text-white transition-colors flex items-center justify-center">
+            <span>TRACK</span>
+          </Link>
           <Link href="/admin" className="px-2 sm:px-10 py-1 sm:py-3 hover:bg-black hover:text-white transition-colors flex items-center justify-center">
             <span>ADMIN</span>
           </Link>

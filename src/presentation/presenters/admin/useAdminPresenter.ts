@@ -17,6 +17,9 @@ export interface AdminPresenterState {
   // Pagination
   currentPage: number;
   statusFilter: string;
+  // Queue Request modals
+  isRejectModalOpen: boolean;
+  selectedRequestId: string | null;
 }
 
 export interface AdminPresenterActions {
@@ -40,12 +43,18 @@ export interface AdminPresenterActions {
   // Pagination
   goToPage: (page: number) => void;
   setStatusFilter: (status: string) => void;
+  // Queue Request actions
+  approveRequest: (id: string) => Promise<void>;
+  openRejectModal: (requestId: string) => void;
+  closeRejectModal: () => void;
+  rejectRequest: (id: string, reason: string) => Promise<void>;
 }
 
 const PER_PAGE = 20;
 
 export function useAdminPresenter(
   initialViewModel?: AdminViewModel,
+  mode: 'dashboard' | 'queues' = 'queues',
   presenterOverride?: AdminPresenter
 ): [AdminPresenterState, AdminPresenterActions] {
   const presenter = useMemo(
@@ -71,6 +80,10 @@ export function useAdminPresenter(
   const [isClearAllModalOpen, setIsClearAllModalOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
+  // Queue request modal states
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
+
   // Use refs to avoid stale closures
   const currentPageRef = useRef(currentPage);
   const statusFilterRef = useRef(statusFilter);
@@ -88,7 +101,13 @@ export function useAdminPresenter(
     const s = status ?? statusFilterRef.current;
 
     try {
-      const newViewModel = await presenter.getViewModel(p, PER_PAGE, s === 'all' ? undefined : s);
+      let newViewModel: AdminViewModel;
+      if (mode === 'dashboard') {
+        newViewModel = await presenter.loadDashboardData() as AdminViewModel;
+      } else {
+        newViewModel = await presenter.loadQueuesData(p, PER_PAGE, s === 'all' ? undefined : s);
+      }
+      
       if (isMountedRef.current) {
         setViewModel(newViewModel);
       }
@@ -248,6 +267,43 @@ export function useAdminPresenter(
     setError(null);
   }, []);
 
+  // Queue request actions
+  const approveRequest = useCallback(async (id: string) => {
+    setError(null);
+    try {
+      await presenter.approveRequest(id);
+      await loadData(undefined, undefined, true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'ไม่สามารถอนุมัติคำขอได้';
+      setError(message);
+    }
+  }, [presenter, loadData]);
+
+  const openRejectModal = useCallback((requestId: string) => {
+    setSelectedRequestId(requestId);
+    setIsRejectModalOpen(true);
+    setError(null);
+  }, []);
+
+  const closeRejectModal = useCallback(() => {
+    setSelectedRequestId(null);
+    setIsRejectModalOpen(false);
+    setError(null);
+  }, []);
+
+  const rejectRequest = useCallback(async (id: string, reason: string) => {
+    setError(null);
+    try {
+      await presenter.rejectRequest(id, reason);
+      setSelectedRequestId(null);
+      setIsRejectModalOpen(false);
+      await loadData(undefined, undefined, true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'ไม่สามารถปฏิเสธคำขอได้';
+      setError(message);
+    }
+  }, [presenter, loadData]);
+
   // Initial load
   useEffect(() => {
     loadData(1, 'all', false);
@@ -283,6 +339,8 @@ export function useAdminPresenter(
       selectedItemId,
       currentPage,
       statusFilter,
+      isRejectModalOpen,
+      selectedRequestId,
     },
     {
       loadData,
@@ -304,6 +362,10 @@ export function useAdminPresenter(
       setError,
       goToPage,
       setStatusFilter,
+      approveRequest,
+      openRejectModal,
+      closeRejectModal,
+      rejectRequest,
     },
   ];
 }

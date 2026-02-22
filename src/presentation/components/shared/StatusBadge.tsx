@@ -8,7 +8,7 @@ import { StatusBadgeRetroTechMagazineTemplate } from './templates/StatusBadgeRet
 
 interface StatusBadgeProps {
   label: string;
-  icon?: string;
+  icon?: React.ReactNode;
   colorClass?: string;
   bgClass?: string;
   pulsing?: boolean;

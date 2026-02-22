@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import { animated } from 'react-spring';
 
 export interface ClearConfirmRetroTechMagazineTemplateProps {
@@ -27,7 +28,7 @@ export function ClearConfirmRetroTechMagazineTemplate({
       <div className="absolute bottom-0 left-0 w-3 h-3 bg-white"></div>
       <div className="absolute bottom-0 right-0 w-3 h-3 bg-white"></div>
 
-      <div className="text-6xl mb-6">☢️</div>
+      <div className="mb-6 flex justify-center text-white"><AlertTriangle className="w-16 h-16" /></div>
       <h2 className="text-white font-black text-2xl mb-4 uppercase tracking-widest">
         ล้างข้อมูลทั้งหมด?
       </h2>

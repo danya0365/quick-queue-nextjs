@@ -1,3 +1,4 @@
+import { Trash2 } from 'lucide-react';
 import { animated } from 'react-spring';
 
 export interface DeleteConfirmRetroTechMagazineTemplateProps {
@@ -32,7 +33,7 @@ export function DeleteConfirmRetroTechMagazineTemplate({
       <div className="absolute bottom-0 left-0 w-3 h-3 bg-white"></div>
       <div className="absolute bottom-0 right-0 w-3 h-3 bg-white"></div>
 
-      <div className="text-6xl mb-6">🗑️</div>
+      <div className="mb-6 flex justify-center text-white"><Trash2 className="w-16 h-16" /></div>
       <h2 className="text-white font-black text-2xl mb-2 uppercase tracking-widest">
         ลบทิ้ง?
       </h2>

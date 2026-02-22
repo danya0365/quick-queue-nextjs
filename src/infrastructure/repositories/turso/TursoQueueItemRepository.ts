@@ -5,16 +5,17 @@
  */
 
 import {
-  IQueueItemRepository,
-  PaginatedResult,
+    IQueueItemRepository,
+    PaginatedResult,
 } from '@/src/application/repositories/IQueueItemRepository';
 import {
-  CreateQueueItemData,
-  QueueItem,
-  QueueStats,
-  QueueStatus,
-  ServiceType,
-  UpdateQueueItemData,
+    CreateQueueItemData,
+    PerformanceInsights,
+    QueueItem,
+    QueueStats,
+    QueueStatus,
+    ServiceType,
+    UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { getTursoDatabase } from '@/src/infrastructure/database/turso';
 import { Row } from '@libsql/client';
@@ -175,7 +176,10 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
         SUM(CASE WHEN status = 'waiting' THEN 1 ELSE 0 END) as waitingItems,
         SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as inProgressItems,
         SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completedItems,
-        SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelledItems
+        SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelledItems,
+        SUM(CASE WHEN service_type = 'general' THEN 1 ELSE 0 END) as generalItems,
+        SUM(CASE WHEN service_type = 'express' THEN 1 ELSE 0 END) as expressItems,
+        SUM(CASE WHEN service_type = 'vip' THEN 1 ELSE 0 END) as vipItems
       FROM queue_items
     `);
 
@@ -187,6 +191,35 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
       inProgressItems: (row.inProgressItems as number) || 0,
       completedItems: (row.completedItems as number) || 0,
       cancelledItems: (row.cancelledItems as number) || 0,
+      generalItems: (row.generalItems as number) || 0,
+      expressItems: (row.expressItems as number) || 0,
+      vipItems: (row.vipItems as number) || 0,
+    };
+  }
+
+  async getRecentActivity(limit: number): Promise<QueueItem[]> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM queue_items ORDER BY updated_at DESC LIMIT ?',
+      args: [limit],
+    });
+    return result.rows.map(mapRowToQueueItem);
+  }
+
+  async getPerformanceInsights(): Promise<PerformanceInsights> {
+    const result = await this.db.execute(`
+      SELECT 
+        AVG(CASE WHEN status = 'in_progress' THEN (julianday(updated_at) - julianday(created_at)) * 24 * 60 ELSE NULL END) as avgWait,
+        AVG(CASE WHEN status = 'completed' THEN (julianday(updated_at) - julianday(created_at)) * 24 * 60 ELSE NULL END) as avgTotal
+      FROM queue_items
+    `);
+    const row = result.rows[0];
+    const avgWait = (row.avgWait as number) || 12; // fallback
+    const avgTotal = (row.avgTotal as number) || 25; // fallback
+    const avgService = Math.max(1, avgTotal - avgWait);
+
+    return {
+      averageWaitTimeMinutes: Math.round(avgWait),
+      averageServiceTimeMinutes: Math.round(avgService),
     };
   }
 
