@@ -1,4 +1,5 @@
 import { REQUEST_STATUS_CONFIG, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { CustomSelect } from '@/src/presentation/components/shared/CustomSelect';
 import { PendingRequestsViewModel } from '@/src/presentation/presenters/admin/PendingRequestsPresenter';
 import { CheckCircle2, Mailbox, XCircle } from 'lucide-react';
 
@@ -39,18 +40,20 @@ export function PendingRequestsClassicTemplate({
           onChange={(e) => actions.setSearch(e.target.value)}
           className="flex-1 px-4 py-2 sm:py-2.5 bg-surface border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-shadow"
         />
-        <select
+        <CustomSelect
           value={viewModel.serviceType}
-          onChange={(e) => actions.setServiceType(e.target.value)}
-          className="px-4 py-2 sm:py-2.5 bg-surface border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer transition-shadow"
-        >
-          <option value="all">ทุกบริการ</option>
-          {Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => (
-            <option key={key} value={key}>
-              {config.label}
-            </option>
-          ))}
-        </select>
+          onChange={(value) => actions.setServiceType(value)}
+          options={[
+            { value: 'all', label: 'ทุกบริการ' },
+            ...Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => ({
+              value: key,
+              label: config.label,
+              icon: config.icon
+            }))
+          ]}
+          className="w-full sm:w-[180px]"
+          triggerClassName="px-4 py-2 sm:py-2.5 bg-surface border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all hover:bg-surface-alt cursor-pointer"
+        />
       </div>
 
       {/* ─── Main Content ─── */}

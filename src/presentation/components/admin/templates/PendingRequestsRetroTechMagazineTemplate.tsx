@@ -1,4 +1,5 @@
 import { REQUEST_STATUS_CONFIG, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { CustomSelect } from '@/src/presentation/components/shared/CustomSelect';
 import { PendingRequestsViewModel } from '@/src/presentation/presenters/admin/PendingRequestsPresenter';
 
 interface PendingRequestsRetroTechMagazineTemplateProps {
@@ -37,18 +38,23 @@ export function PendingRequestsRetroTechMagazineTemplate({
           onChange={(e) => actions.setSearch(e.target.value)}
           className="flex-1 px-4 py-3 border-4 border-black text-sm font-bold uppercase focus:outline-none shadow-[4px_4px_0_0_rgba(0,0,0,1)] bg-white"
         />
-        <select
+        <CustomSelect
           value={viewModel.serviceType}
-          onChange={(e) => actions.setServiceType(e.target.value)}
-          className="px-4 py-3 border-4 border-black text-sm font-bold uppercase focus:outline-none cursor-pointer bg-white shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
-        >
-          <option value="all">ทุกบริการ (ALL)</option>
-          {Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => (
-            <option key={key} value={key}>
-              {config.label}
-            </option>
-          ))}
-        </select>
+          onChange={(value) => actions.setServiceType(value)}
+          options={[
+            { value: 'all', label: 'ทุกบริการ (ALL)' },
+            ...Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => ({
+              value: key,
+              label: config.label,
+              icon: config.icon
+            }))
+          ]}
+          className="w-full sm:w-[220px]"
+          triggerClassName="px-4 py-3 border-4 border-black text-sm font-bold uppercase focus:outline-none cursor-pointer bg-white shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all"
+          dropdownClassName="bg-[#00FFFF] border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] rounded-none mt-4 p-0"
+          itemClassName="text-black font-black uppercase hover:bg-black hover:text-[#00FFFF] rounded-none border-b-4 border-black last:border-b-0"
+          activeItemClassName="bg-[#FF00FF] text-white font-black uppercase rounded-none border-b-4 border-black last:border-b-0"
+        />
       </div>
 
       {/* ─── Main Content ─── */}

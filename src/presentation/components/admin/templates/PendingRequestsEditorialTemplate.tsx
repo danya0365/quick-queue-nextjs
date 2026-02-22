@@ -1,4 +1,5 @@
 import { REQUEST_STATUS_CONFIG, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { CustomSelect } from '@/src/presentation/components/shared/CustomSelect';
 import { PendingRequestsViewModel } from '@/src/presentation/presenters/admin/PendingRequestsPresenter';
 
 interface PendingRequestsEditorialTemplateProps {
@@ -37,18 +38,23 @@ export function PendingRequestsEditorialTemplate({
           onChange={(e) => actions.setSearch(e.target.value)}
           className="flex-1 px-4 py-3 border-[3px] border-black text-sm font-bold uppercase focus:outline-none"
         />
-        <select
+        <CustomSelect
           value={viewModel.serviceType}
-          onChange={(e) => actions.setServiceType(e.target.value)}
-          className="px-4 py-3 border-[3px] border-black text-sm font-bold uppercase focus:outline-none cursor-pointer bg-white"
-        >
-          <option value="all">ทุกบริการ (ALL)</option>
-          {Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => (
-            <option key={key} value={key}>
-              {config.label}
-            </option>
-          ))}
-        </select>
+          onChange={(value) => actions.setServiceType(value)}
+          options={[
+            { value: 'all', label: 'ทุกบริการ (ALL)' },
+            ...Object.entries(SERVICE_TYPE_CONFIG).map(([key, config]) => ({
+              value: key,
+              label: config.label,
+              icon: config.icon
+            }))
+          ]}
+          className="w-full sm:w-[220px]"
+          triggerClassName="px-4 py-3 border-[3px] border-black text-sm font-bold uppercase focus:outline-none cursor-pointer bg-white transition-colors hover:bg-gray-50"
+          dropdownClassName="bg-white border-[3px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] rounded-none"
+          itemClassName="text-black font-bold uppercase hover:bg-gray-100 rounded-none"
+          activeItemClassName="bg-black text-white font-bold uppercase rounded-none"
+        />
       </div>
 
       {/* ─── Main Content ─── */}
