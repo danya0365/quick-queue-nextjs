@@ -70,11 +70,6 @@ export function useQueueSoundAlert(currentQueueNumber: number) {
   }, []);
 
   useEffect(() => {
-    if (prevQRef.current === null) {
-      prevQRef.current = currentQueueNumber; // Initialize
-      return;
-    }
-    
     if (currentQueueNumber > 0 && currentQueueNumber !== prevQRef.current) {
       if (soundEnabled) {
         playAlert(currentQueueNumber);
