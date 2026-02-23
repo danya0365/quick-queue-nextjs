@@ -2,7 +2,9 @@ import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
+import { useState } from 'react';
 
 export interface QueuesRetroTechMagazineTemplateProps {
   state: AdminPresenterState;
@@ -17,10 +19,13 @@ export function QueuesRetroTechMagazineTemplate({
   generatePageNumbers,
   getStatusActions,
 }: QueuesRetroTechMagazineTemplateProps) {
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+
   const viewModel = state.viewModel;
   if (!viewModel) return null;
 
   const filter = state.statusFilter;
+  const stats = viewModel.stats;
   const items = viewModel.items || [];
   const nextQ = viewModel.nextQueueNumber || 1;
   const totalPages = viewModel.totalPages || 1;
@@ -29,6 +34,16 @@ export function QueuesRetroTechMagazineTemplate({
   const selectedItem = state.selectedItemId
     ? items.find((i) => i.id === state.selectedItemId)
     : null;
+
+  const tabs = [
+    { key: 'all', label: 'ทั้งหมด' },
+    { key: QueueStatus.WAITING, label: 'รอคิว' },
+    { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก' },
+    { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น' },
+    { key: QueueStatus.CANCELLED, label: 'ยกเลิก' },
+  ];
+
+  const activeTab = tabs.find(t => t.key === filter) || tabs[0];
 
   return (
     <div
@@ -60,29 +75,81 @@ export function QueuesRetroTechMagazineTemplate({
         </div>
       </div>
 
+      {/* ─── Current Queue & Stats ─── */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
+        <div className="md:col-span-2">
+          <RetroWidgetBox color="#00FFFF" label="คิวปัจจุบัน">
+             <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="retro" />
+          </RetroWidgetBox>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:col-span-2 text-white">
+           <RetroStatBox label="รวมทั้งหมด" value={stats?.totalItems || 0} color="#000000" textColor="text-white" />
+           <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
+           <RetroStatBox label="กำลังเรียก" value={stats?.inProgressItems || 0} color="#00FFFF" textColor="text-black" />
+           <RetroStatBox label="เสร็จสิ้น" value={stats?.completedItems || 0} color="#39FF14" textColor="text-black" />
+        </div>
+      </div>
+
       {/* ─── Main Content ─── */}
       <div className="bg-white border-[4px] sm:border-8 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] sm:shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-3 sm:p-6 flex flex-col min-h-[400px] sm:min-h-[500px]">
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
-          {[
-             { key: 'all', label: 'ทั้งหมด' },
-             { key: QueueStatus.WAITING, label: 'รอคิว' },
-             { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก' },
-             { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น' },
-             { key: QueueStatus.CANCELLED, label: 'ยกเลิก' },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => actions.setStatusFilter(tab.key)}
-              className={`px-4 py-1 font-bold uppercase border-2 border-black transition-all ${
-                filter === tab.key
-                  ? 'bg-black text-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,1)] translate-y-[2px]'
-                  : 'bg-white text-black hover:bg-gray-200 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Filters (Responsive) */}
+        <div className="mb-6 relative w-full z-30">
+          
+          {/* Mobile Dropdown Button */}
+          <button 
+            onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+            className="sm:hidden w-full flex items-center justify-between px-4 py-3 bg-white text-black border-[3px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] font-black uppercase tracking-widest text-[10px] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all"
+          >
+            <div className="flex items-center">
+               <span className="opacity-60 mr-2">SYS.FILTER:</span>
+               {activeTab.label}
+            </div>
+            <div className="flex items-center">
+               <span className={`transform transition-transform duration-200 text-[#FF00FF] ${isFilterDropdownOpen ? 'rotate-180' : ''}`}>▼</span>
+            </div>
+          </button>
+
+          {/* Mobile Dropdown Menu */}
+          {isFilterDropdownOpen && (
+            <div className="sm:hidden absolute top-full left-0 right-0 mt-2 border-[3px] border-black bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex flex-col z-40 max-h-[300px] overflow-y-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    actions.setStatusFilter(tab.key);
+                    setIsFilterDropdownOpen(false);
+                  }}
+                  className={`
+                    w-full text-left px-4 py-3 font-black uppercase tracking-widest text-[10px] flex items-center justify-between border-b-[2px] border-black/20 last:border-b-0 transition-colors
+                    ${filter === tab.key ? 'bg-black text-[#00FFFF]' : 'bg-white text-black hover:bg-gray-200'}
+                  `}
+                >
+                  <span className="flex items-center gap-2">
+                    {filter === tab.key && <span className="text-[#FF00FF] leading-none">▶</span>}
+                    {tab.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Desktop Buttons */}
+          <div className="hidden sm:flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => actions.setStatusFilter(tab.key)}
+                className={`px-4 py-1 font-bold uppercase border-2 border-black transition-all ${
+                  filter === tab.key
+                    ? 'bg-black text-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,1)] translate-y-[2px]'
+                    : 'bg-white text-black hover:bg-gray-200 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
         </div>
 
         {/* Table Container */}
@@ -251,6 +318,27 @@ export function QueuesRetroTechMagazineTemplate({
           await actions.clearAllQueues();
         }}
       />
+    </div>
+  );
+}
+
+// ─── Retro Stat Box ───
+function RetroStatBox({ label, value, color, textColor = 'text-black' }: { label: string; value: number; color: string; textColor?: string }) {
+  return (
+    <div className={`border-[3px] sm:border-4 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] py-2 sm:py-3 px-2 sm:p-4 flex flex-col items-center justify-center transform hover:scale-105 transition-transform ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-3xl sm:text-5xl font-black tabular-nums leading-none mb-1 sm:mb-2">{value}</div>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black text-white px-1 leading-none py-1">{label}</div>
+    </div>
+  );
+}
+
+function RetroWidgetBox({ children, color, label, textColor = 'text-black' }: { children: React.ReactNode; color: string; label: string; textColor?: string }) {
+  return (
+    <div className={`border-[3px] sm:border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] p-4 sm:p-5 flex flex-col h-full ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black text-white px-2 py-1 mb-4 self-start">{label}</div>
+      <div className="flex-1 bg-white/20 p-2 sm:p-4 rounded border-2 border-black/20">
+        {children}
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { QueueItem, QueueStatus, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useState } from 'react';
 
@@ -113,6 +114,32 @@ export function QueuesEditorialTemplate({
             <p className="font-bold">{state.error}</p>
           </div>
         )}
+
+        {/* ─── Current Queue & Stats ─── */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 font-sans">
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[180px] md:col-span-2">
+            <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="editorial" />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-2 sm:gap-4 md:col-span-2 h-full">
+            <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group flex flex-col justify-center">
+               <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">รวมทั้งหมด</div>
+               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1">{stats?.totalItems || 0}</div>
+            </div>
+            <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group flex flex-col justify-center">
+               <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">รอคิว</div>
+               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1">{stats?.waitingItems || 0}</div>
+            </div>
+            <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-black text-white hover:bg-white hover:text-black transition-colors group flex flex-col justify-center">
+               <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">กำลังเรียก</div>
+               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1">{stats?.inProgressItems || 0}</div>
+            </div>
+            <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group flex flex-col justify-center">
+               <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">เสร็จสิ้น</div>
+               <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1">{stats?.completedItems || 0}</div>
+            </div>
+          </div>
+        </div>
 
         {/* ─── Filter Tabs (Responsive) ─── */}
         <div className="mb-2 sm:mb-4 relative font-sans w-full z-30">

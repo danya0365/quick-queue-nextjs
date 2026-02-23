@@ -3,10 +3,9 @@ import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/p
 import { animated, useSpring } from 'react-spring';
 
 // Widgets
-import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/widgets/PerformanceInsightsWidget';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
 import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
-import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
 
 export interface AdminRetroTechMagazineTemplateProps {
   state: AdminPresenterState;
@@ -93,20 +92,19 @@ export function AdminRetroTechMagazineTemplate({
 
       {/* ─── DASHBOARD WIDGETS ─── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 w-full max-w-7xl mx-auto mt-4 sm:mt-8 pb-8">
-        <RetroWidgetBox color="#FFF000" label="สัดส่วนคิว">
-          <ServiceTypeBreakdown stats={stats} variant="retro" />
-        </RetroWidgetBox>
-        <RetroWidgetBox color="#00FFFF" label="เวลาเฉลี่ย">
-          <PerformanceInsightsWidget performance={viewModel.performance} variant="retro" />
-        </RetroWidgetBox>
         <div className="lg:col-span-2">
-          <RetroWidgetBox color="#FF00FF" label="ความเคลื่อนไหวล่าสุด" textColor="text-white">
-            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="retro" />
+          <RetroWidgetBox color="#00FFFF" label="คิวปัจจุบัน">
+            <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="retro" />
+          </RetroWidgetBox>
+        </div>
+        <div className="lg:col-span-2">
+          <RetroWidgetBox color="#39FF14" label="เมนูลัด">
+            <QuickActionsWidget variant="retro" />
           </RetroWidgetBox>
         </div>
         <div className="lg:col-span-4">
-          <RetroWidgetBox color="#39FF14" label="เมนูลัด">
-            <QuickActionsWidget variant="retro" />
+          <RetroWidgetBox color="#FF00FF" label="ความเคลื่อนไหวล่าสุด" textColor="text-white">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="retro" />
           </RetroWidgetBox>
         </div>
       </div>

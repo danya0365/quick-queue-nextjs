@@ -5,10 +5,9 @@ import { GlassCard } from '@/src/presentation/components/shared/GlassCard';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 
 // Widgets
-import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/widgets/PerformanceInsightsWidget';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
 import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
-import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
 import { BarChart2, CheckCircle2, Hourglass, RefreshCw, XCircle } from 'lucide-react';
 
 export interface AdminClassicTemplateProps {
@@ -62,21 +61,17 @@ export function AdminClassicTemplate({
 
       {/* ─── Dashboard Widgets ─── */}
       <FadeInSection delay={200} direction="up" className="flex-1">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 h-full min-h-[220px]">
-          <GlassCard className="p-4" glowColor="rgba(124, 58, 237, 0.05)">
-            <ServiceTypeBreakdown stats={stats} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 h-full min-h-[220px]">
+          <GlassCard className="p-4 md:col-span-2 lg:col-span-1" glowColor="rgba(16, 185, 129, 0.05)">
+            <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="classic" />
           </GlassCard>
           
-          <GlassCard className="p-4" glowColor="rgba(59, 130, 246, 0.05)">
-            <PerformanceInsightsWidget performance={viewModel.performance} />
-          </GlassCard>
-          
-          <GlassCard className="p-4 overflow-hidden" glowColor="rgba(16, 185, 129, 0.05)">
-            <RecentActivityLog recentActivity={viewModel.recentActivity} />
+          <GlassCard className="p-4 md:col-span-2 lg:col-span-1" glowColor="rgba(245, 158, 11, 0.05)">
+            <QuickActionsWidget />
           </GlassCard>
 
-          <GlassCard className="p-4" glowColor="rgba(245, 158, 11, 0.05)">
-            <QuickActionsWidget />
+          <GlassCard className="p-4 overflow-hidden md:col-span-2 lg:col-span-2" glowColor="rgba(16, 185, 129, 0.05)">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} />
           </GlassCard>
         </div>
       </FadeInSection>
