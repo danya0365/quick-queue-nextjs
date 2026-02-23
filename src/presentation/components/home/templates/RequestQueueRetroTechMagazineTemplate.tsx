@@ -1,3 +1,4 @@
+import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { ServiceType } from '@/src/domain/types/queue';
 import { CheckCircle2 } from 'lucide-react';
 import { FormEvent } from 'react';
@@ -119,6 +120,18 @@ export function RequestQueueRetroTechMagazineTemplate({
               autoFocus
             />
           </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setCustomerName(preset)}
+                className="px-3 py-1 font-bold text-xs uppercase bg-white text-black border-2 border-black hover:bg-black hover:text-white transition-all shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+              >
+                + {preset}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -169,6 +182,18 @@ export function RequestQueueRetroTechMagazineTemplate({
               "
               placeholder="..."
             />
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {QUEUE_FORM_PRESETS.notes.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                className="px-3 py-1 font-bold text-xs uppercase bg-white text-black border-2 border-black hover:bg-black hover:text-white transition-all shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+              >
+                + {preset}
+              </button>
+            ))}
           </div>
         </div>
 
