@@ -4,6 +4,7 @@ import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueu
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
 import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
+import { useState } from 'react';
 
 export interface QueuesRetroTechMagazineTemplateProps {
   state: AdminPresenterState;
@@ -18,6 +19,8 @@ export function QueuesRetroTechMagazineTemplate({
   generatePageNumbers,
   getStatusActions,
 }: QueuesRetroTechMagazineTemplateProps) {
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+
   const viewModel = state.viewModel;
   if (!viewModel) return null;
 
@@ -31,6 +34,16 @@ export function QueuesRetroTechMagazineTemplate({
   const selectedItem = state.selectedItemId
     ? items.find((i) => i.id === state.selectedItemId)
     : null;
+
+  const tabs = [
+    { key: 'all', label: 'ทั้งหมด' },
+    { key: QueueStatus.WAITING, label: 'รอคิว' },
+    { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก' },
+    { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น' },
+    { key: QueueStatus.CANCELLED, label: 'ยกเลิก' },
+  ];
+
+  const activeTab = tabs.find(t => t.key === filter) || tabs[0];
 
   return (
     <div
@@ -79,27 +92,64 @@ export function QueuesRetroTechMagazineTemplate({
 
       {/* ─── Main Content ─── */}
       <div className="bg-white border-[4px] sm:border-8 border-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] sm:shadow-[12px_12px_0_0_rgba(0,0,0,1)] p-3 sm:p-6 flex flex-col min-h-[400px] sm:min-h-[500px]">
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
-          {[
-             { key: 'all', label: 'ทั้งหมด' },
-             { key: QueueStatus.WAITING, label: 'รอคิว' },
-             { key: QueueStatus.IN_PROGRESS, label: 'กำลังเรียก' },
-             { key: QueueStatus.COMPLETED, label: 'เสร็จสิ้น' },
-             { key: QueueStatus.CANCELLED, label: 'ยกเลิก' },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => actions.setStatusFilter(tab.key)}
-              className={`px-4 py-1 font-bold uppercase border-2 border-black transition-all ${
-                filter === tab.key
-                  ? 'bg-black text-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,1)] translate-y-[2px]'
-                  : 'bg-white text-black hover:bg-gray-200 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Filters (Responsive) */}
+        <div className="mb-6 relative w-full z-30">
+          
+          {/* Mobile Dropdown Button */}
+          <button 
+            onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
+            className="sm:hidden w-full flex items-center justify-between px-4 py-3 bg-white text-black border-[3px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] font-black uppercase tracking-widest text-[10px] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none transition-all"
+          >
+            <div className="flex items-center">
+               <span className="opacity-60 mr-2">SYS.FILTER:</span>
+               {activeTab.label}
+            </div>
+            <div className="flex items-center">
+               <span className={`transform transition-transform duration-200 text-[#FF00FF] ${isFilterDropdownOpen ? 'rotate-180' : ''}`}>▼</span>
+            </div>
+          </button>
+
+          {/* Mobile Dropdown Menu */}
+          {isFilterDropdownOpen && (
+            <div className="sm:hidden absolute top-full left-0 right-0 mt-2 border-[3px] border-black bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex flex-col z-40 max-h-[300px] overflow-y-auto">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    actions.setStatusFilter(tab.key);
+                    setIsFilterDropdownOpen(false);
+                  }}
+                  className={`
+                    w-full text-left px-4 py-3 font-black uppercase tracking-widest text-[10px] flex items-center justify-between border-b-[2px] border-black/20 last:border-b-0 transition-colors
+                    ${filter === tab.key ? 'bg-black text-[#00FFFF]' : 'bg-white text-black hover:bg-gray-200'}
+                  `}
+                >
+                  <span className="flex items-center gap-2">
+                    {filter === tab.key && <span className="text-[#FF00FF] leading-none">▶</span>}
+                    {tab.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Desktop Buttons */}
+          <div className="hidden sm:flex flex-wrap gap-2 mb-6 border-b-4 border-black pb-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => actions.setStatusFilter(tab.key)}
+                className={`px-4 py-1 font-bold uppercase border-2 border-black transition-all ${
+                  filter === tab.key
+                    ? 'bg-black text-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,1)] translate-y-[2px]'
+                    : 'bg-white text-black hover:bg-gray-200 shadow-[2px_2px_0_0_rgba(0,0,0,1)]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
         </div>
 
         {/* Table Container */}
