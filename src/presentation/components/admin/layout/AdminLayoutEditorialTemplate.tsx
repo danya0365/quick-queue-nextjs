@@ -10,6 +10,7 @@ export function AdminLayoutEditorialTemplate({ children }: { children: React.Rea
     { label: 'แผงควบคุม', href: '/admin' },
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests' },
     { label: 'จัดการคิว', href: '/admin/queues' },
+    { label: 'โหมดหน้าจอพนักงาน', href: '/admin/focus' },
   ];
 
   return (
