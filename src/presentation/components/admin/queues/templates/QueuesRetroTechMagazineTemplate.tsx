@@ -76,13 +76,13 @@ export function QueuesRetroTechMagazineTemplate({
       </div>
 
       {/* ─── Current Queue & Stats ─── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-        <div className="md:col-span-1">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
+        <div className="md:col-span-2">
           <RetroWidgetBox color="#00FFFF" label="คิวปัจจุบัน">
              <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="retro" />
           </RetroWidgetBox>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:col-span-2 text-white">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 md:col-span-2 text-white">
            <RetroStatBox label="รวมทั้งหมด" value={stats?.totalItems || 0} color="#000000" textColor="text-white" />
            <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
            <RetroStatBox label="กำลังเรียก" value={stats?.inProgressItems || 0} color="#00FFFF" textColor="text-black" />

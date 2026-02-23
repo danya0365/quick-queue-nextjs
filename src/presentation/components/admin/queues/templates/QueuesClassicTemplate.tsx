@@ -62,11 +62,11 @@ export function QueuesClassicTemplate({
       {/* ─── Current Queue & Stats Widget ─── */}
       <FadeInSection delay={150} direction="up">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
-          <GlassCard className="p-4 md:col-span-2 lg:col-span-1 min-h-[160px]" glowColor="rgba(16, 185, 129, 0.05)">
+          <GlassCard className="p-4 md:col-span-2 min-h-[160px]" glowColor="rgba(16, 185, 129, 0.05)">
             <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="classic" />
           </GlassCard>
           
-          <div className="grid grid-cols-2 md:col-span-2 lg:col-span-3 gap-2 sm:gap-3">
+          <div className="grid grid-cols-2 md:col-span-2 gap-2 sm:gap-3">
              <GlassCard className="p-3 sm:p-4 flex flex-col justify-center" glowColor="rgba(124, 58, 237, 0.1)">
                <div className="text-xs sm:text-sm font-semibold opacity-70 uppercase tracking-wider mb-1">คิวทั้งหมดวันนี้</div>
                <div className="text-2xl sm:text-4xl font-black text-primary">{stats?.totalItems || 0}</div>

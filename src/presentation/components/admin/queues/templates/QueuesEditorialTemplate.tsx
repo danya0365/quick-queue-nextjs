@@ -116,12 +116,12 @@ export function QueuesEditorialTemplate({
         )}
 
         {/* ─── Current Queue & Stats ─── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 font-sans">
-          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[180px] md:col-span-1">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 font-sans">
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[180px] md:col-span-2">
             <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="editorial" />
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:col-span-2 h-full">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4 md:col-span-2 h-full">
             <div className="border-[3px] sm:border-[6px] border-black p-3 sm:p-4 bg-white hover:bg-black hover:text-white transition-colors group flex flex-col justify-center">
                <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60 group-hover:opacity-100">รวมทั้งหมด</div>
                <div className="text-3xl sm:text-5xl font-black tabular-nums tracking-tighter mt-1">{stats?.totalItems || 0}</div>
