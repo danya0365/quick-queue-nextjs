@@ -132,7 +132,7 @@ export interface ShopConfig {
 
 // ─── Static Data: Default Shop Config ───
 export const DEFAULT_SHOP_CONFIG: ShopConfig = {
-  shopName: 'บัตรดิวด่วน',
+  shopName: 'บัตรคิวด่วน',
   shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
   maxQueuePerDay: 100,
   operatingHours: {
