@@ -2,6 +2,7 @@ import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
 import { DeleteConfirmModal } from '@/src/presentation/components/admin/DeleteConfirmModal';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 
 export interface QueuesRetroTechMagazineTemplateProps {
@@ -21,6 +22,7 @@ export function QueuesRetroTechMagazineTemplate({
   if (!viewModel) return null;
 
   const filter = state.statusFilter;
+  const stats = viewModel.stats;
   const items = viewModel.items || [];
   const nextQ = viewModel.nextQueueNumber || 1;
   const totalPages = viewModel.totalPages || 1;
@@ -57,6 +59,21 @@ export function QueuesRetroTechMagazineTemplate({
            >
              + ADD.Q
            </button>
+        </div>
+      </div>
+
+      {/* ─── Current Queue & Stats ─── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="md:col-span-1">
+          <RetroWidgetBox color="#00FFFF" label="คิวปัจจุบัน">
+             <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="retro" />
+          </RetroWidgetBox>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:col-span-2 text-white">
+           <RetroStatBox label="รวมทั้งหมด" value={stats?.totalItems || 0} color="#000000" textColor="text-white" />
+           <RetroStatBox label="รอคิว" value={stats?.waitingItems || 0} color="#FF00FF" textColor="text-white" />
+           <RetroStatBox label="กำลังเรียก" value={stats?.inProgressItems || 0} color="#00FFFF" textColor="text-black" />
+           <RetroStatBox label="เสร็จสิ้น" value={stats?.completedItems || 0} color="#39FF14" textColor="text-black" />
         </div>
       </div>
 
@@ -251,6 +268,27 @@ export function QueuesRetroTechMagazineTemplate({
           await actions.clearAllQueues();
         }}
       />
+    </div>
+  );
+}
+
+// ─── Retro Stat Box ───
+function RetroStatBox({ label, value, color, textColor = 'text-black' }: { label: string; value: number; color: string; textColor?: string }) {
+  return (
+    <div className={`border-[3px] sm:border-4 border-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] py-2 sm:py-3 px-2 sm:p-4 flex flex-col items-center justify-center transform hover:scale-105 transition-transform ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-3xl sm:text-5xl font-black tabular-nums leading-none mb-1 sm:mb-2">{value}</div>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black text-white px-1 leading-none py-1">{label}</div>
+    </div>
+  );
+}
+
+function RetroWidgetBox({ children, color, label, textColor = 'text-black' }: { children: React.ReactNode; color: string; label: string; textColor?: string }) {
+  return (
+    <div className={`border-[3px] sm:border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] p-4 sm:p-5 flex flex-col h-full ${textColor}`} style={{ backgroundColor: color }}>
+      <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest bg-black text-white px-2 py-1 mb-4 self-start">{label}</div>
+      <div className="flex-1 bg-white/20 p-2 sm:p-4 rounded border-2 border-black/20">
+        {children}
+      </div>
     </div>
   );
 }

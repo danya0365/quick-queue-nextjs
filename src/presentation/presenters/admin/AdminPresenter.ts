@@ -84,10 +84,11 @@ export class AdminPresenter {
     status?: string
   ): Promise<AdminViewModel> {
     try {
-      const [paginated, stats, nextQueueNumber] = await Promise.all([
+      const [paginated, stats, nextQueueNumber, currentQueueNumber] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
+        this.repository.getCurrentServingNumber(),
       ]);
 
       return {
@@ -103,6 +104,7 @@ export class AdminPresenter {
         error: null,
         pendingRequests: [], // Not needed on queues list page
         pendingCount: 0,
+        currentQueueNumber,
       };
     } catch (error) {
       console.error('Error getting queues listing data:', error);
