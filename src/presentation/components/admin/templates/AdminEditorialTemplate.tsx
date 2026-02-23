@@ -2,10 +2,9 @@ import { PendingRequestsSection } from '@/src/presentation/components/admin/Pend
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 
 // Widgets
-import { PerformanceInsightsWidget } from '@/src/presentation/components/admin/widgets/PerformanceInsightsWidget';
+import { CurrentQueueWidget } from '@/src/presentation/components/admin/widgets/CurrentQueueWidget';
 import { QuickActionsWidget } from '@/src/presentation/components/admin/widgets/QuickActionsWidget';
 import { RecentActivityLog } from '@/src/presentation/components/admin/widgets/RecentActivityLog';
-import { ServiceTypeBreakdown } from '@/src/presentation/components/admin/widgets/ServiceTypeBreakdown';
 
 export interface AdminEditorialTemplateProps {
   state: AdminPresenterState;
@@ -67,11 +66,8 @@ export function AdminEditorialTemplate({
 
         {/* ─── DASHBOARD WIDGETS ─── */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px]">
-            <ServiceTypeBreakdown stats={stats} variant="editorial" />
-          </div>
-          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px]">
-            <PerformanceInsightsWidget performance={viewModel.performance} variant="editorial" />
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] lg:col-span-2">
+            <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="editorial" />
           </div>
           <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] overflow-hidden lg:col-span-2">
             <RecentActivityLog recentActivity={viewModel.recentActivity} variant="editorial" />

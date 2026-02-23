@@ -7,14 +7,14 @@
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
 import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
 import {
-  CreateQueueItemData,
-  PerformanceInsights,
-  QueueItem,
-  QueueRequest,
-  QueueStats,
-  QueueStatus,
-  ShopConfig,
-  UpdateQueueItemData,
+    CreateQueueItemData,
+    PerformanceInsights,
+    QueueItem,
+    QueueRequest,
+    QueueStats,
+    QueueStatus,
+    ShopConfig,
+    UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -33,6 +33,7 @@ export interface AdminViewModel {
   pendingCount: number;
   recentActivity?: QueueItem[];
   performance?: PerformanceInsights;
+  currentQueueNumber?: number;
 }
 
 export class AdminPresenter {
@@ -46,12 +47,13 @@ export class AdminPresenter {
    */
   async loadDashboardData(): Promise<Omit<AdminViewModel, 'items' | 'totalItems' | 'currentPage' | 'perPage' | 'totalPages'>> {
     try {
-      const [stats, pendingRequests, pendingCount, recentActivity, performance] = await Promise.all([
+      const [stats, pendingRequests, pendingCount, recentActivity, performance, currentQueueNumber] = await Promise.all([
         this.repository.getStats(),
         this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
         this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
         this.repository.getRecentActivity(5),
         this.repository.getPerformanceInsights(),
+        this.repository.getCurrentServingNumber(),
       ]);
 
       return {
@@ -65,6 +67,7 @@ export class AdminPresenter {
         pendingCount,
         recentActivity,
         performance,
+        currentQueueNumber,
       };
     } catch (error) {
       console.error('Error getting dashboard data:', error);
