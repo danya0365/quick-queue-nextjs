@@ -2,7 +2,7 @@
  * Queue Domain Types
  * Master Data & Static Data definitions for Quick Queue
  */
-import { CheckCircle2, ClipboardList, Crown, Home, Hourglass, ListTodo, RefreshCw, Search, Settings, XCircle, Zap } from 'lucide-react';
+import { CheckCircle2, ClipboardList, Crown, Home, Hourglass, ListTodo, MapPin, RefreshCw, Search, Settings, XCircle, Zap } from 'lucide-react';
 import * as React from 'react';
 
 
@@ -119,27 +119,7 @@ export interface UpdateQueueItemData {
   note?: string;
 }
 
-// ─── Master Data: Shop Configuration ───
-export interface ShopConfig {
-  shopName: string;
-  shopDescription: string;
-  maxQueuePerDay: number;
-  operatingHours: {
-    open: string;
-    close: string;
-  };
-}
 
-// ─── Static Data: Default Shop Config ───
-export const DEFAULT_SHOP_CONFIG: ShopConfig = {
-  shopName: 'บัตรคิวด่วน',
-  shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
-  maxQueuePerDay: 100,
-  operatingHours: {
-    open: '09:00',
-    close: '18:00',
-  },
-};
 
 // ─── Status Enums: Queue Requests ───
 export enum RequestStatus {
@@ -207,6 +187,12 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'หน้าแรก',
     href: '/',
     icon: React.createElement(Home, { className: 'w-full h-full' }),
+    requiresAuth: false,
+  },
+  {
+    label: 'ร้านค้า',
+    href: '/shop',
+    icon: React.createElement(MapPin, { className: 'w-full h-full' }),
     requiresAuth: false,
   },
   {

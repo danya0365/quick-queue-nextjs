@@ -1,4 +1,4 @@
-import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import Link from 'next/link';
 
