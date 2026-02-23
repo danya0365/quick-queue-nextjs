@@ -6,7 +6,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 
-export function ShopMap() {
+export function ShopClassicTemplate() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -146,68 +146,82 @@ export function ShopMap() {
   }, []);
 
   return (
-    <div className="w-full h-full min-h-[500px] flex flex-col md:flex-row shadow-2xl rounded-2xl overflow-hidden bg-surface border border-border">
-      {/* Sidebar Info */}
-      <div className="w-full md:w-1/3 bg-surface-alt p-6 sm:p-8 flex flex-col border-b md:border-b-0 md:border-r border-border z-10">
-        <div className="mb-6">
-          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 text-primary">
-            <MapPin className="w-6 h-6" />
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">{DEFAULT_SHOP_CONFIG.shopName}</h2>
-          <p className="text-muted text-sm leading-relaxed">{DEFAULT_SHOP_CONFIG.shopDescription}</p>
+    <div className="w-full flex-1 flex flex-col bg-background text-foreground pt-4 pb-12 sm:pt-8 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto w-full space-y-6 sm:space-y-8">
+        
+        {/* Header Section */}
+        <div className="space-y-2 mt-4 md:mt-8">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">ข้อมูลร้านค้า (Shop Info)</h1>
+          <p className="text-muted text-sm sm:text-base max-w-2xl">
+            ตรวจสอบข้อมูลสถานที่ตั้ง เวลาทำการ และข้อมูลการติดต่อของเราผ่านแผนที่แบบ Interactive
+          </p>
         </div>
 
-        <div className="space-y-4 flex-1">
-          <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
-            <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold text-foreground">เวลาทำการ</p>
-              <p className="text-sm text-muted">
-                เปิด {DEFAULT_SHOP_CONFIG.operatingHours.open} น. - ปิด {DEFAULT_SHOP_CONFIG.operatingHours.close} น.
-              </p>
-              <p className="text-xs text-emerald-500 mt-1 font-medium bg-emerald-500/10 inline-block px-2 py-0.5 rounded-full">เปิดให้บริการทุกวัน</p>
+        {/* Map Section */}
+        <div className="w-full h-full min-h-[600px] flex flex-col md:flex-row shadow-2xl rounded-2xl overflow-hidden bg-surface border border-border">
+          {/* Sidebar Info */}
+          <div className="w-full md:w-1/3 bg-surface-alt p-6 sm:p-8 flex flex-col border-b md:border-b-0 md:border-r border-border z-10 shrink-0">
+            <div className="mb-6">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 text-primary">
+                <MapPin className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">{DEFAULT_SHOP_CONFIG.shopName}</h2>
+              <p className="text-muted text-sm leading-relaxed">{DEFAULT_SHOP_CONFIG.shopDescription}</p>
             </div>
-          </div>
-          
-          <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
-            <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold text-foreground">ติดต่อสอบถาม</p>
-              <p className="text-sm text-muted">02-XXX-XXXX</p>
+
+            <div className="space-y-4 flex-1">
+              <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
+                <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">เวลาทำการ</p>
+                  <p className="text-sm text-muted">
+                    เปิด {DEFAULT_SHOP_CONFIG.operatingHours.open} น. - ปิด {DEFAULT_SHOP_CONFIG.operatingHours.close} น.
+                  </p>
+                  <p className="text-xs text-emerald-500 mt-1 font-medium bg-emerald-500/10 inline-block px-2 py-0.5 rounded-full">เปิดให้บริการทุกวัน</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
+                <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">ติดต่อสอบถาม</p>
+                  <p className="text-sm text-muted">02-XXX-XXXX</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
+                <Navigation className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">สถานที่ตั้ง</p>
+                  <p className="text-sm text-muted leading-relaxed">
+                    ใจกลางกรุงเทพมหานคร เดินทางสะดวกด้วยรถไฟฟ้า BTS
+                  </p>
+                </div>
+              </div>
             </div>
+
+            <button 
+              onClick={() => {
+                if (map.current) {
+                  map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
+                }
+              }}
+              className="w-full mt-6 py-3.5 bg-foreground text-background font-semibold rounded-xl hover:bg-foreground/90 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.1)] active:scale-95 text-sm flex items-center justify-center gap-2"
+            >
+              <Navigation className="w-4 h-4" /> ดูตำแหน่งร้านค้า
+            </button>
           </div>
 
-           <div className="flex items-start gap-3 p-4 bg-surface rounded-xl border border-border/50">
-            <Navigation className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-semibold text-foreground">สถานที่ตั้ง</p>
-              <p className="text-sm text-muted leading-relaxed">
-                ใจกลางกรุงเทพมหานคร เดินทางสะดวกด้วยรถไฟฟ้า BTS
-              </p>
-            </div>
+          {/* Map Container */}
+          <div className="w-full md:w-2/3 h-[400px] md:h-auto relative bg-slate-100 dark:bg-slate-800">
+            {!isMapLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center z-10 bg-surface/80 backdrop-blur-sm">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+            <div ref={mapContainer} className="w-full h-full absolute inset-0" />
           </div>
         </div>
-
-        <button 
-          onClick={() => {
-            if (map.current) {
-               map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
-            }
-          }}
-          className="w-full mt-6 py-3.5 bg-foreground text-background font-semibold rounded-xl hover:bg-foreground/90 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.1)] active:scale-95 text-sm flex items-center justify-center gap-2"
-        >
-          <Navigation className="w-4 h-4" /> ดูตำแหน่งร้านค้า
-        </button>
-      </div>
-
-      {/* Map Container */}
-      <div className="w-full md:w-2/3 h-[400px] md:h-auto relative bg-slate-100 dark:bg-slate-800">
-        {!isMapLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 bg-surface/80 backdrop-blur-sm">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        )}
-        <div ref={mapContainer} className="w-full h-full absolute inset-0" />
       </div>
     </div>
   );
