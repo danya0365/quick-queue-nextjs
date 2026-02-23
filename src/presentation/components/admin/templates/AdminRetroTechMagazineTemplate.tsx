@@ -98,13 +98,13 @@ export function AdminRetroTechMagazineTemplate({
           </RetroWidgetBox>
         </div>
         <div className="lg:col-span-2">
-          <RetroWidgetBox color="#FF00FF" label="ความเคลื่อนไหวล่าสุด" textColor="text-white">
-            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="retro" />
+          <RetroWidgetBox color="#39FF14" label="เมนูลัด">
+            <QuickActionsWidget variant="retro" />
           </RetroWidgetBox>
         </div>
         <div className="lg:col-span-4">
-          <RetroWidgetBox color="#39FF14" label="เมนูลัด">
-            <QuickActionsWidget variant="retro" />
+          <RetroWidgetBox color="#FF00FF" label="ความเคลื่อนไหวล่าสุด" textColor="text-white">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="retro" />
           </RetroWidgetBox>
         </div>
       </div>

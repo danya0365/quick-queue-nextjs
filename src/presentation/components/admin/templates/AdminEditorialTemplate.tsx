@@ -69,11 +69,11 @@ export function AdminEditorialTemplate({
           <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] lg:col-span-2">
             <CurrentQueueWidget currentQueueNumber={viewModel.currentQueueNumber || 0} variant="editorial" />
           </div>
-          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] overflow-hidden lg:col-span-2">
-            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="editorial" />
-          </div>
-          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] lg:col-span-4">
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] lg:col-span-2">
             <QuickActionsWidget variant="editorial" />
+          </div>
+          <div className="border-[3px] sm:border-[6px] border-black p-4 sm:p-6 bg-white min-h-[220px] overflow-hidden lg:col-span-4">
+            <RecentActivityLog recentActivity={viewModel.recentActivity} variant="editorial" />
           </div>
         </section>
 
