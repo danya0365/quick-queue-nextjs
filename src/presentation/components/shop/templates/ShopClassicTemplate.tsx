@@ -1,7 +1,7 @@
 'use client';
 
 import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
-import { Clock, MapPin, Navigation, Phone } from 'lucide-react';
+import { Clock, ExternalLink, MapPin, Navigation, Phone } from 'lucide-react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
@@ -200,16 +200,26 @@ export function ShopClassicTemplate() {
               </div>
             </div>
 
-            <button 
-              onClick={() => {
-                if (map.current) {
-                  map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
-                }
-              }}
-              className="w-full mt-6 py-3.5 bg-foreground text-background font-semibold rounded-xl hover:bg-foreground/90 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.1)] active:scale-95 text-sm flex items-center justify-center gap-2"
-            >
-              <Navigation className="w-4 h-4" /> ดูตำแหน่งร้านค้า
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <button 
+                onClick={() => {
+                  if (map.current) {
+                    map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
+                  }
+                }}
+                className="w-full sm:w-1/2 py-3.5 bg-foreground text-background font-semibold rounded-xl hover:bg-foreground/90 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.1)] active:scale-95 text-sm flex items-center justify-center gap-2"
+              >
+                <Navigation className="w-4 h-4" /> ดูตำแหน่งร้าน
+              </button>
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${shopLat},${shopLng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-1/2 py-3.5 bg-surface text-foreground font-semibold rounded-xl border border-border hover:bg-surface-alt transition-all shadow-[0_4px_14px_0_rgb(0,0,0,0.05)] active:scale-95 text-sm flex items-center justify-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" /> Google Maps
+              </a>
+            </div>
           </div>
 
           {/* Map Container */}

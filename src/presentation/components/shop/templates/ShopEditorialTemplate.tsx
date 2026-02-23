@@ -1,7 +1,7 @@
 'use client';
 
 import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
-import { Clock, MapPin, Navigation, Phone } from 'lucide-react';
+import { Clock, ExternalLink, MapPin, Navigation, Phone } from 'lucide-react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
@@ -193,16 +193,26 @@ export function ShopEditorialTemplate() {
               </div>
             </div>
 
-            <button 
-              onClick={() => {
-                if (map.current) {
-                  map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
-                }
-              }}
-              className="w-full mt-10 py-4 bg-black text-white font-black uppercase tracking-[0.2em] border-[4px] border-black hover:bg-white hover:text-black transition-colors text-sm sm:text-base flex items-center justify-center gap-3"
-            >
-              <Navigation className="w-5 h-5" strokeWidth={3} /> RECENTER MAP
-            </button>
+            <div className="flex flex-col gap-4 mt-10">
+              <button 
+                onClick={() => {
+                  if (map.current) {
+                    map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
+                  }
+                }}
+                className="w-full py-4 bg-black text-white font-black uppercase tracking-[0.2em] border-[4px] border-black hover:bg-white hover:text-black transition-colors text-sm sm:text-base flex items-center justify-center gap-3"
+              >
+                <Navigation className="w-5 h-5" strokeWidth={3} /> RECENTER MAP
+              </button>
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${shopLat},${shopLng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 bg-white text-black font-black uppercase tracking-[0.2em] border-[4px] border-black hover:bg-black hover:text-white transition-colors text-sm sm:text-base flex items-center justify-center gap-3"
+              >
+                <ExternalLink className="w-5 h-5" strokeWidth={3} /> GOOGLE MAPS
+              </a>
+            </div>
           </div>
 
           {/* Map Area */}

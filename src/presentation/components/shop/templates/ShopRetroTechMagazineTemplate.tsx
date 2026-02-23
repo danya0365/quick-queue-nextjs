@@ -1,7 +1,7 @@
 'use client';
 
 import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
-import { Clock, MapPin, Navigation, Phone } from 'lucide-react';
+import { Clock, ExternalLink, MapPin, Navigation, Phone } from 'lucide-react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
@@ -195,16 +195,26 @@ export function ShopRetroTechMagazineTemplate() {
               </div>
             </div>
 
-            <button 
-              onClick={() => {
-                if (map.current) {
-                  map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
-                }
-              }}
-              className="w-full mt-8 py-4 bg-[#00FFFF] text-black font-black uppercase tracking-[0.2em] border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-[#39FF14] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-base flex items-center justify-center gap-3 cursor-pointer"
-            >
-              <Navigation className="w-5 h-5" strokeWidth={3} /> RELOCATE_PIN
-            </button>
+            <div className="flex flex-col gap-4 mt-8">
+              <button 
+                onClick={() => {
+                  if (map.current) {
+                    map.current.flyTo({ center: [shopLng, shopLat], zoom: 16 });
+                  }
+                }}
+                className="w-full py-4 bg-[#00FFFF] text-black font-black uppercase tracking-[0.2em] border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-[#39FF14] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-base flex items-center justify-center gap-3 cursor-pointer"
+              >
+                <Navigation className="w-5 h-5" strokeWidth={3} /> RELOCATE_PIN
+              </button>
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${shopLat},${shopLng}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 bg-white text-black font-black uppercase tracking-[0.2em] border-4 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-gray-200 hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-base flex items-center justify-center gap-3 cursor-pointer"
+              >
+                <ExternalLink className="w-5 h-5" strokeWidth={3} /> GOOGLE MAPS
+              </a>
+            </div>
           </div>
 
           <div className="w-full lg:flex-1 h-[500px] lg:h-auto relative bg-[#111]">
