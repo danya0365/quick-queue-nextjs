@@ -144,15 +144,20 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
               {/* Replaced with new conditional rendering and inline items */}
               {servingItems.length > 1 && (
                 <>
-                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t border-slate-800">
-                    <span className="text-xs text-slate-400">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
-                    <button 
-                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
-                      className="text-xs font-bold text-blue-400 hover:text-blue-300"
-                    >
-                      {isOtherServingExpanded ? 'ซ่อน' : 'แสดงทั้งหมด'}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                    className="w-full flex sm:hidden items-center justify-between mt-3 p-3 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 rounded-xl text-slate-300 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-slate-200">คิวอื่นๆ ที่กำลังให้บริการ</span>
+                      <span className="text-[10px] font-black bg-slate-700 px-2 py-0.5 rounded-full text-white">{servingItems.length - 1}</span>
+                    </div>
+                    {isOtherServingExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-slate-500" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-500" />
+                    )}
+                  </button>
                   
                   <div className={`space-y-3 mt-3 sm:mt-4 sm:flex flex-col ${isOtherServingExpanded ? 'flex' : 'hidden'}`}>
                     {servingItems.slice(1).map(item => (
@@ -186,25 +191,31 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
         <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-slate-950 pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto">
           
           {/* Next Up Card */}
-          <div className="bg-slate-900 rounded-2xl p-4 sm:p-6 border border-slate-800 mb-3 sm:mb-4 flex flex-col items-center">
-            <div className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">คิวถัดไป</div>
-            <div className="text-4xl sm:text-6xl font-black text-white tracking-tighter mb-1">
-              {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
-            </div>
-            {/* Updated className for customerName */}
-            {nextUpItem?.customerName && (
-              <div className="text-sm sm:text-lg text-slate-300 font-bold mt-1 sm:mt-3 relative z-10">คุณ {nextUpItem.customerName}</div>
-            )}
+          <div className="bg-slate-900 rounded-2xl p-3 sm:p-6 border border-slate-800 mb-2 sm:mb-4 flex flex-row sm:flex-col items-center sm:items-center justify-between sm:justify-start">
             
-            <div className="w-full h-px bg-slate-800 my-3 sm:my-4"></div>
-
-            <div className="flex items-center gap-3 text-slate-300">
-              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                <Users className="w-4 sm:w-5 h-4 sm:h-5" />
+            {/* Left Side (Mobile) / Top (Desktop): Queue Info */}
+            <div className="flex flex-col items-start sm:items-center">
+              <div className="text-slate-400 font-bold uppercase tracking-widest text-[10px] sm:text-xs mb-0.5 sm:mb-2">คิวถัดไป</div>
+              <div className="flex items-baseline gap-2 sm:block sm:text-center">
+                <div className="text-3xl sm:text-6xl font-black text-white tracking-tighter leading-none">
+                  {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
+                </div>
+                {nextUpItem?.customerName && (
+                  <div className="text-xs sm:text-lg text-slate-300 font-bold sm:mt-3 relative z-10">คุณ {nextUpItem.customerName}</div>
+                )}
               </div>
-              <div>
-                <div className="text-[10px] sm:text-xs text-slate-500 font-bold">คิวรอทั้งหมด</div>
-                <div className="text-xl sm:text-2xl font-black text-white">{waitingCount} <span className="text-xs sm:text-sm font-medium text-slate-500">คิว</span></div>
+            </div>
+            
+            <div className="hidden sm:block w-full h-px bg-slate-800 my-4"></div>
+
+            {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-3 text-slate-300">
+              <div className="hidden sm:flex w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 items-center justify-center">
+                <Users className="w-5 h-5" />
+              </div>
+              <div className="text-right sm:text-left">
+                <div className="text-[9px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider">คิวรอทั้งหมด</div>
+                <div className="text-lg sm:text-2xl font-black text-white leading-none mt-0.5">{waitingCount} <span className="text-[10px] sm:text-sm font-medium text-slate-500">คิว</span></div>
               </div>
             </div>
           </div>

@@ -123,15 +123,20 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
               {/* Other Items in Progress */}
               {servingItems.length > 1 && (
                 <>
-                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t-2 border-black">
-                    <span className="text-xs font-black uppercase text-gray-500">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
-                    <button 
-                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
-                      className="text-xs font-black uppercase text-black hover:text-gray-600 underline decoration-2 underline-offset-2"
-                    >
-                      {isOtherServingExpanded ? 'ซ่อน' : 'แสดงทั้งหมด'}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                    className="w-full flex sm:hidden items-center justify-between mt-4 p-3 border-[3px] border-black bg-gray-50 hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-black">OTHER.SERVING</span>
+                      <span className="text-[10px] font-black bg-black text-white px-1.5 py-0.5">{servingItems.length - 1}</span>
+                    </div>
+                    {isOtherServingExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-black" strokeWidth={3} />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-black" strokeWidth={3} />
+                    )}
+                  </button>
                   
                   <div className={`space-y-3 mt-3 sm:mt-4 sm:block ${isOtherServingExpanded ? 'block' : 'hidden'}`}>
                     {servingItems.slice(1).map(item => (
@@ -164,24 +169,29 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
         <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto relative">
           
           {/* Next Up */}
-          <div className="bg-white p-4 sm:p-6 border-[4px] border-black mb-3 sm:mb-4 relative">
-            <div className="absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 sm:py-1">
+          <div className="bg-white p-3 sm:p-6 border-[3px] sm:border-[4px] border-black mb-2 sm:mb-4 relative flex flex-row sm:flex-col items-center justify-between sm:justify-start">
+            
+            <div className="hidden sm:block absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 sm:py-1">
               NEXT.IN.LINE
             </div>
-            <div className="text-center">
-              <div className="text-5xl sm:text-7xl font-black tracking-tighter">
-                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
+            
+            {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
+            <div className="flex flex-col items-start sm:items-center text-left sm:text-center">
+              <div className="sm:hidden text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">NEXT.IN.LINE</div>
+              <div className="flex items-baseline gap-2 sm:block">
+                <div className="text-4xl sm:text-7xl font-black tracking-tighter leading-none">
+                  {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
+                </div>
+                {nextUpItem?.customerName && (
+                  <div className="text-xs sm:text-xl text-gray-500 font-bold sm:mt-1">คุณ {nextUpItem.customerName}</div>
+                )}
               </div>
-              {nextUpItem?.customerName && (
-                <div className="text-base sm:text-xl text-gray-500 font-bold mt-1">คุณ {nextUpItem.customerName}</div>
-              )}
             </div>
             
-            <div className="w-full h-[3px] bg-black my-4"></div>
-
-            <div className="flex items-center justify-between border-2 border-black p-2 sm:p-3 bg-gray-50">
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-gray-400">WAITING.COUNT</span>
-              <span className="text-xl sm:text-2xl font-black">{waitingCount} <span className="text-xs sm:text-sm font-bold text-gray-400">PERSONS</span></span>
+            {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
+            <div className="flex flex-col sm:flex-row items-end sm:items-center sm:justify-between sm:border-2 sm:border-black sm:p-3 sm:bg-gray-50 sm:mt-4 sm:w-full">
+              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-gray-400 sm:text-gray-400">WAITING</span>
+              <span className="text-lg sm:text-2xl font-black leading-none mt-0.5 sm:mt-0">{waitingCount} <span className="text-[9px] sm:text-sm font-bold text-gray-400">PRS</span></span>
             </div>
           </div>
 

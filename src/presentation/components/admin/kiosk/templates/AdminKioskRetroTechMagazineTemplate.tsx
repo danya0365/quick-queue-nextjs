@@ -129,15 +129,20 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
               {/* ── Other Serving Items ── */}
               {servingItems.length > 1 && (
                 <>
-                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t border-black/30">
-                    <span className="text-xs font-black uppercase tracking-[0.1em] text-black/70">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
-                    <button 
-                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
-                      className="text-xs font-black uppercase tracking-[0.1em] text-[#FF00FF] hover:text-[#FF00FF]/70 underline decoration-1 underline-offset-2"
-                    >
-                      {isOtherServingExpanded ? '[ซ่อน]' : '[แสดงทั้งหมด]'}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                    className="w-full flex sm:hidden items-center justify-between mt-4 p-2.5 bg-[#00FFFF] border-[3px] border-black hover:bg-white text-black transition-colors shadow-[3px_3px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-black uppercase tracking-widest">OTHER.SERVING</span>
+                      <span className="text-[11px] font-black bg-[#FF00FF] border-2 border-black text-white px-1.5 py-0.5">{servingItems.length - 1}</span>
+                    </div>
+                    {isOtherServingExpanded ? (
+                      <ChevronUp className="w-5 h-5" strokeWidth={4} />
+                    ) : (
+                      <ChevronDown className="w-5 h-5" strokeWidth={4} />
+                    )}
+                  </button>
                   
                   <div className={`space-y-2 sm:block ${isOtherServingExpanded ? 'block' : 'hidden'}`}>
                     <div className="text-xs font-black uppercase tracking-widest text-[#FF00FF] bg-white border-2 border-black px-2 py-1 inline-block shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
@@ -157,25 +162,41 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
         <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto bg-white border-l-[4px] border-black">
           
           {/* Next Up */}
-          <div className="bg-[#f0f0f0] p-3 sm:p-5 border-[4px] border-black mb-3 sm:mb-4 relative shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
-            <div className="absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest">
+          <div className="bg-[#f0f0f0] p-3 sm:p-5 border-[3px] sm:border-[4px] border-black mb-2 sm:mb-4 relative shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-row sm:flex-col items-center justify-between sm:justify-start">
+            
+            <div className="hidden sm:block absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest z-10">
               UP.NEXT
             </div>
-            
-            <div className="bg-black w-full py-4 sm:py-6 border-[3px] border-[#FF00FF] flex flex-col items-center relative overflow-hidden mb-3 sm:mb-4">
-              <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
-              <div className="text-4xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_10px_#39FF14] relative z-20">
-                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
+
+            {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
+            <div className="flex flex-col items-start sm:items-center bg-black sm:bg-black w-auto sm:w-full py-2 sm:py-6 px-3 sm:px-0 border-[3px] sm:border-[3px] border-[#FF00FF] sm:mb-4 relative overflow-hidden">
+               {/* Grid scanlines overlay only for desktop to keep mobile clean */}
+              <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
+              
+              <div className="sm:hidden text-[9px] font-black uppercase text-[#FF00FF] mb-0.5">UP.NEXT</div>
+
+              <div className="flex items-baseline gap-2 sm:block relative z-20">
+                <div className="text-4xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_5px_#39FF14] sm:drop-shadow-[0_0_10px_#39FF14] leading-none">
+                  {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
+                </div>
+                {nextUpItem?.customerName && (
+                  <div className="hidden sm:inline-block bg-[#FF00FF] text-white text-xs font-black px-3 py-1 mt-2 transform -rotate-2 border-2 border-black">
+                    {nextUpItem.customerName}
+                  </div>
+                )}
+                 {nextUpItem?.customerName && (
+                  <div className="sm:hidden text-[#FF00FF] text-[10px] font-black mt-0.5 tracking-wider">
+                    {nextUpItem.customerName}
+                  </div>
+                )}
               </div>
-              {nextUpItem?.customerName && (
-                <div className="text-sm sm:text-lg text-white font-black bg-[#FF00FF] px-2 sm:px-3 py-0.5 mt-1 sm:mt-2 transform skew-x-12 relative z-20">{nextUpItem.customerName}</div>
-              )}
             </div>
 
-            <div className="flex justify-between items-center border-[3px] border-black p-2 sm:p-3 bg-white shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
-              <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-[#FF00FF]">WAIT.COUNT =</span>
-              <span className="text-xl sm:text-2xl font-black text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
-                {waitingCount} <span className="text-xs sm:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
+            {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
+            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end sm:justify-between border-[2px] sm:border-[3px] border-black p-1.5 sm:p-3 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:w-full">
+              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-[#FF00FF]">WAITING</span>
+              <span className="text-lg sm:text-2xl font-black leading-none mt-0.5 sm:mt-0 text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
+                {waitingCount} <span className="text-[9px] sm:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
               </span>
             </div>
           </div>
