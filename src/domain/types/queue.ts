@@ -190,8 +190,8 @@ export const NAV_ITEMS: NavItem[] = [
     requiresAuth: false,
   },
   {
-    label: 'เช็คคิว',
-    href: '/queue',
+    label: 'จอแสดงคิว',
+    href: '/display',
     icon: React.createElement(ListTodo, { className: 'w-full h-full' }),
     requiresAuth: false,
   },
