@@ -72,9 +72,18 @@ export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEna
             <div className="text-[100px] sm:text-[160px] lg:text-[200px] font-black leading-none tracking-tighter text-white drop-shadow-lg z-10">
               {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '--'}
             </div>
-            {currentServingItem?.customerName && (
-              <div className="text-2xl sm:text-4xl text-slate-300 mt-4 font-bold z-10">
-                คุณ {currentServingItem.customerName}
+            {currentServingItem && (currentServingItem.customerName || currentServingItem.note) && (
+              <div className="flex flex-col items-center mt-4 z-10">
+                {currentServingItem.customerName && (
+                  <div className="text-2xl sm:text-4xl text-slate-300 font-bold">
+                    คุณ {currentServingItem.customerName}
+                  </div>
+                )}
+                {currentServingItem.note && (
+                  <div className="text-sm sm:text-base text-slate-500 mt-2 font-medium max-w-sm text-center">
+                    {currentServingItem.note}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -86,8 +95,15 @@ export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEna
               <div className="text-4xl sm:text-5xl font-black text-blue-400 tracking-tighter">
                 {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
-              {nextUpItem?.customerName && (
-                <div className="text-sm text-slate-400 mt-1">คุณ {nextUpItem.customerName}</div>
+              {nextUpItem && (nextUpItem.customerName || nextUpItem.note) && (
+                <div className="mt-1 flex flex-col items-center">
+                  {nextUpItem.customerName && (
+                    <div className="text-sm text-slate-400">คุณ {nextUpItem.customerName}</div>
+                  )}
+                  {nextUpItem.note && (
+                    <div className="text-xs text-slate-500 max-w-[120px] truncate">{nextUpItem.note}</div>
+                  )}
+                </div>
               )}
             </div>
             <div className="w-px h-16 bg-slate-800"></div>
@@ -120,7 +136,10 @@ export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEna
                       {formatQueueNumber(item.queueNumber)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-slate-300 truncate">{item.customerName}</div>
+                      <div className="text-sm font-medium text-slate-300 truncate">{item.customerName || '-'}</div>
+                      {item.note && (
+                        <div className="text-xs text-slate-500 truncate mt-0.5">{item.note}</div>
+                      )}
                     </div>
                     <div className="text-xs text-slate-600 shrink-0">
                       {SERVICE_TYPE_CONFIG[item.serviceType]?.label}

@@ -71,9 +71,18 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
             <div className="text-[100px] sm:text-[160px] lg:text-[200px] font-black leading-none tracking-tighter text-[#00FFFF] z-10 drop-shadow-[0_0_20px_#00FFFF] relative">
               {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '---'}
             </div>
-            {currentServingItem?.customerName && (
-              <div className="text-2xl sm:text-4xl font-black text-white bg-[#FF00FF] px-6 py-2 mt-6 border-4 border-[#00FFFF] z-10 transform -rotate-1 group-hover:rotate-1 transition-transform shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
-                {currentServingItem.customerName}
+            {currentServingItem && (currentServingItem.customerName || currentServingItem.note) && (
+              <div className="flex flex-col items-center mt-6 z-10 transform -rotate-1 group-hover:rotate-1 transition-transform">
+                {currentServingItem.customerName && (
+                  <div className="text-2xl sm:text-4xl font-black text-white bg-[#FF00FF] px-6 py-2 border-4 border-[#00FFFF] shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                    {currentServingItem.customerName}
+                  </div>
+                )}
+                {currentServingItem.note && (
+                  <div className="text-xs sm:text-sm font-black text-white px-4 py-1 mt-3 tracking-widest uppercase bg-black border-2 border-[#39FF14] shadow-[4px_4px_0_0_rgba(57,255,20,0.5)]">
+                    {currentServingItem.note}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -87,8 +96,15 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
                 </div>
               </div>
-              {nextUpItem?.customerName && (
-                <div className="text-sm font-black text-[#FF00FF] mt-1">{nextUpItem.customerName}</div>
+              {nextUpItem && (nextUpItem.customerName || nextUpItem.note) && (
+                <div className="mt-1 flex flex-col items-center">
+                  {nextUpItem.customerName && (
+                    <div className="text-sm font-black text-[#FF00FF]">{nextUpItem.customerName}</div>
+                  )}
+                  {nextUpItem.note && (
+                    <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-0.5 truncate max-w-[120px]">{nextUpItem.note}</div>
+                  )}
+                </div>
               )}
             </div>
             <div className="text-center border-[4px] border-black p-4 sm:p-5 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
@@ -122,7 +138,10 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
                       {formatQueueNumber(item.queueNumber)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-black uppercase truncate">{item.customerName}</div>
+                      <div className="text-sm font-black uppercase truncate">{item.customerName || '-'}</div>
+                      {item.note && (
+                        <div className="text-[10px] uppercase font-black text-gray-500 truncate mt-0.5">{item.note}</div>
+                      )}
                     </div>
                     <div className="text-[10px] font-black uppercase text-[#FF00FF] shrink-0">
                       {SERVICE_TYPE_CONFIG[item.serviceType]?.label}

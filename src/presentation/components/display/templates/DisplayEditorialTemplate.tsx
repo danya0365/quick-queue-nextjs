@@ -64,9 +64,18 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
             <div className="text-[100px] sm:text-[160px] lg:text-[200px] font-black leading-none tracking-tighter">
               {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '--'}
             </div>
-            {currentServingItem?.customerName && (
-              <div className="text-2xl sm:text-4xl text-gray-600 mt-4 font-bold border-t-4 border-black pt-4">
-                คุณ {currentServingItem.customerName}
+            {currentServingItem && (currentServingItem.customerName || currentServingItem.note) && (
+              <div className="flex flex-col items-center w-full mt-4 border-t-4 border-black pt-4">
+                {currentServingItem.customerName && (
+                  <div className="text-2xl sm:text-4xl text-gray-600 font-bold">
+                    คุณ {currentServingItem.customerName}
+                  </div>
+                )}
+                {currentServingItem.note && (
+                  <div className="text-sm text-gray-400 mt-2 font-bold uppercase tracking-wider text-center">
+                    {currentServingItem.note}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -78,8 +87,15 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
               <div className="text-4xl sm:text-5xl font-black tracking-tighter">
                 {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
-              {nextUpItem?.customerName && (
-                <div className="text-sm text-gray-500 font-bold mt-1">คุณ {nextUpItem.customerName}</div>
+              {nextUpItem && (nextUpItem.customerName || nextUpItem.note) && (
+                <div className="mt-1 flex flex-col items-center">
+                  {nextUpItem.customerName && (
+                    <div className="text-sm text-gray-500 font-bold">คุณ {nextUpItem.customerName}</div>
+                  )}
+                  {nextUpItem.note && (
+                    <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider max-w-[150px] truncate">{nextUpItem.note}</div>
+                  )}
+                </div>
               )}
             </div>
             <div className="text-center border-4 border-black p-4 sm:p-6 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,0.1)]">
@@ -111,7 +127,10 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
                       {formatQueueNumber(item.queueNumber)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-bold uppercase truncate">{item.customerName}</div>
+                      <div className="text-sm font-bold uppercase truncate">{item.customerName || '-'}</div>
+                      {item.note && (
+                        <div className="text-[10px] text-gray-400 uppercase font-bold truncate mt-0.5">{item.note}</div>
+                      )}
                     </div>
                     <div className="text-[10px] font-bold uppercase text-gray-400 shrink-0">
                       {SERVICE_TYPE_CONFIG[item.serviceType]?.label}
