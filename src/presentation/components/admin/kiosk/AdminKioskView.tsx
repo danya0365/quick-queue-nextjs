@@ -1,6 +1,6 @@
 'use client';
 
-import { QueueItem, QueueRequest, QueueStatus } from '@/src/domain/types/queue';
+import { QueueItem, QueueRequest } from '@/src/domain/types/queue';
 import { useAdminLayoutPresenter } from '@/src/presentation/presenters/admin/useAdminLayoutPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -76,14 +76,9 @@ export function AdminKioskView() {
 
   if (!viewModel) return null;
 
-  // Build kiosk-specific view model
-  const inProgressItems = viewModel.items
-    .filter(i => i.status === QueueStatus.IN_PROGRESS)
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-
-  const waitingItems = viewModel.items
-    .filter(i => i.status === QueueStatus.WAITING)
-    .sort((a, b) => a.queueNumber - b.queueNumber);
+  // Build kiosk-specific view model using pre-fetched sorted items
+  const inProgressItems = viewModel.inProgressItems;
+  const waitingItems = viewModel.waitingItems;
 
   const kioskViewModel: KioskViewModel = {
     servingItems: inProgressItems,

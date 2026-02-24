@@ -1,15 +1,15 @@
 'use client';
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
-import { QueueStatus, ServiceType } from '@/src/domain/types/queue';
+import { ServiceType } from '@/src/domain/types/queue';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, Check, FastForward, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 export function AdminFocusEditorialTemplate({ viewModel, state, actions }: { viewModel: AdminViewModel, state: AdminPresenterState, actions: AdminPresenterActions }) {
-  const waitingItems = viewModel.items.filter(i => i.status === QueueStatus.WAITING);
-  const inProgressItems = viewModel.items.filter(i => i.status === QueueStatus.IN_PROGRESS);
+  const waitingItems = viewModel.waitingItems;
+  const inProgressItems = viewModel.inProgressItems;
   
   const currentServingItem = inProgressItems.length > 0 ? inProgressItems[0] : null;
   const nextUpItem = waitingItems.length > 0 ? waitingItems[0] : null;

@@ -80,19 +80,13 @@ export function DisplayView({ initialViewModel }: DisplayViewProps) {
 
   if (!viewModel) return null;
 
-  // Build display-specific view model
-  const inProgressItems = viewModel.inProgressItems
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-
-  const waitingItems = viewModel.waitingItems
-    .sort((a, b) => a.queueNumber - b.queueNumber);
-
-  const recentCompleted = viewModel.completedItems
-    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-    .slice(0, 5);
+  // Build display-specific view model — data is pre-sorted from repo
+  const inProgressItems = viewModel.inProgressItems;
+  const waitingItems = viewModel.waitingItems;
+  const recentCompleted = viewModel.completedItems.slice(0, 5);
 
   const displayViewModel: DisplayViewModel = {
-    currentServingItem: inProgressItems.length > 0 ? inProgressItems[0] : null,
+    currentServingItem: viewModel.currentServingItem || (inProgressItems.length > 0 ? inProgressItems[0] : null),
     servingItems: inProgressItems,
     nextUpItem: waitingItems.length > 0 ? waitingItems[0] : null,
     waitingItems,

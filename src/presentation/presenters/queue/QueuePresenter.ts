@@ -13,6 +13,8 @@ export interface QueueViewModel {
   waitingItems: QueueItem[];
   inProgressItems: QueueItem[];
   completedItems: QueueItem[];
+  /** The current serving item (first inProgressItem, most recently updated) */
+  currentServingItem: QueueItem | null;
   stats: QueueStats;
   currentServingNumber: number;
   estimatedWaitMinutes: number;
@@ -23,21 +25,22 @@ export class QueuePresenter {
 
   /**
    * Get queue status view model (read-only for customers)
+   * All items are pre-sorted by the repository:
+   *  - waiting: queue_number ASC
+   *  - in_progress: updated_at DESC
+   *  - completed: updated_at DESC
    */
   async getViewModel(): Promise<QueueViewModel> {
     try {
       const LIMIT = 20;
-      const [waitingResult, inProgressResult, completedResult, stats, currentServingNumber] = await Promise.all([
-        this.repository.getPaginated(1, LIMIT, 'waiting'),
-        this.repository.getPaginated(1, LIMIT, 'in_progress'),
-        this.repository.getPaginated(1, LIMIT, 'completed'),
+      const [waitingItems, inProgressItems, completedItems, stats, currentServingNumber] = await Promise.all([
+        this.repository.getWaitingItems(LIMIT),
+        this.repository.getInProgressItems(LIMIT),
+        this.repository.getCompletedItems(LIMIT),
         this.repository.getStats(),
         this.repository.getCurrentServingNumber(),
       ]);
 
-      const waitingItems = waitingResult.data;
-      const inProgressItems = inProgressResult.data;
-      const completedItems = completedResult.data;
       const allItems = [...inProgressItems, ...waitingItems, ...completedItems];
 
       // Estimate: ~10 min per waiting item
@@ -48,6 +51,7 @@ export class QueuePresenter {
         waitingItems,
         inProgressItems,
         completedItems,
+        currentServingItem: inProgressItems.length > 0 ? inProgressItems[0] : null,
         stats,
         currentServingNumber,
         estimatedWaitMinutes,

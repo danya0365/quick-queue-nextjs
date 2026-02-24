@@ -1,7 +1,7 @@
 'use client';
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
-import { QueueStatus, ServiceType } from '@/src/domain/types/queue';
+import { ServiceType } from '@/src/domain/types/queue';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, Check, FastForward, Plus, Users } from 'lucide-react';
@@ -14,11 +14,11 @@ interface AdminFocusTemplateProps {
 }
 
 export function AdminFocusClassicTemplate({ viewModel, state, actions }: AdminFocusTemplateProps) {
-  // Extract data
-  const waitingItems = viewModel.items.filter(i => i.status === QueueStatus.WAITING);
-  const inProgressItems = viewModel.items.filter(i => i.status === QueueStatus.IN_PROGRESS);
+  // Extract and sort data using pre-fetched sorted items
+  const waitingItems = viewModel.waitingItems;
+  const inProgressItems = viewModel.inProgressItems;
   
-  // Logical next and current (assuming sorted by queueNumber asc)
+  // Current serving = most recently updated in_progress item
   const currentServingItem = inProgressItems.length > 0 ? inProgressItems[0] : null;
   const nextUpItem = waitingItems.length > 0 ? waitingItems[0] : null;
 

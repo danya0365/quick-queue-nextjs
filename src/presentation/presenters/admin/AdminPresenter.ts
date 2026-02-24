@@ -8,18 +8,24 @@ import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemR
 import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
 import { ShopConfig } from '@/src/config/shop.config';
 import {
-    CreateQueueItemData,
-    PerformanceInsights,
-    QueueItem,
-    QueueRequest,
-    QueueStats,
-    QueueStatus,
-    UpdateQueueItemData,
+  CreateQueueItemData,
+  PerformanceInsights,
+  QueueItem,
+  QueueRequest,
+  QueueStats,
+  QueueStatus,
+  UpdateQueueItemData,
 } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
 export interface AdminViewModel {
   items: QueueItem[];
+  /** Waiting items sorted by queueNumber ASC (for kiosk/focus views) */
+  waitingItems: QueueItem[];
+  /** In-progress items sorted by updatedAt DESC (for kiosk/focus views) */
+  inProgressItems: QueueItem[];
+  /** Completed items sorted by updatedAt DESC */
+  completedItems: QueueItem[];
   stats: QueueStats;
   nextQueueNumber: number;
   totalItems: number;
@@ -84,8 +90,12 @@ export class AdminPresenter {
     status?: string
   ): Promise<AdminViewModel> {
     try {
-      const [paginated, stats, nextQueueNumber, currentQueueNumber] = await Promise.all([
+      const SORTED_LIMIT = 20;
+      const [paginated, waitingItems, inProgressItems, completedItems, stats, nextQueueNumber, currentQueueNumber] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
+        this.repository.getWaitingItems(SORTED_LIMIT),
+        this.repository.getInProgressItems(SORTED_LIMIT),
+        this.repository.getCompletedItems(SORTED_LIMIT),
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
         this.repository.getCurrentServingNumber(),
@@ -93,6 +103,9 @@ export class AdminPresenter {
 
       return {
         items: paginated.data,
+        waitingItems,
+        inProgressItems,
+        completedItems,
         stats,
         nextQueueNumber,
         totalItems: paginated.total,

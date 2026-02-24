@@ -171,4 +171,30 @@ export class ApiQueueItemRepository implements IQueueItemRepository {
     const data = await res.json();
     return data.currentServingNumber;
   }
+  async getWaitingItems(limit: number): Promise<QueueItem[]> {
+    const res = await fetch(`${this.baseUrl}/by-status?status=waiting&limit=${limit}`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดข้อมูลคิวได้');
+    }
+    return res.json();
+  }
+
+  async getInProgressItems(limit: number): Promise<QueueItem[]> {
+    const res = await fetch(`${this.baseUrl}/by-status?status=in_progress&limit=${limit}`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดข้อมูลคิวได้');
+    }
+    return res.json();
+  }
+
+  async getCompletedItems(limit: number): Promise<QueueItem[]> {
+    const res = await fetch(`${this.baseUrl}/by-status?status=completed&limit=${limit}`);
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'ไม่สามารถโหลดข้อมูลคิวได้');
+    }
+    return res.json();
+  }
 }

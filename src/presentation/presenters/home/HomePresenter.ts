@@ -23,13 +23,15 @@ export class HomePresenter {
    */
   async getViewModel(): Promise<HomeViewModel> {
     try {
-      const [paginated, stats, currentQueueNumber] = await Promise.all([
-        this.repository.getPaginated(1, 10),
+      const [inProgressItems, waitingItems, stats, currentQueueNumber] = await Promise.all([
+        this.repository.getInProgressItems(5),
+        this.repository.getWaitingItems(5),
         this.repository.getStats(),
         this.repository.getCurrentServingNumber(),
       ]);
 
-      const items = paginated.data;
+      // Combine: in_progress first (sorted by updatedAt desc), then waiting (sorted by queueNumber asc)
+      const items = [...inProgressItems, ...waitingItems];
 
       // Estimate wait: ~10 min per waiting item
       const estimatedWaitMinutes = stats.waitingItems * 10;

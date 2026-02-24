@@ -76,6 +76,21 @@ export interface IQueueItemRepository {
   getCurrentServingNumber(): Promise<number>;
 
   /**
+   * Get waiting items sorted by queue_number ASC (first in line at top)
+   */
+  getWaitingItems(limit: number): Promise<QueueItem[]>;
+
+  /**
+   * Get in-progress items sorted by updated_at DESC (most recently called at top)
+   */
+  getInProgressItems(limit: number): Promise<QueueItem[]>;
+
+  /**
+   * Get completed items sorted by updated_at DESC (most recently completed at top)
+   */
+  getCompletedItems(limit: number): Promise<QueueItem[]>;
+
+  /**
    * Delete all queue items (Clear all queues)
    */
   deleteAll(): Promise<boolean>;

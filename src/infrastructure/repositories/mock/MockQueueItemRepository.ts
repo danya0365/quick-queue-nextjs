@@ -218,7 +218,34 @@ export class MockQueueItemRepository implements IQueueItemRepository {
   async getCurrentServingNumber(): Promise<number> {
     const inProgressItems = this.items.filter((i) => i.status === QueueStatus.IN_PROGRESS);
     if (inProgressItems.length === 0) return 0;
-    return Math.min(...inProgressItems.map((i) => i.queueNumber));
+    
+    // Sort by updatedAt DESC to find the most recently called item
+    const sorted = [...inProgressItems].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+    return sorted[0].queueNumber;
+  }
+
+  async getWaitingItems(limit: number): Promise<QueueItem[]> {
+    await this.delay(100);
+    return [...this.items]
+      .filter((i) => i.status === QueueStatus.WAITING)
+      .sort((a, b) => a.queueNumber - b.queueNumber)
+      .slice(0, limit);
+  }
+
+  async getInProgressItems(limit: number): Promise<QueueItem[]> {
+    await this.delay(100);
+    return [...this.items]
+      .filter((i) => i.status === QueueStatus.IN_PROGRESS)
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, limit);
+  }
+
+  async getCompletedItems(limit: number): Promise<QueueItem[]> {
+    await this.delay(100);
+    return [...this.items]
+      .filter((i) => i.status === QueueStatus.COMPLETED)
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, limit);
   }
 
   private delay(ms: number): Promise<void> {
