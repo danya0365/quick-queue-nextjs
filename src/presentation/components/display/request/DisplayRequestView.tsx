@@ -4,6 +4,7 @@ import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { CreateQueueRequestData, ServiceType } from '@/src/domain/types/queue';
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { useTrackingHistory } from '@/src/presentation/hooks/useTrackingHistory';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { DisplayRequestClassicTemplate } from './templates/DisplayRequestClassicTemplate';
 import { DisplayRequestEditorialTemplate } from './templates/DisplayRequestEditorialTemplate';
@@ -44,6 +45,7 @@ export interface DisplayRequestTemplateProps {
 
 export function DisplayRequestView() {
   const { template } = useTemplate();
+  const router = useRouter();
   const addTrackingEntry = useTrackingHistory((s) => s.addEntry);
 
   // Form state
@@ -114,6 +116,9 @@ export function DisplayRequestView() {
 
       setSuccessCode(data.trackingCode);
       addTrackingEntry({ code: data.trackingCode, customerName: customerName.trim() });
+      
+      // Redirect to the Kiosk Ticket Success Screen
+      router.push(`/display/ticket/${data.trackingCode}`);
     } catch {
       setError('เกิดข้อผิดพลาดในการส่งคำขอ');
     } finally {

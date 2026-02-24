@@ -2,7 +2,7 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Home, Ticket, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Search, Ticket, Volume2, VolumeX } from 'lucide-react';
 import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
@@ -11,9 +11,10 @@ interface DisplayTemplateProps {
   currentTime: string;
   soundEnabled: boolean;
   setSoundEnabled: (val: boolean | ((prev: boolean) => boolean)) => void;
+  onOpenTrackModal: () => void;
 }
 
-export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled }: DisplayTemplateProps) {
+export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled, onOpenTrackModal }: DisplayTemplateProps) {
   const { currentServingItem, nextUpItem, waitingItems, recentCompleted, stats, estimatedWaitMinutes, shopName, operatingHours } = displayViewModel;
 
   return (
@@ -36,7 +37,14 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
             <Ticket className="w-4 h-4" />
             <span className="hidden sm:inline">QUEUE.TICKET</span>
           </Link>
-          <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase">{shopName}</h1>
+          <button
+            onClick={onOpenTrackModal}
+            className="flex items-center gap-1.5 px-3 py-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors font-black text-xs uppercase tracking-widest font-sans"
+          >
+            <Search className="w-4 h-4" />
+            <span className="hidden sm:inline">TRACK.QUEUE</span>
+          </button>
+          <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase ml-3">{shopName}</h1>
         </div>
 
         <div className="flex items-center gap-0 sm:gap-0">

@@ -7,6 +7,7 @@ import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert'
 import { useTemplate } from '@/src/presentation/hooks/useTemplate';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { useQueuePresenter } from '@/src/presentation/presenters/queue/useQueuePresenter';
+import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DisplayClassicTemplate } from './templates/DisplayClassicTemplate';
 import { DisplayEditorialTemplate } from './templates/DisplayEditorialTemplate';
@@ -70,6 +71,9 @@ export function DisplayView({ initialViewModel }: DisplayViewProps) {
   const currentQ = viewModel?.currentServingNumber || 0;
   const { soundEnabled, setSoundEnabled } = useQueueSoundAlert(currentQ);
 
+  // Track Modal
+  const [isTrackModalOpen, setTrackModalOpen] = useState(false);
+
   if (state.loading && !viewModel) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center min-h-screen bg-black text-white p-4 font-sans space-y-4">
@@ -110,6 +114,7 @@ export function DisplayView({ initialViewModel }: DisplayViewProps) {
     currentTime,
     soundEnabled,
     setSoundEnabled,
+    onOpenTrackModal: () => setTrackModalOpen(true),
   };
 
   return (
@@ -118,6 +123,23 @@ export function DisplayView({ initialViewModel }: DisplayViewProps) {
       {template === 'retroTechMagazine' && <DisplayRetroTechMagazineTemplate {...templateProps} />}
       {template === 'editorial' && <DisplayEditorialTemplate {...templateProps} />}
       {template === 'classic' && <DisplayClassicTemplate {...templateProps} />}
+
+      {isTrackModalOpen && (
+        <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8">
+           <div className="w-full max-w-2xl h-[85vh] bg-white rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.3)] overflow-hidden relative flex flex-col animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center justify-between p-4 bg-slate-50 border-b border-slate-200">
+                 <h2 className="font-bold text-lg text-slate-800">ตรวจสอบสถานะคิว</h2>
+                 <button 
+                   onClick={() => setTrackModalOpen(false)} 
+                   className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-500 hover:text-red-500"
+                 >
+                   <X className="w-6 h-6" />
+                 </button>
+              </div>
+              <iframe src="/track" className="w-full flex-1 border-0" title="Track Queue" />
+           </div>
+        </div>
+      )}
     </>
   );
 }
