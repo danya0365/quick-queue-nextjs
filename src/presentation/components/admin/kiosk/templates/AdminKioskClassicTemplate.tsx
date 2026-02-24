@@ -32,7 +32,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
             <ArrowLeft className="w-5 h-5 text-slate-300" />
           </Link>
           <div>
-            <h1 className="text-lg sm:text-xl font-black tracking-tight">Kiosk Mode</h1>
+            <h1 className="text-lg sm:text-xl font-black tracking-tight">จอปฏิบัติการ</h1>
             <p className="text-emerald-400 text-xs font-semibold flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -206,7 +206,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
               const dummyData = {
                 customerName: 'Walk-in',
                 serviceType: ServiceType.GENERAL,
-                note: 'Walk-in จาก Kiosk Mode'
+                note: 'Walk-in จาก จอปฏิบัติการ'
               };
               actions.createQueueItem(dummyData).catch(console.error);
             }}

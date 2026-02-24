@@ -32,7 +32,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tighter uppercase">KIOSK.MODE</h1>
+            <h1 className="text-xl sm:text-2xl font-black tracking-tighter uppercase">จอปฏิบัติการ</h1>
             <p className="text-black text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></span>
               SYSTEM.READY
@@ -180,7 +180,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
               const dummyData = {
                 customerName: 'Walk-in',
                 serviceType: ServiceType.GENERAL,
-                note: 'Walk-in จาก Kiosk Mode'
+                note: 'Walk-in จาก จอปฏิบัติการ'
               };
               actions.createQueueItem(dummyData).catch(console.error);
             }}

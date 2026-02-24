@@ -33,7 +33,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
             <ArrowLeft className="w-5 h-5 stroke-[3px]" />
           </Link>
           <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-widest uppercase" style={{ WebkitTextStroke: '0.5px black' }}>KIOSK.SYS</h1>
+            <h1 className="text-xl sm:text-2xl font-black tracking-widest uppercase" style={{ WebkitTextStroke: '0.5px black' }}>จอปฏิบัติการ</h1>
             <p className="text-black text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 bg-[#39FF14] px-2 py-0.5 border-2 border-black w-max mt-0.5 shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
               <span className="w-1.5 h-1.5 bg-black rounded-full animate-ping"></span>
               SYS.ONLINE
@@ -183,7 +183,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
               const dummyData = {
                 customerName: 'Walk-in',
                 serviceType: ServiceType.GENERAL,
-                note: 'Walk-in from Kiosk Mode'
+                note: 'Walk-in จาก จอปฏิบัติการ'
               };
               actions.createQueueItem(dummyData).catch(console.error);
             }}

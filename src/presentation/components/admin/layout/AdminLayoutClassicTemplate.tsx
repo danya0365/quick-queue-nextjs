@@ -10,8 +10,7 @@ export function AdminLayoutClassicTemplate({ children }: { children: React.React
     { label: 'แผงควบคุม', href: '/admin', icon: '⚙️' },
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests', icon: '⏳' },
     { label: 'จัดการคิว', href: '/admin/queues', icon: '📋' },
-    { label: 'โหมดหน้าจอพนักงาน', href: '/admin/focus', icon: '🖥️' },
-    { label: 'Kiosk Mode', href: '/admin/kiosk', icon: '📺' },
+    { label: 'จอปฏิบัติการ', href: '/admin/kiosk', icon: '📺' },
   ];
 
   return (
