@@ -91,6 +91,11 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
                       <div className="text-sm font-bold uppercase tracking-widest text-gray-400 mt-2">
                         {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label}
                       </div>
+                      {latestServingItem.note && (
+                        <div className="mt-3 text-sm font-bold text-black border-l-4 border-black pl-3 py-1 uppercase max-w-full break-words">
+                          NOTE: {latestServingItem.note}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -251,9 +256,14 @@ function EditorialServingRow({ item, state, actions }: { item: QueueItem; state:
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-black uppercase truncate">{item.customerName || '-'}</div>
-        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+        <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">
           {SERVICE_TYPE_CONFIG[item.serviceType]?.label} · {new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
         </div>
+        {item.note && (
+          <div className="text-[10px] font-bold text-black border-l-2 border-black pl-2 uppercase truncate max-w-full">
+            N: {item.note}
+          </div>
+        )}
       </div>
       <div className="flex gap-1 shrink-0">
         <button

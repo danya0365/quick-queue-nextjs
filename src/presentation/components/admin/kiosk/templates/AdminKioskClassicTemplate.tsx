@@ -114,6 +114,12 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
                       <div className="text-sm text-slate-400">
                         {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label || latestServingItem.serviceType}
                       </div>
+                      {latestServingItem.note && (
+                        <div className="mt-3 text-base text-amber-300 bg-amber-500/10 px-4 py-2.5 rounded-xl border border-amber-500/20 inline-flex items-start gap-2 max-w-full font-medium">
+                          <span className="text-lg leading-none">📝</span>
+                          <span className="break-words line-clamp-3">{latestServingItem.note}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -278,9 +284,14 @@ function ServingItemCompact({ item, state, actions, variant }: { item: QueueItem
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-slate-300 truncate">{item.customerName || '-'}</div>
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-slate-500 mb-1">
           {SERVICE_TYPE_CONFIG[item.serviceType]?.label} · {new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
         </div>
+        {item.note && (
+          <div className="text-xs text-amber-300 bg-amber-500/10 px-2 py-1.5 rounded-lg border border-amber-500/20 truncate max-w-full flex items-center gap-1.5">
+            📝 {item.note}
+          </div>
+        )}
       </div>
       <div className="flex gap-1.5 shrink-0">
         <button

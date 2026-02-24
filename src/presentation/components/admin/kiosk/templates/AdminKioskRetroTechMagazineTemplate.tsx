@@ -96,6 +96,11 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                         <div className="text-sm font-black uppercase tracking-widest text-[#39FF14] mt-3">
                           TYPE={SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label}
                         </div>
+                        {latestServingItem.note && (
+                          <div className="mt-4 text-xs font-black uppercase tracking-widest text-black bg-[#00FFFF] border-2 border-black p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] inline-block transform rotate-1 break-words max-w-full">
+                            MSG=&gt;{latestServingItem.note}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -254,9 +259,14 @@ function RetroServingRow({ item, state, actions }: { item: QueueItem; state: Adm
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-black uppercase truncate">{item.customerName || '-'}</div>
-        <div className="text-[10px] text-[#FF00FF] font-bold uppercase tracking-wider">
+        <div className="text-[10px] text-[#FF00FF] font-bold uppercase tracking-wider mb-1">
           {SERVICE_TYPE_CONFIG[item.serviceType]?.label} · @{new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
         </div>
+        {item.note && (
+          <div className="text-[9px] font-black text-black bg-[#00FFFF] border border-black px-1 py-0.5 inline-block truncate max-w-full">
+            MSG:&gt;{item.note}
+          </div>
+        )}
       </div>
       <div className="flex gap-1 shrink-0">
         <button
