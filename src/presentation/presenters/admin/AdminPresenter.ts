@@ -6,7 +6,7 @@
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
 import { IQueueRequestRepository } from '@/src/application/repositories/IQueueRequestRepository';
-import { ShopConfig } from '@/src/config/shop.config';
+import { DEFAULT_SHOP_CONFIG, ShopConfig } from '@/src/config/shop.config';
 import {
   CreateQueueItemData,
   PerformanceInsights,
@@ -128,16 +128,9 @@ export class AdminPresenter {
     }
   }
 
+
   private getDefaultShopConfig(): ShopConfig {
-    return {
-      shopName: 'Quick Queue',
-      shopDescription: 'ระบบจัดการคิวอัจฉริยะ',
-      maxQueuePerDay: 100,
-      operatingHours: {
-        open: '09:00',
-        close: '18:00',
-      }
-    };
+    return DEFAULT_SHOP_CONFIG;
   }
 
   /**
@@ -145,7 +138,7 @@ export class AdminPresenter {
    */
   generateMetadata(): Metadata {
     return {
-      title: 'จัดการคิว | Quick Queue',
+      title: `จัดการคิว | ${DEFAULT_SHOP_CONFIG.shopName}`,
       description: 'หน้าจัดการคิวสำหรับเจ้าของร้าน',
     };
   }

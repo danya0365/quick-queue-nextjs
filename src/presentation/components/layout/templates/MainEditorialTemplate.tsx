@@ -51,7 +51,7 @@ export function MainEditorialTemplate({ children }: MainEditorialTemplateProps) 
 
       {/* ─── Editorial Footer ─── */}
       <footer className="border-t-[4px] sm:border-t-[6px] border-black bg-white text-black px-2 sm:px-8 py-2.5 sm:py-5 font-black uppercase text-[8px] sm:text-sm md:text-base text-center shrink-0 flex flex-row justify-between items-center gap-2 overflow-hidden">
-        <p className="tracking-widest truncate text-left">© {currentYear} QUICK QUEUE // {displayVersion}</p>
+        <p className="tracking-widest truncate text-left">© {currentYear} {DEFAULT_SHOP_CONFIG.shopName} // {displayVersion}</p>
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <span className="hidden sm:block w-4 h-4 bg-black"></span>
           <a 

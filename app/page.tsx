@@ -1,3 +1,4 @@
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { HomeView } from '@/src/presentation/components/home/HomeView';
 import { createServerHomePresenter } from '@/src/presentation/presenters/home/HomePresenterServerFactory';
 import type { Metadata } from 'next';
@@ -16,8 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return presenter.generateMetadata();
   } catch (error) {
     console.error('Error generating metadata:', error);
+
     return {
-      title: 'Quick Queue — ระบบจัดการคิวอัจฉริยะ',
+      title: `${DEFAULT_SHOP_CONFIG.shopName} — ${DEFAULT_SHOP_CONFIG.shopDescription}`,
       description: 'ระบบจดบันทึกคิวแบบ Simple เช็คสถานะคิวได้ง่ายๆ ผ่านหน้าเว็บ',
     };
   }

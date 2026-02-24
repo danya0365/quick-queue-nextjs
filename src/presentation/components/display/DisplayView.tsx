@@ -1,5 +1,6 @@
 'use client';
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QueueItem } from '@/src/domain/types/queue';
 import { AudioInteractionOverlay } from '@/src/presentation/components/shared/AudioInteractionOverlay';
 import { useQueueSoundAlert } from '@/src/presentation/hooks/useQueueSoundAlert';
@@ -98,9 +99,10 @@ export function DisplayView({ initialViewModel }: DisplayViewProps) {
       serving: viewModel.stats?.inProgressItems || 0,
       completed: viewModel.stats?.completedItems || 0,
     },
+
     estimatedWaitMinutes: viewModel.estimatedWaitMinutes,
-    shopName: 'Quick Queue',
-    operatingHours: { open: '09:00', close: '18:00' },
+    shopName: DEFAULT_SHOP_CONFIG.shopName,
+    operatingHours: DEFAULT_SHOP_CONFIG.operatingHours,
   };
 
   const templateProps = {

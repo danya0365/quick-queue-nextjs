@@ -1,3 +1,4 @@
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QueueView } from '@/src/presentation/components/queue/QueueView';
 import { createServerQueuePresenter } from '@/src/presentation/presenters/queue/QueuePresenterServerFactory';
 import type { Metadata } from 'next';
@@ -14,8 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     return presenter.generateMetadata();
   } catch {
+
     return {
-      title: 'เช็คสถานะคิว | Quick Queue',
+      title: `เช็คสถานะคิว | ${DEFAULT_SHOP_CONFIG.shopName}`,
       description: 'ตรวจสอบสถานะคิวของคุณแบบเรียลไทม์',
     };
   }

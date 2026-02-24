@@ -1,8 +1,10 @@
 import { ShopView } from '@/src/presentation/components/shop/ShopView';
 import { Metadata } from 'next';
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+
 export const metadata: Metadata = {
-  title: 'ข้อมูลร้านค้า | Quick Queue',
+  title: `ข้อมูลร้านค้า | ${DEFAULT_SHOP_CONFIG.shopName}`,
   description: 'ข้อมูลสถานที่ตั้งร้านค้าและเวลาทำการ',
 };
 

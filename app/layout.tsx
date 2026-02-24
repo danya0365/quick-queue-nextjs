@@ -11,8 +11,10 @@ const notoSansThai = Noto_Sans_Thai({
   variable: '--font-noto-sans-thai',
 });
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+
 export const metadata: Metadata = {
-  title: 'Quick Queue — ระบบจัดการคิวอัจฉริยะ',
+  title: `${DEFAULT_SHOP_CONFIG.shopName} — ${DEFAULT_SHOP_CONFIG.shopDescription}`,
   description: 'ระบบจดบันทึกคิวแบบ Simple เช็คสถานะคิวได้ง่ายๆ ผ่านหน้าเว็บ',
   keywords: ['queue', 'คิว', 'ระบบคิว', 'จัดการคิว'],
 };

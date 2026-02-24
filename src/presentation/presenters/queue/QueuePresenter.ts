@@ -5,6 +5,7 @@
  */
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QueueItem, QueueStats } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -62,12 +63,13 @@ export class QueuePresenter {
     }
   }
 
+
   /**
    * Generate metadata for the queue page
    */
   generateMetadata(): Metadata {
     return {
-      title: 'เช็คสถานะคิว | Quick Queue',
+      title: `เช็คสถานะคิว | ${DEFAULT_SHOP_CONFIG.shopName}`,
       description: 'ตรวจสอบสถานะคิวของคุณแบบเรียลไทม์',
     };
   }

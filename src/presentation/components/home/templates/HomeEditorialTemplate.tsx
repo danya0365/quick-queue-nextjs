@@ -1,4 +1,5 @@
 import { formatQueueNumber } from '@/src/config/queue-display.config';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { Edit3 } from 'lucide-react';
@@ -40,16 +41,15 @@ export function HomeEditorialTemplate({
     >
       <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-8">
         
+
         {/* ─── Magazine Header ─── */}
         <header className="flex flex-row justify-between items-end border-b-[3px] sm:border-b-[8px] border-black pb-2 sm:pb-8 gap-2 sm:gap-8 overflow-hidden">
-          <div className="w-auto shrink-0">
-            <h1 className="text-2xl sm:text-7xl lg:text-[6.5rem] font-black uppercase tracking-tighter leading-none sm:leading-[0.85] text-black flex flex-row md:flex-col">
-              QUICK
-              <br className="hidden md:block"/>
-              <span className="text-black bg-white md:pl-2 inline-block">QUEUE</span>
+          <div className="w-auto shrink-0 animate-in fade-in slide-in-from-left-4 duration-700">
+            <h1 className="text-2xl sm:text-7xl lg:text-[6.5rem] font-black uppercase tracking-tighter leading-none sm:leading-[0.85] text-black">
+              {DEFAULT_SHOP_CONFIG.shopName}
             </h1>
             <p className="font-bold text-[6px] sm:text-xl uppercase tracking-widest mt-1 sm:mt-6 px-1.5 sm:px-4 py-0.5 sm:py-2 border-[1px] sm:border-[6px] border-black inline-block whitespace-nowrap">
-              ระบบจัดการคิวออนไลน์ // QUICK QUEUE
+              {DEFAULT_SHOP_CONFIG.shopDescription} // {DEFAULT_SHOP_CONFIG.shopName}
             </p>
           </div>
 

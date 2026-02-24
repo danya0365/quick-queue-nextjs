@@ -3,9 +3,11 @@ import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Kiosk Mode | Quick Queue Admin',
+    title: `Kiosk Mode | ${DEFAULT_SHOP_CONFIG.shopName} Admin`,
     description: 'หน้าจอจัดการคิวสำหรับพนักงานหน้าร้าน — โหมด Kiosk',
   };
 }

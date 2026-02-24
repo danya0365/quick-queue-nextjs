@@ -59,7 +59,7 @@ export function HeaderClassicTemplate() {
                 {DEFAULT_SHOP_CONFIG.shopName}
               </span>
               <span className="text-muted text-[10px] leading-none tracking-wide uppercase hidden sm:block">
-                ระบบจัดการคิวอัจฉริยะ
+                {DEFAULT_SHOP_CONFIG.shopDescription}
               </span>
             </div>
           </animated.div>

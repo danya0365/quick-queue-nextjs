@@ -6,9 +6,11 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Display Board | Quick Queue',
+    title: `Display Board | ${DEFAULT_SHOP_CONFIG.shopName}`,
     description: 'หน้าจอแสดงสถานะคิวสำหรับลูกค้า',
   };
 }

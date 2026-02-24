@@ -12,6 +12,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 import crypto from 'crypto';
+import { DEFAULT_SHOP_CONFIG } from '../../config/shop.config';
 import { getTursoDatabase } from './turso';
 
 function hashPassword(password: string): string {
@@ -20,10 +21,11 @@ function hashPassword(password: string): string {
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
+
   const username = args[0];
   const newPassword = args[1];
 
-  console.log('🔐 Quick Queue — Change Password');
+  console.log(`🔐 ${DEFAULT_SHOP_CONFIG.shopName} — Change Password`);
   console.log('═'.repeat(40));
 
   if (!username || !newPassword) {
