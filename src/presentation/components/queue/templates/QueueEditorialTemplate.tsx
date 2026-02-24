@@ -94,7 +94,7 @@ export function QueueEditorialTemplate({
           <div className="col-span-1 lg:col-span-8 flex flex-col justify-center items-center lg:items-start lg:border-r-[6px] lg:border-black lg:pr-12 relative z-10 pt-10 lg:pt-0">
             <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tighter mb-2 sm:mb-4 opacity-50">คิวปัจจุบัน</h2>
             <animated.div style={pulseSpring} className="relative w-full text-center lg:text-left">
-              <div className="text-[10rem] sm:text-[18rem] md:text-[22rem] font-black tabular-nums leading-[0.8] tracking-tighter text-black">
+              <div className="text-[7rem] sm:text-[9rem] lg:text-[10rem] xl:text-[12rem] font-black tabular-nums leading-[0.8] tracking-tighter text-black">
                 {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </div>
             </animated.div>

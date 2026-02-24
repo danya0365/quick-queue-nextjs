@@ -101,7 +101,7 @@ export function HomeEditorialTemplate({
                 คิวปัจจุบัน
               </div>
               
-              <div className="text-[7rem] sm:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black tabular-nums leading-[0.75] tracking-tighter mix-blend-difference mb-6 sm:mb-12">
+              <div className="text-[7rem] sm:text-[9rem] lg:text-[10rem] xl:text-[12rem] font-black tabular-nums leading-[0.75] tracking-tighter mix-blend-difference mb-6 sm:mb-12">
                 {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </div>
 
