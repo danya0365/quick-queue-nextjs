@@ -10,8 +10,10 @@ dotenv.config({ path: '.env.local' });
 
 import { getTursoDatabase, runMigrations } from './turso';
 
+import { DEFAULT_SHOP_CONFIG } from '../../config/shop.config';
+
 async function main(): Promise<void> {
-  console.log('🏗  Quick Queue — Database Migration');
+  console.log(`🏗  ${DEFAULT_SHOP_CONFIG.shopName} — Database Migration`);
   console.log('═'.repeat(40));
 
   const db = getTursoDatabase();

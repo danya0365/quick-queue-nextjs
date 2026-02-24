@@ -13,6 +13,7 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
+import { DEFAULT_SHOP_CONFIG } from '../../config/shop.config';
 import { seedMock } from './seeds/mock.seed';
 import { seedStarter } from './seeds/starter.seed';
 import { getTursoDatabase, runMigrations } from './turso';
@@ -21,10 +22,11 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const mode = args[0] || 'starter';
 
+
   // Get single instance of the database (Local SQLite via Turso Client or Remote Turso)
   const db = getTursoDatabase();
 
-  console.log('🌱 Quick Queue — Database Seed');
+  console.log(`🌱 ${DEFAULT_SHOP_CONFIG.shopName} — Database Seed`);
   console.log(`   Mode: ${mode}`);
   console.log(`   Provider: @libsql/client`);
   console.log('═'.repeat(40));

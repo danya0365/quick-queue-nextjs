@@ -34,8 +34,8 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
         </Link>
         
         <div className="flex font-bold uppercase text-xs sm:text-sm border-4 border-black bg-[#00FFFF] shadow-[4px_4px_0_0_rgba(0,0,0,1)] transform -skew-x-6 z-10">
-          <Link href="/queue" className="px-3 sm:px-6 py-2 border-r-4 border-black hover:bg-[#FF00FF] hover:text-white transition-colors flex items-center justify-center">
-            <span className="transform skew-x-6 block">QUEUE</span>
+          <Link href="/display" className="px-3 sm:px-6 py-2 border-r-4 border-black hover:bg-[#FF00FF] hover:text-white transition-colors flex items-center justify-center">
+            <span className="transform skew-x-6 block">MONITOR</span>
           </Link>
           <Link href="/track" className="px-3 sm:px-6 py-2 border-r-4 border-black hover:bg-[#FF00FF] hover:text-white transition-colors flex items-center justify-center">
             <span className="transform skew-x-6 block">TRACK</span>
@@ -56,7 +56,7 @@ export function MainRetroTechMagazineTemplate({ children }: MainRetroTechMagazin
 
       {/* ─── Retro Footer ─── */}
       <footer className="border-t-8 border-black bg-black text-white px-6 py-4 font-bold uppercase text-xs sm:text-sm text-center shrink-0 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <p className="tracking-widest opacity-80">© {currentYear} QUICK QUEUE // {displayVersion}</p>
+        <p className="tracking-widest opacity-80">© {currentYear} {DEFAULT_SHOP_CONFIG.shopName.toUpperCase()} // {displayVersion}</p>
         <div className="flex items-center gap-2">
           <span>//</span>
           <a 

@@ -2,7 +2,8 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Search, Ticket, Volume2, VolumeX } from 'lucide-react';
+import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -10,9 +11,10 @@ interface DisplayTemplateProps {
   currentTime: string;
   soundEnabled: boolean;
   setSoundEnabled: (val: boolean | ((prev: boolean) => boolean)) => void;
+  onOpenTrackModal: () => void;
 }
 
-export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled }: DisplayTemplateProps) {
+export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled, onOpenTrackModal }: DisplayTemplateProps) {
   const { currentServingItem, nextUpItem, waitingItems, recentCompleted, stats, estimatedWaitMinutes, shopName, operatingHours } = displayViewModel;
 
   return (
@@ -21,7 +23,30 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
 
       {/* ─── Info Bar ─── */}
       <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-[#00FFFF] border-b-[4px] border-black shadow-[0_4px_0_0_rgba(0,0,0,1)] z-10 shrink-0">
-        <h1 className="text-xl sm:text-3xl font-black tracking-widest uppercase" style={{ WebkitTextStroke: '1px black', color: 'white' }}>{shopName}</h1>
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/"
+            className="p-2 border-[3px] border-black bg-white hover:bg-[#FF00FF] text-black hover:text-white transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            title="กลับหน้าหลัก"
+          >
+            <Home className="w-5 h-5" strokeWidth={3} />
+          </Link>
+          <Link
+            href="/display/request"
+            className="flex items-center gap-1.5 px-3 py-2 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#39FF14] hover:text-black transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none font-black text-xs uppercase tracking-widest"
+          >
+            <Ticket className="w-4 h-4" strokeWidth={3} />
+            <span className="hidden sm:inline">GET.TICKET_</span>
+          </Link>
+          <button
+            onClick={onOpenTrackModal}
+            className="flex items-center gap-1.5 px-3 py-2 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none font-black text-xs uppercase tracking-widest"
+          >
+            <Search className="w-4 h-4" strokeWidth={3} />
+            <span className="hidden sm:inline">TRACK.QUEUE_</span>
+          </button>
+          <h1 className="text-xl sm:text-3xl font-black tracking-widest uppercase ml-3" style={{ WebkitTextStroke: '1px black', color: 'white' }}>{shopName}</h1>
+        </div>
 
         <div className="flex items-center gap-0">
           {/* Stats */}

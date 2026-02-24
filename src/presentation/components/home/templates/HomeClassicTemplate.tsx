@@ -1,4 +1,5 @@
 import { formatQueueNumber } from '@/src/config/queue-display.config';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { AnimatedButton } from '@/src/presentation/components/shared/AnimatedButton';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
@@ -79,13 +80,14 @@ export function HomeClassicTemplate({
               </div>
             </animated.div>
 
+
             {/* Hero Text */}
             <div className="flex-1 text-center sm:text-left">
               <h1 className="text-white text-lg sm:text-3xl font-bold mb-1 sm:mb-2 tracking-tight">
-                Quick Queue
+                {DEFAULT_SHOP_CONFIG.shopName}
               </h1>
               <p className="text-white/80 text-xs sm:text-base mb-2 sm:mb-4">
-                ระบบจัดการคิวอัจฉริยะ — เช็คสถานะคิวแบบเรียลไทม์
+                {DEFAULT_SHOP_CONFIG.shopDescription} — เช็คสถานะคิวแบบเรียลไทม์
               </p>
 
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-start">

@@ -20,7 +20,16 @@ export function TrackView() {
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch for Zustand persisted state
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => { 
+    setMounted(true); 
+    
+    // Auto-search if code is provided in URL (e.g. from QR code scan)
+    const params = new URLSearchParams(window.location.search);
+    const codeParam = params.get('code');
+    if (codeParam && codeParam.length === 6) {
+      searchByCode(codeParam);
+    }
+  }, []);
 
   const resultSpring = useSpring({
     opacity: result ? 1 : 0,

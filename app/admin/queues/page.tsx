@@ -1,3 +1,4 @@
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QueuesView } from '@/src/presentation/components/admin/queues/QueuesView';
 import { createServerAdminPresenter } from '@/src/presentation/presenters/admin/AdminPresenterServerFactory';
 import type { Metadata } from 'next';
@@ -14,8 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     return presenter.generateMetadata();
   } catch {
+
     return {
-      title: 'จัดการคิว | Quick Queue',
+      title: `จัดการคิว | ${DEFAULT_SHOP_CONFIG.shopName}`,
       description: 'หน้ารายการคิวทั้งหมดสำหรับแอดมิน',
     };
   }

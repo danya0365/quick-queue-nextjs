@@ -7,7 +7,7 @@ export function AudioInteractionRetroTechMagazineTemplate() {
   });
 
   return (
-    <div className="fixed inset-0 z-[200] pointer-events-none flex items-start justify-center pt-24 sm:pt-28 px-4">
+    <div className="fixed inset-0 z-[1000] pointer-events-none flex items-start justify-center pt-24 sm:pt-28 px-4">
       <animated.div
         style={spring}
         className="bg-[#FF00FF] pointer-events-auto text-white p-4 sm:p-6 border-4 border-black shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex items-center gap-4 sm:gap-6 max-w-lg w-full cursor-pointer hover:-translate-y-1 hover:shadow-[12px_12px_0_0_rgba(0,0,0,1)] transition-transform active:scale-95"

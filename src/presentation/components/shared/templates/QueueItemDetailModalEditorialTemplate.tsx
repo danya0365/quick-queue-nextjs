@@ -1,4 +1,5 @@
 import { formatQueueNumber } from '@/src/config/queue-display.config';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { animated } from 'react-spring';
 
@@ -63,8 +64,9 @@ export function QueueItemDetailModalEditorialTemplate({ onClose, item, modalSpri
            </div>
         </div>
 
+
         <div className="mt-8 pt-6 border-t-[4px] border-black flex items-center justify-between">
-            <div className="text-[10px] font-bold uppercase tracking-widest border-[2px] border-black px-2 py-1">QUICK QUEUE SYSTEM</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest border-[2px] border-black px-2 py-1">{DEFAULT_SHOP_CONFIG.shopName} SYSTEM</div>
             <button
                onClick={onClose}
                className="bg-black text-white hover:bg-white hover:text-black border-[4px] border-black font-black uppercase tracking-widest text-sm px-6 py-2 transition-colors inline-block"

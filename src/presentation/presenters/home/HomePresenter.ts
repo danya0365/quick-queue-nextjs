@@ -5,6 +5,7 @@
  */
 
 import { IQueueItemRepository } from '@/src/application/repositories/IQueueItemRepository';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { QueueItem, QueueStats } from '@/src/domain/types/queue';
 import { Metadata } from 'next';
 
@@ -48,12 +49,13 @@ export class HomePresenter {
     }
   }
 
+
   /**
    * Generate metadata for the home page
    */
   generateMetadata(): Metadata {
     return {
-      title: 'Quick Queue — ระบบจัดการคิวอัจฉริยะ',
+      title: `${DEFAULT_SHOP_CONFIG.shopName} — ${DEFAULT_SHOP_CONFIG.shopDescription}`,
       description: 'ระบบจดบันทึกคิวแบบ Simple เช็คสถานะคิวได้ง่ายๆ ผ่านหน้าเว็บ',
     };
   }

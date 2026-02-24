@@ -1,5 +1,6 @@
 'use client';
 
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import { useState } from 'react';
 import { animated, useSpring } from 'react-spring';
@@ -15,6 +16,7 @@ export function FooterClassicTemplate() {
   const currentYear = new Date().getFullYear();
   const { displayVersion } = useAppVersion();
 
+
   return (
     <footer
       className="
@@ -26,7 +28,7 @@ export function FooterClassicTemplate() {
       id="main-footer"
     >
       <div className="flex items-center gap-2 text-xs text-muted">
-        <span>© {currentYear} Quick Queue</span>
+        <span>© {currentYear} {DEFAULT_SHOP_CONFIG.shopName}</span>
         <span className="hidden sm:inline">•</span>
         <span className="hidden sm:inline">{displayVersion}</span>
       </div>
