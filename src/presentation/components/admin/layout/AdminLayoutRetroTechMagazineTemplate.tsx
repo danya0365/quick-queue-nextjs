@@ -11,6 +11,7 @@ export function AdminLayoutRetroTechMagazineTemplate({ children }: { children: R
     { label: 'REQ.QUEUE', href: '/admin/pending-requests', icon: '⏳' },
     { label: 'MNG.QUEUE', href: '/admin/queues', icon: '📋' },
     { label: 'FOCUS.MODE', href: '/admin/focus', icon: '🖥️' },
+    { label: 'KIOSK.SYS', href: '/admin/kiosk', icon: '📺' },
   ];
 
   return (
