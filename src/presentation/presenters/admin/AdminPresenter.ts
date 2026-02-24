@@ -74,6 +74,9 @@ export class AdminPresenter {
         recentActivity,
         performance,
         currentQueueNumber,
+        waitingItems: [],
+        inProgressItems: [],
+        completedItems: [],
       };
     } catch (error) {
       console.error('Error getting dashboard data:', error);
