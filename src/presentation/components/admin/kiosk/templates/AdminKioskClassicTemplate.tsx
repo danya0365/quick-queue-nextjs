@@ -85,18 +85,27 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
             <div className="flex flex-col gap-4">
               {/* ★ Hero Card — Latest Serving Item */}
               {latestServingItem && (
-                <div className="w-full bg-slate-950 rounded-3xl border-2 border-blue-500/30 p-6 sm:p-8 shadow-[0_0_60px_-15px_rgba(59,130,246,0.3)] relative overflow-hidden">
+                <div className="w-full bg-slate-950 rounded-3xl border-2 border-blue-500/30 p-6 sm:p-8 shadow-[0_0_60px_-15px_rgba(59,130,246,0.3)] relative">
                   {/* Glow */}
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none"></div>
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none rounded-3xl overflow-hidden"></div>
                   
-                  <div className="flex items-center gap-2 mb-2 relative z-10">
-                    <span className="bg-blue-500 text-white text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">คิวล่าสุด</span>
-                    <span className="text-xs text-slate-500 font-mono">
-                      {new Date(latestServingItem.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+                  {/* Floating Service Type Badge */}
+                  <div className="absolute -top-1 -right-1 sm:top-4 sm:right-6 bg-blue-600/20 border border-blue-500/50 backdrop-blur-sm px-3 py-1.5 rounded-bl-3xl sm:rounded-2xl shadow-lg z-30">
+                    <span className="text-[10px] sm:text-sm font-bold uppercase tracking-widest text-blue-300">
+                      {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label || latestServingItem.serviceType}
                     </span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative z-10">
+                  <div className="flex items-center justify-between mb-2 relative z-10 w-full pr-16 sm:pr-0">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-500 text-white text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full">คิวล่าสุด</span>
+                      <span className="text-xs text-slate-500 font-mono">
+                        {new Date(latestServingItem.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative z-10 mt-4 sm:mt-0">
                     <div className="text-[80px] sm:text-[120px] lg:text-[160px] font-black leading-none tracking-tighter text-white drop-shadow-lg">
                       {formatQueueNumber(latestServingItem.queueNumber)}
                     </div>
@@ -106,9 +115,6 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
                           คุณ {latestServingItem.customerName}
                         </div>
                       )}
-                      <div className="text-sm text-slate-400">
-                        {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label || latestServingItem.serviceType}
-                      </div>
                       {latestServingItem.note && (
                         <div className="mt-3 text-base text-amber-300 bg-amber-500/10 px-4 py-2.5 rounded-xl border border-amber-500/20 inline-flex items-start gap-2 max-w-full font-medium">
                           <span className="text-lg leading-none">📝</span>
@@ -119,21 +125,21 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
                   </div>
 
                   {/* Action Buttons for Hero */}
-                  <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
+                  <div className="grid grid-cols-2 gap-3 mt-4 sm:mt-6 relative z-10">
                     <button 
                       disabled={state.loading}
                       onClick={() => actions.markCompleted(latestServingItem.id)}
-                      className="py-4 sm:py-5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 transition-all text-white font-bold text-lg sm:text-xl flex items-center justify-center gap-2 shadow-lg active:scale-95"
+                      className="py-3 sm:py-5 rounded-xl sm:rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 transition-all text-white font-bold text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-sm sm:shadow-lg active:scale-95"
                     >
-                      <Check className="w-6 h-6" strokeWidth={3} />
+                      <Check className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={3} />
                       เสร็จสิ้น
                     </button>
                     <button 
                       disabled={state.loading}
                       onClick={() => actions.markCancelled(latestServingItem.id)}
-                      className="py-4 sm:py-5 rounded-2xl bg-slate-800 hover:bg-slate-700 disabled:opacity-50 border border-slate-700 transition-all text-slate-300 hover:text-white font-bold text-lg sm:text-xl flex items-center justify-center gap-2 active:scale-95"
+                      className="py-3 sm:py-5 rounded-xl sm:rounded-2xl bg-slate-800 hover:bg-slate-700 disabled:opacity-50 border border-slate-700 transition-all text-slate-300 hover:text-white font-bold text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 active:scale-95"
                     >
-                      <FastForward className="w-6 h-6" strokeWidth={3} />
+                      <FastForward className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={3} />
                       ข้ามคิว
                     </button>
                   </div>

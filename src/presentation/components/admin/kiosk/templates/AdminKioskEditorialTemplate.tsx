@@ -71,14 +71,20 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
               {latestServingItem && (
                 <div className="w-full bg-white border-[6px] border-black p-6 sm:p-8 shadow-[12px_12px_0_0_rgba(0,0,0,1)] relative">
                   {/* Corner tag */}
-                  <div className="absolute -top-4 -left-1 bg-black text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5">
+                  <div className="absolute -top-4 -left-1 bg-black text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 border-2 border-black">
                     LATEST
                   </div>
-                  <div className="absolute top-3 right-4 text-xs font-mono font-bold text-gray-400">
+                  
+                  {/* Floating Service Type Badge */}
+                  <div className="absolute -top-3 -right-3 bg-white border-[3px] border-black p-1.5 sm:p-2 font-black text-black text-[9px] sm:text-[10px] uppercase tracking-widest z-30 shadow-[4px_4px_0_0_rgba(0,0,0,0.1)]">
+                    {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label || latestServingItem.serviceType}
+                  </div>
+
+                  <div className="absolute top-4 right-4 text-xs font-mono font-bold text-gray-400 mt-4 sm:mt-6">
                     {new Date(latestServingItem.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 mt-6">
                     <div className="text-[80px] sm:text-[120px] lg:text-[160px] font-black leading-none tracking-tighter">
                       {formatQueueNumber(latestServingItem.queueNumber)}
                     </div>
@@ -88,9 +94,6 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                           คุณ {latestServingItem.customerName}
                         </div>
                       )}
-                      <div className="text-sm font-bold uppercase tracking-widest text-gray-400 mt-2">
-                        {SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label}
-                      </div>
                       {latestServingItem.note && (
                         <div className="mt-3 text-sm font-bold text-black border-l-4 border-black pl-3 py-1 uppercase max-w-full break-words">
                           NOTE: {latestServingItem.note}
@@ -99,21 +102,21 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-6">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-4 sm:mt-6">
                     <button 
                       disabled={state.loading}
                       onClick={() => actions.markCompleted(latestServingItem.id)}
-                      className="py-4 sm:py-5 bg-black hover:bg-white disabled:opacity-50 transition-all text-white hover:text-black border-4 border-black font-black uppercase tracking-widest text-lg sm:text-xl flex items-center justify-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,0.2)] hover:shadow-none active:translate-x-1 active:translate-y-1"
+                      className="py-2.5 sm:py-5 bg-black hover:bg-white disabled:opacity-50 transition-all text-white hover:text-black border-[3px] sm:border-4 border-black font-black uppercase tracking-widest text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[4px_4px_0_0_rgba(0,0,0,0.2)] sm:shadow-[6px_6px_0_0_rgba(0,0,0,0.2)] hover:shadow-none active:translate-x-1 active:translate-y-1"
                     >
-                      <Check className="w-6 h-6" strokeWidth={3} />
+                      <Check className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={3} />
                       COMPLETE
                     </button>
                     <button 
                       disabled={state.loading}
                       onClick={() => actions.markCancelled(latestServingItem.id)}
-                      className="py-4 sm:py-5 bg-white hover:bg-gray-100 disabled:opacity-50 border-4 border-black transition-all text-black font-black uppercase tracking-widest text-lg sm:text-xl flex items-center justify-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,0.1)] hover:shadow-none active:translate-x-1 active:translate-y-1"
+                      className="py-2.5 sm:py-5 bg-white hover:bg-gray-100 disabled:opacity-50 border-[3px] sm:border-4 border-black transition-all text-black font-black uppercase tracking-widest text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] sm:shadow-[6px_6px_0_0_rgba(0,0,0,0.1)] hover:shadow-none active:translate-x-1 active:translate-y-1"
                     >
-                      <FastForward className="w-6 h-6" strokeWidth={3} />
+                      <FastForward className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={3} />
                       SKIP
                     </button>
                   </div>

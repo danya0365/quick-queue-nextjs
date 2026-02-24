@@ -69,12 +69,17 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
             <div className="flex flex-col gap-6 mt-8">
               {/* ★ Hero Card */}
               {latestServingItem && (
-                <div className="w-full bg-black border-[5px] border-[#FF00FF] p-6 sm:p-8 shadow-[16px_16px_0_0_rgba(0,0,0,1)] relative overflow-hidden group">
+                <div className="w-full bg-black border-[5px] border-[#FF00FF] p-6 sm:p-8 shadow-[16px_16px_0_0_rgba(0,0,0,1)] relative group mt-4 sm:mt-6">
                   {/* Scanline effect */}
                   <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-20"></div>
                   {/* Grid background */}
                   <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#00FFFF 1px, transparent 1px), linear-gradient(90deg, #00FFFF 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
                   
+                  {/* Floating Service Type Badge */}
+                  <div className="absolute -top-4 -right-4 bg-[#FF00FF] border-[3px] border-black p-2 sm:p-3 font-black text-white shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[5px_5px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] sm:text-xs tracking-widest z-30">
+                    TYPE={SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label || latestServingItem.serviceType}
+                  </div>
+
                   <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="bg-[#FF00FF] text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 border-2 border-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,0.5)]">★ LATEST_</span>
@@ -93,9 +98,6 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                             {latestServingItem.customerName}
                           </div>
                         )}
-                        <div className="text-sm font-black uppercase tracking-widest text-[#39FF14] mt-3">
-                          TYPE={SERVICE_TYPE_CONFIG[latestServingItem.serviceType]?.label}
-                        </div>
                         {latestServingItem.note && (
                           <div className="mt-4 text-xs font-black uppercase tracking-widest text-black bg-[#00FFFF] border-2 border-black p-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] inline-block transform rotate-1 break-words max-w-full">
                             MSG=&gt;{latestServingItem.note}
@@ -108,17 +110,17 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                       <button 
                         disabled={state.loading}
                         onClick={() => actions.markCompleted(latestServingItem.id)}
-                        className="py-4 sm:py-5 bg-[#39FF14] hover:bg-white disabled:opacity-50 transition-all text-black border-4 border-black font-black uppercase tracking-widest text-lg sm:text-xl flex items-center justify-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-x-2 active:translate-y-2 active:shadow-none"
+                        className="py-2.5 sm:py-5 bg-[#39FF14] hover:bg-white disabled:opacity-50 transition-all text-black border-[3px] sm:border-4 border-black font-black uppercase tracking-widest text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 sm:active:translate-x-2 sm:active:translate-y-2 active:shadow-none"
                       >
-                        <Check className="w-6 h-6" strokeWidth={4} />
+                        <Check className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={4} />
                         COMPLETE()
                       </button>
                       <button 
                         disabled={state.loading}
                         onClick={() => actions.markCancelled(latestServingItem.id)}
-                        className="py-4 sm:py-5 bg-[#FF00FF] hover:bg-white disabled:opacity-50 transition-all text-white hover:text-black border-4 border-black font-black uppercase tracking-widest text-lg sm:text-xl flex items-center justify-center gap-2 shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-x-2 active:translate-y-2 active:shadow-none"
+                        className="py-2.5 sm:py-5 bg-[#FF00FF] hover:bg-white disabled:opacity-50 transition-all text-white hover:text-black border-[3px] sm:border-4 border-black font-black uppercase tracking-widest text-sm sm:text-xl flex items-center justify-center gap-1.5 sm:gap-2 shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 sm:active:translate-x-2 sm:active:translate-y-2 active:shadow-none"
                       >
-                        <FastForward className="w-6 h-6" strokeWidth={4} />
+                        <FastForward className="w-4 h-4 sm:w-6 sm:h-6" strokeWidth={4} />
                         SKIP()
                       </button>
                     </div>
