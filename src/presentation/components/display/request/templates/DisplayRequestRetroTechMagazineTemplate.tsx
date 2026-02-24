@@ -3,6 +3,7 @@
 import { ServiceType } from '@/src/domain/types/queue';
 import { ArrowLeft, ArrowRight, CheckCircle2, ClipboardList, Crown, Lock, Send, Ticket, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 import { DisplayRequestTemplateProps, RequestStep } from '../DisplayRequestView';
 
 const STEPS: { key: RequestStep; label: string }[] = [
@@ -14,7 +15,7 @@ const STEPS: { key: RequestStep; label: string }[] = [
 export function DisplayRequestRetroTechMagazineTemplate({
   currentStep, setCurrentStep, customerName, setCustomerName, serviceType, setServiceType,
   note, setNote, challenge, challengeAnswer, setChallengeAnswer, isSubmitting, error,
-  successCode, handleSubmit, canGoNext, presets,
+  successCode, qrCodeUrl, countdown, handleDone, handleSubmit, canGoNext, presets,
 }: DisplayRequestTemplateProps) {
   const stepIndex = STEPS.findIndex((s) => s.key === currentStep);
 
@@ -29,14 +30,29 @@ export function DisplayRequestRetroTechMagazineTemplate({
           </div>
           <h1 className="text-4xl font-black text-[#39FF14] tracking-widest uppercase mb-3 drop-shadow-[0_0_10px_#39FF14]">SUCCESS_</h1>
           <p className="text-[#00FFFF] font-bold uppercase text-xs tracking-widest mb-10">REQUEST.SUBMITTED.OK</p>
-          <div className="border-[4px] border-[#FF00FF] bg-black p-8 shadow-[8px_8px_0_0_rgba(255,0,255,0.5)] mb-10">
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00FFFF] mb-4">TRACK.CODE =</div>
-            <div className="text-5xl font-black tracking-[0.25em] text-[#39FF14] select-all drop-shadow-[0_0_15px_#39FF14]">{successCode}</div>
+          <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mb-10">
+            {/* Tracking Code */}
+            <div className="border-[4px] border-[#FF00FF] bg-black p-6 shadow-[8px_8px_0_0_rgba(255,0,255,0.5)] flex-1 w-full">
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00FFFF] mb-4">TRACK.CODE =</div>
+              <div className="text-4xl sm:text-5xl font-black tracking-[0.25em] text-[#39FF14] select-all drop-shadow-[0_0_15px_#39FF14]">{successCode}</div>
+            </div>
+
+            {/* QR Code */}
+            {qrCodeUrl && (
+              <div className="border-[4px] border-[#00FFFF] bg-white p-4 shadow-[8px_8px_0_0_rgba(0,255,255,0.5)] shrink-0">
+                <QRCodeSVG value={qrCodeUrl} size={110} level="H" includeMargin={false} />
+                <div className="text-[10px] font-black text-black uppercase tracking-widest mt-2">SCAN.ME_</div>
+              </div>
+            )}
           </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-[#FF00FF] mb-10">SAVE.CODE // CHECK.STATUS</p>
-          <Link href="/display" className="inline-flex items-center gap-2 px-8 py-4 border-[4px] border-[#00FFFF] bg-black text-[#00FFFF] font-black uppercase tracking-widest hover:bg-[#00FFFF] hover:text-black transition-colors text-sm shadow-[4px_4px_0_0_rgba(0,255,255,0.5)]">
+
+          <p className="text-xs font-bold uppercase tracking-widest text-[#FF00FF] mb-10">
+            AUTO.RETURN IN {countdown}S_
+          </p>
+
+          <button onClick={handleDone} className="inline-flex items-center gap-2 px-8 py-4 border-[4px] border-[#00FFFF] bg-black text-[#00FFFF] font-black uppercase tracking-widest hover:bg-[#00FFFF] hover:text-black transition-colors text-sm shadow-[4px_4px_0_0_rgba(0,255,255,0.5)]">
             <ArrowLeft className="w-5 h-5" /> BACK.TO.DISPLAY_
-          </Link>
+          </button>
         </div>
       </div>
     );

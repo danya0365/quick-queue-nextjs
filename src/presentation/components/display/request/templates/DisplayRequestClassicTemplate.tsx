@@ -3,6 +3,7 @@
 import { ServiceType } from '@/src/domain/types/queue';
 import { ArrowLeft, ArrowRight, CheckCircle2, ClipboardList, Crown, Eye, Lock, Send, Ticket, User, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 import { DisplayRequestTemplateProps, RequestStep } from '../DisplayRequestView';
 
 const STEPS: { key: RequestStep; label: string; icon: React.ReactNode }[] = [
@@ -26,6 +27,9 @@ export function DisplayRequestClassicTemplate({
   isSubmitting,
   error,
   successCode,
+  qrCodeUrl,
+  countdown,
+  handleDone,
   handleSubmit,
   canGoNext,
   presets,
@@ -48,22 +52,35 @@ export function DisplayRequestClassicTemplate({
           <h1 className="text-3xl sm:text-4xl font-black mb-3">ส่งคำขอสำเร็จ!</h1>
           <p className="text-slate-400 text-base mb-10">เราได้รับคำขอคิวของคุณเรียบร้อยแล้ว</p>
 
-          <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-8 mb-10 backdrop-blur-sm">
-            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">รหัสติดตาม</div>
-            <div className="text-5xl sm:text-6xl font-black tracking-[0.25em] text-emerald-400 font-mono select-all py-3">
-              {successCode}
+          <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mb-10">
+            {/* Tracking Code */}
+            <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm flex-1 w-full">
+              <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">รหัสติดตาม</div>
+              <div className="text-4xl sm:text-5xl font-black tracking-[0.25em] text-emerald-400 font-mono select-all">
+                {successCode}
+              </div>
             </div>
+
+            {/* QR Code */}
+            {qrCodeUrl && (
+              <div className="bg-white p-4 rounded-xl shadow-lg shrink-0">
+                <QRCodeSVG value={qrCodeUrl} size={110} level="H" includeMargin={false} />
+                <div className="text-[10px] font-bold text-slate-800 uppercase tracking-widest mt-2">สแกนเพื่อตรวจสอบ</div>
+              </div>
+            )}
           </div>
 
-          <p className="text-sm text-slate-500 mb-8">กรุณาจดรหัสเพื่อใช้เช็คสถานะ</p>
+          <p className="text-sm text-slate-500 mb-8">
+            กลับสู่หน้าหลักอัตโนมัติใน {countdown} วินาที
+          </p>
 
-          <Link
-            href="/display"
+          <button
+            onClick={handleDone}
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-100 transition-all text-lg shadow-xl"
           >
             <ArrowLeft className="w-5 h-5" />
             กลับหน้าจอแสดงคิว
-          </Link>
+          </button>
         </div>
       </div>
     );

@@ -35,7 +35,11 @@ export interface DisplayRequestTemplateProps {
   // Status
   isSubmitting: boolean;
   error: string | null;
+  // Result
   successCode: string | null;
+  qrCodeUrl: string;
+  countdown: number;
+  handleDone: () => void;
   // Actions
   handleSubmit: (e: FormEvent) => void;
   canGoNext: boolean;
@@ -58,6 +62,8 @@ export function DisplayRequestView() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successCode, setSuccessCode] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(15);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   const fetchChallenge = useCallback(async () => {
     try {
@@ -116,14 +122,40 @@ export function DisplayRequestView() {
 
       setSuccessCode(data.trackingCode);
       addTrackingEntry({ code: data.trackingCode, customerName: customerName.trim() });
-      
-      // Redirect to the Kiosk Ticket Success Screen
-      router.push(`/display/ticket/${data.trackingCode}`);
+      // Removed router.push, letting the local Success State component render instead
     } catch {
       setError('เกิดข้อผิดพลาดในการส่งคำขอ');
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Handle countdown & QR code on success
+  useEffect(() => {
+    if (successCode) {
+      // 1) Set QR Code
+      if (typeof window !== 'undefined') {
+        setQrCodeUrl(`${window.location.origin}/track?code=${successCode}`);
+      }
+
+      // 2) Start countdown
+      const timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [successCode]);
+
+  // Navigate away when countdown hits 0
+  useEffect(() => {
+    if (successCode && countdown <= 0) {
+      router.push('/display');
+    }
+  }, [countdown, successCode, router]);
+
+  const handleDone = () => {
+    router.push('/display');
   };
 
   const templateProps: DisplayRequestTemplateProps = {
@@ -141,6 +173,9 @@ export function DisplayRequestView() {
     isSubmitting,
     error,
     successCode,
+    qrCodeUrl,
+    countdown,
+    handleDone,
     handleSubmit,
     canGoNext,
     presets: QUEUE_FORM_PRESETS,

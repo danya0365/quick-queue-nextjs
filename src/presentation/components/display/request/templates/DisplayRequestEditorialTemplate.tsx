@@ -3,6 +3,7 @@
 import { ServiceType } from '@/src/domain/types/queue';
 import { ArrowLeft, ArrowRight, CheckCircle2, ClipboardList, Crown, Lock, Send, Ticket, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 import { DisplayRequestTemplateProps, RequestStep } from '../DisplayRequestView';
 
 const STEPS: { key: RequestStep; label: string }[] = [
@@ -14,7 +15,7 @@ const STEPS: { key: RequestStep; label: string }[] = [
 export function DisplayRequestEditorialTemplate({
   currentStep, setCurrentStep, customerName, setCustomerName, serviceType, setServiceType,
   note, setNote, challenge, challengeAnswer, setChallengeAnswer, isSubmitting, error,
-  successCode, handleSubmit, canGoNext, presets,
+  successCode, qrCodeUrl, countdown, handleDone, handleSubmit, canGoNext, presets,
 }: DisplayRequestTemplateProps) {
   const stepIndex = STEPS.findIndex((s) => s.key === currentStep);
 
@@ -27,14 +28,29 @@ export function DisplayRequestEditorialTemplate({
           </div>
           <h1 className="text-4xl font-black tracking-tighter uppercase mb-3">SUCCESS</h1>
           <p className="text-gray-500 font-bold uppercase text-sm tracking-widest mb-10">YOUR REQUEST HAS BEEN SUBMITTED</p>
-          <div className="border-4 border-black p-8 shadow-[8px_8px_0_0_rgba(0,0,0,1)] mb-10">
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-4">TRACKING.CODE</div>
-            <div className="text-5xl font-black tracking-[0.25em] font-mono select-all">{successCode}</div>
+          <div className="flex flex-col sm:flex-row gap-6 items-center justify-center mb-10">
+            {/* Tracking Code */}
+            <div className="border-4 border-black p-6 shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex-1 w-full bg-white">
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-4">TRACKING.CODE</div>
+              <div className="text-4xl sm:text-5xl font-black tracking-[0.25em] font-mono select-all">{successCode}</div>
+            </div>
+
+            {/* QR Code */}
+            {qrCodeUrl && (
+              <div className="border-4 border-black p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)] shrink-0 bg-white">
+                <QRCodeSVG value={qrCodeUrl} size={110} level="H" includeMargin={false} />
+                <div className="text-[10px] font-black uppercase tracking-widest mt-2">SCAN_TO_TRACK</div>
+              </div>
+            )}
           </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-10">SAVE THIS CODE TO CHECK STATUS</p>
-          <Link href="/display" className="inline-flex items-center gap-2 px-8 py-4 border-4 border-black bg-black text-white font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors text-sm font-sans">
+
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-10">
+            REDIRECTING MIGHTILY IN {countdown}S
+          </p>
+
+          <button onClick={handleDone} className="inline-flex items-center gap-2 px-8 py-4 border-4 border-black bg-black text-white font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors text-sm font-sans mx-auto shadow-[4px_4px_0_0_rgba(0,0,0,0.15)]">
             <ArrowLeft className="w-5 h-5" /> BACK.TO.DISPLAY
-          </Link>
+          </button>
         </div>
       </div>
     );
