@@ -1,13 +1,15 @@
 'use client';
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface SoundStore {
   soundEnabled: boolean;
   setSoundEnabled: (val: boolean | ((prev: boolean) => boolean)) => void;
+  announcedQueues: number[];
+  addAnnouncedQueue: (qNum: number) => void;
 }
 
 export const useSoundStore = create<SoundStore>()(
@@ -18,6 +20,13 @@ export const useSoundStore = create<SoundStore>()(
         set((state) => ({
           soundEnabled: typeof val === 'function' ? val(state.soundEnabled) : val,
         })),
+      announcedQueues: [],
+      addAnnouncedQueue: (qNum) =>
+        set((state) => {
+          // เก็บประวัติแค่ 100 คิวล่าสุด เพื่อไม่ให้ localStorage บวมเกินไป
+          if (state.announcedQueues.includes(qNum)) return state;
+          return { announcedQueues: [...state.announcedQueues, qNum].slice(-100) };
+        }),
     }),
     {
       name: 'queue-sound-storage', // บันทึกสถานะการเปิดเสียงลง localStorage
@@ -31,8 +40,7 @@ export const useSoundStore = create<SoundStore>()(
  * Uses Zustand to persist the soundEnabled setting globally.
  */
 export function useQueueSoundAlert(currentQueueNumber: number) {
-  const { soundEnabled, setSoundEnabled } = useSoundStore();
-  const prevQRef = useRef<number | null>(null);
+  const { soundEnabled, setSoundEnabled, announcedQueues, addAnnouncedQueue } = useSoundStore();
 
   const playAlert = useCallback((qNum: number) => {
     try {
@@ -96,13 +104,11 @@ export function useQueueSoundAlert(currentQueueNumber: number) {
   }, []);
 
   useEffect(() => {
-    if (currentQueueNumber > 0 && currentQueueNumber !== prevQRef.current) {
-      if (soundEnabled) {
-        playAlert(currentQueueNumber);
-      }
-      prevQRef.current = currentQueueNumber;
+    if (currentQueueNumber > 0 && soundEnabled && !announcedQueues.includes(currentQueueNumber)) {
+      playAlert(currentQueueNumber);
+      addAnnouncedQueue(currentQueueNumber);
     }
-  }, [currentQueueNumber, soundEnabled, playAlert]);
+  }, [currentQueueNumber, soundEnabled, playAlert, announcedQueues, addAnnouncedQueue]);
 
   return { soundEnabled, setSoundEnabled };
 }
