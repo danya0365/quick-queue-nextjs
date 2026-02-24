@@ -17,6 +17,7 @@ interface AdminKioskTemplateProps {
 export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
+  const [isOtherServingExpanded, setIsOtherServingExpanded] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col bg-slate-900 text-slate-50 font-sans selection:bg-blue-500 selection:text-white">
@@ -70,7 +71,8 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         
         {/* ═══ Left Zone: Serving Status ═══ */}
-        <div className="flex-1 flex flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-slate-800/50">
+        {/* Changed p-4 to p-3 for mobile, and added pb-20 sm:pb-6 space-y-4 sm:space-y-8 custom-scrollbar */}
+        <div className="flex-1 flex flex-col overflow-y-auto p-3 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-slate-800/50 pb-20 sm:pb-6 space-y-4 sm:space-y-8 custom-scrollbar">
           
           {/* Section Title */}
           <div className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
@@ -139,82 +141,113 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
               )}
 
               {/* ── Other Serving Items (Compact List) ── */}
+              {/* Replaced with new conditional rendering and inline items */}
               {servingItems.length > 1 && (
-                <div className="space-y-2">
-                  <div className="text-xs text-slate-500 font-bold uppercase tracking-widest px-1">
-                    คิวอื่นที่กำลังให้บริการ ({servingItems.length - 1})
+                <>
+                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t border-slate-800">
+                    <span className="text-xs text-slate-400">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
+                    <button 
+                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                      className="text-xs font-bold text-blue-400 hover:text-blue-300"
+                    >
+                      {isOtherServingExpanded ? 'ซ่อน' : 'แสดงทั้งหมด'}
+                    </button>
                   </div>
-                  {servingItems.slice(1).map((item) => (
-                    <ServingItemCompact key={item.id} item={item} state={state} actions={actions} variant="classic" />
-                  ))}
-                </div>
+                  
+                  <div className={`space-y-3 mt-3 sm:mt-4 sm:flex flex-col ${isOtherServingExpanded ? 'flex' : 'hidden'}`}>
+                    {servingItems.slice(1).map(item => (
+                      <div key={item.id} className="flex items-center gap-4 p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <div className="text-2xl font-black text-slate-300 min-w-[70px]">
+                          {formatQueueNumber(item.queueNumber)}
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-bold text-slate-200">{item.customerName || '-'}</div>
+                          <div className="text-xs text-slate-400 mt-0.5">
+                            {new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => actions.markCompleted(item.id)}
+                          className="px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-sm font-bold rounded-lg transition-colors border border-emerald-500/20"
+                        >
+                          เสร็จสิ้น
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           )}
         </div>
 
         {/* ═══ Right Zone: Control Panel ═══ */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-slate-950 p-4 sm:p-6 shrink-0 overflow-y-auto">
+        {/* Changed pt-2 sm:pt-0 px-4 sm:px-6 to pt-2 sm:pt-0 px-3 sm:px-6 pb-4 sm:pb-6 */}
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-slate-950 pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto">
           
           {/* Next Up Card */}
-          <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800 mb-4 flex flex-col items-center">
+          <div className="bg-slate-900 rounded-2xl p-4 sm:p-6 border border-slate-800 mb-3 sm:mb-4 flex flex-col items-center">
             <div className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">คิวถัดไป</div>
-            <div className="text-5xl sm:text-6xl font-black text-white tracking-tighter mb-1">
+            <div className="text-4xl sm:text-6xl font-black text-white tracking-tighter mb-1">
               {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
             </div>
+            {/* Updated className for customerName */}
             {nextUpItem?.customerName && (
-              <div className="text-lg text-slate-400 font-medium">คุณ {nextUpItem.customerName}</div>
+              <div className="text-sm sm:text-lg text-slate-300 font-bold mt-1 sm:mt-3 relative z-10">คุณ {nextUpItem.customerName}</div>
             )}
             
-            <div className="w-full h-px bg-slate-800 my-4"></div>
+            <div className="w-full h-px bg-slate-800 my-3 sm:my-4"></div>
 
             <div className="flex items-center gap-3 text-slate-300">
-              <div className="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                <Users className="w-5 h-5" />
+              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <Users className="w-4 sm:w-5 h-4 sm:h-5" />
               </div>
               <div>
-                <div className="text-xs text-slate-500 font-bold">คิวรอทั้งหมด</div>
-                <div className="text-2xl font-black text-white">{waitingCount} <span className="text-sm font-medium text-slate-500">คิว</span></div>
+                <div className="text-[10px] sm:text-xs text-slate-500 font-bold">คิวรอทั้งหมด</div>
+                <div className="text-xl sm:text-2xl font-black text-white">{waitingCount} <span className="text-xs sm:text-sm font-medium text-slate-500">คิว</span></div>
               </div>
             </div>
           </div>
 
-          {/* Call Next Button */}
-          <button 
-            disabled={!nextUpItem || state.loading}
-            onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-            className="w-full py-6 sm:py-8 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all rounded-2xl text-white font-black text-2xl sm:text-3xl shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] flex flex-col items-center justify-center gap-1 active:scale-95 mb-4"
-          >
-            <span className="uppercase tracking-wide">เรียกคิวถัดไป</span>
-            {nextUpItem && (
-              <span className="text-blue-200 text-sm font-bold">
-                ({formatQueueNumber(nextUpItem.queueNumber)})
-              </span>
-            )}
-          </button>
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+            {/* Call Next Button */}
+            <button 
+              disabled={!nextUpItem || state.loading}
+              onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
+              className="w-full py-1.5 sm:py-8 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-3xl shadow-[0_0_20px_-5px_rgba(59,130,246,0.5)] sm:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] flex flex-col items-center justify-center gap-0 sm:gap-1 active:scale-95 sm:mb-4 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+            >
+              <span className="uppercase tracking-wide">เรียกคิวถัดไป</span>
+              {nextUpItem && (
+                <span className="text-blue-200 text-[10px] sm:text-sm font-bold">
+                  ({formatQueueNumber(nextUpItem.queueNumber)})
+                </span>
+              )}
+            </button>
 
-          {/* Walk-in Button */}
-          <button 
-            onClick={() => {
-              const dummyData = {
-                customerName: 'Walk-in',
-                serviceType: ServiceType.GENERAL,
-                note: 'Walk-in จาก จอปฏิบัติการ'
-              };
-              actions.createQueueItem(dummyData).catch(console.error);
-            }}
-            className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors rounded-2xl font-bold text-base flex items-center justify-center gap-2 border border-slate-700 active:scale-95 mb-4"
-          >
-            <Plus className="w-5 h-5" />
-            เพิ่มคิวหน้าร้าน (Walk-in)
-          </button>
+            {/* Walk-in Button */}
+            <button 
+              onClick={() => {
+                const dummyData = {
+                  customerName: 'Walk-in',
+                  serviceType: ServiceType.GENERAL,
+                  note: 'Walk-in จาก จอปฏิบัติการ'
+                };
+                actions.createQueueItem(dummyData).catch(console.error);
+              }}
+              className="w-full py-1.5 sm:py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors rounded-xl sm:rounded-2xl font-bold text-[10px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 border border-slate-700 active:scale-95 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+            >
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 shrink-0" />
+              <span className="truncate">เพิ่มคิวหน้าร้าน</span>
+            </button>
+          </div>
 
           {/* Pending Requests — Expandable */}
           {pendingCount > 0 && (
             <div className="mt-auto">
               <button
                 onClick={() => setIsPendingExpanded(!isPendingExpanded)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 hover:bg-amber-500/20 transition-colors"
+                className="w-full flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 hover:bg-amber-500/20 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <Bell className="w-4 h-4" />

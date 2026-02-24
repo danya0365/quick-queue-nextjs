@@ -17,6 +17,7 @@ interface AdminKioskTemplateProps {
 export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
+  const [isOtherServingExpanded, setIsOtherServingExpanded] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col bg-white text-black font-serif selection:bg-black selection:text-white">
@@ -52,7 +53,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         
         {/* ═══ Left Zone: Serving Status ═══ */}
-        <div className="flex-1 flex flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-gray-50">
+        <div className="flex-1 flex flex-col p-3 sm:p-6 lg:p-8 bg-zinc-100 overflow-y-auto border-b lg:border-b-0 lg:border-r-2 border-black pb-20 sm:pb-6 space-y-4 sm:space-y-8 custom-scrollbar">
           
           <div className="text-black font-black uppercase tracking-[0.15em] text-sm border-b-2 border-black pb-2 mb-6 flex items-center justify-between">
             <span>SERVING.STATUS ({servingItems.length})</span>
@@ -119,81 +120,109 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                 </div>
               )}
 
-              {/* ── Other Serving Items ── */}
+              {/* Other Items in Progress */}
               {servingItems.length > 1 && (
-                <div className="space-y-2">
-                  <div className="text-xs font-black uppercase tracking-widest text-gray-400 border-b-2 border-gray-200 pb-1">
-                    OTHER.SERVING ({servingItems.length - 1})
+                <>
+                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t-2 border-black">
+                    <span className="text-xs font-black uppercase text-gray-500">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
+                    <button 
+                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                      className="text-xs font-black uppercase text-black hover:text-gray-600 underline decoration-2 underline-offset-2"
+                    >
+                      {isOtherServingExpanded ? 'ซ่อน' : 'แสดงทั้งหมด'}
+                    </button>
                   </div>
-                  {servingItems.slice(1).map((item) => (
-                    <EditorialServingRow key={item.id} item={item} state={state} actions={actions} />
-                  ))}
-                </div>
+                  
+                  <div className={`space-y-3 mt-3 sm:mt-4 sm:block ${isOtherServingExpanded ? 'block' : 'hidden'}`}>
+                    {servingItems.slice(1).map(item => (
+                      <div key={item.id} className="flex items-center gap-4 p-4 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <div className="text-2xl font-black text-black min-w-[70px]">
+                          {formatQueueNumber(item.queueNumber)}
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-black text-black">{item.customerName || '-'}</div>
+                          <div className="text-xs font-bold text-gray-500 mt-0.5">
+                            {new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => actions.markCompleted(item.id)}
+                          className="px-4 py-2 bg-zinc-100 hover:bg-zinc-200 border-2 border-black text-black text-sm font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                        >
+                          เสร็จสิ้น
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           )}
         </div>
 
         {/* ═══ Right Zone: Controls ═══ */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-white p-4 sm:p-6 shrink-0 overflow-y-auto">
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto relative">
           
           {/* Next Up */}
-          <div className="bg-white p-6 border-[4px] border-black mb-4 relative">
-            <div className="absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-1">
+          <div className="bg-white p-4 sm:p-6 border-[4px] border-black mb-3 sm:mb-4 relative">
+            <div className="absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 sm:py-1">
               NEXT.IN.LINE
             </div>
             <div className="text-center">
-              <div className="text-6xl sm:text-7xl font-black tracking-tighter">
+              <div className="text-5xl sm:text-7xl font-black tracking-tighter">
                 {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
               {nextUpItem?.customerName && (
-                <div className="text-xl text-gray-500 font-bold mt-1">คุณ {nextUpItem.customerName}</div>
+                <div className="text-base sm:text-xl text-gray-500 font-bold mt-1">คุณ {nextUpItem.customerName}</div>
               )}
             </div>
             
             <div className="w-full h-[3px] bg-black my-4"></div>
 
-            <div className="flex items-center justify-between border-2 border-black p-3 bg-gray-50">
-              <span className="text-xs font-black uppercase tracking-widest text-gray-400">WAITING.COUNT</span>
-              <span className="text-2xl font-black">{waitingCount} <span className="text-sm font-bold text-gray-400">PERSONS</span></span>
+            <div className="flex items-center justify-between border-2 border-black p-2 sm:p-3 bg-gray-50">
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-gray-400">WAITING.COUNT</span>
+              <span className="text-xl sm:text-2xl font-black">{waitingCount} <span className="text-xs sm:text-sm font-bold text-gray-400">PERSONS</span></span>
             </div>
           </div>
 
-          {/* Call Next */}
-          <button 
-            disabled={!nextUpItem || state.loading}
-            onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-            className="w-full py-6 sm:py-8 bg-black hover:bg-gray-800 disabled:opacity-50 transition-all text-white font-black text-2xl sm:text-3xl border-[4px] border-black shadow-[8px_8px_0_0_rgba(0,0,0,0.1)] flex flex-col items-center justify-center gap-1 hover:translate-x-1 hover:translate-y-1 hover:shadow-none mb-4"
-          >
-            <span className="uppercase tracking-[0.1em]">เรียกคิวถัดไป</span>
-            {nextUpItem && (
-              <span className="text-gray-400 text-sm font-bold border-t-2 border-gray-700 pt-1 mt-1">
-                ({formatQueueNumber(nextUpItem.queueNumber)})
-              </span>
-            )}
-          </button>
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+            {/* Call Next */}
+            <button 
+              disabled={!nextUpItem || state.loading}
+              onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
+              className="w-full py-1.5 sm:py-8 bg-black hover:bg-gray-800 disabled:opacity-50 transition-all text-white font-black text-xs sm:text-3xl border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,0.1)] flex flex-col items-center justify-center gap-0 sm:gap-1 hover:translate-x-1 hover:translate-y-1 hover:shadow-none sm:mb-4 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+            >
+              <span className="uppercase tracking-[0.05em] sm:tracking-[0.1em]">เรียกคิวถัดไป</span>
+              {nextUpItem && (
+                <span className="text-gray-400 text-[10px] sm:text-sm font-bold border-t sm:border-t-2 border-gray-700 pt-0.5 sm:pt-1 mt-0.5 sm:mt-1">
+                  ({formatQueueNumber(nextUpItem.queueNumber)})
+                </span>
+              )}
+            </button>
 
-          {/* Walk-in */}
-          <button 
-            onClick={() => {
-              const dummyData = {
-                customerName: 'Walk-in',
-                serviceType: ServiceType.GENERAL,
-                note: 'Walk-in จาก จอปฏิบัติการ'
-              };
-              actions.createQueueItem(dummyData).catch(console.error);
-            }}
-            className="w-full py-4 bg-white hover:bg-gray-100 text-black border-[3px] border-black font-black uppercase tracking-widest text-base flex items-center justify-center gap-2 active:translate-x-1 active:translate-y-1 mb-4"
-          >
-            <Plus className="w-5 h-5" strokeWidth={3} />
-            WALK-IN.ADD()
-          </button>
+            {/* Walk-in */}
+            <button 
+              onClick={() => {
+                const dummyData = {
+                  customerName: 'Walk-in',
+                  serviceType: ServiceType.GENERAL,
+                  note: 'Walk-in จาก จอปฏิบัติการ'
+                };
+                actions.createQueueItem(dummyData).catch(console.error);
+              }}
+              className="w-full py-1.5 sm:py-4 bg-white hover:bg-gray-100 text-black border-[3px] border-black font-black uppercase tracking-widest text-[9px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 active:translate-x-1 active:translate-y-1 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+            >
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" strokeWidth={3} />
+              <span className="truncate">WALK-IN.ADD()</span>
+            </button>
+          </div>
 
           {/* Pending — Expandable */}
           <div className="mt-auto">
             <button
               onClick={() => setIsPendingExpanded(!isPendingExpanded)}
-              className="w-full flex items-center justify-between px-4 py-3 border-3 border-black bg-amber-50 hover:bg-amber-100 transition-colors border-[3px]"
+              className="w-full flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 border-black bg-amber-50 hover:bg-amber-100 transition-colors border-[3px]"
             >
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4" />

@@ -17,6 +17,7 @@ interface AdminKioskTemplateProps {
 export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
+  const [isOtherServingExpanded, setIsOtherServingExpanded] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col font-sans selection:bg-[#FF00FF] selection:text-white"
@@ -53,7 +54,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         
         {/* ═══ Left Zone: Serving Status ═══ */}
-        <div className="flex-1 flex flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black relative">
+        <div className="flex-1 flex flex-col overflow-y-auto p-3 sm:p-6 lg:p-8 border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black relative pb-20 sm:pb-6">
           <div className="absolute top-3 left-3 text-black font-black uppercase tracking-widest text-xs bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] z-10">
             VIEW.SERVING [{servingItems.length}]
           </div>
@@ -127,76 +128,91 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
 
               {/* ── Other Serving Items ── */}
               {servingItems.length > 1 && (
-                <div className="space-y-2">
-                  <div className="text-xs font-black uppercase tracking-widest text-[#FF00FF] bg-white border-2 border-black px-2 py-1 inline-block shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-                    BUFFER.SERVING [{servingItems.length - 1}]
+                <>
+                  <div className="flex items-center justify-between sm:hidden mt-2 pt-2 border-t border-black/30">
+                    <span className="text-xs font-black uppercase tracking-[0.1em] text-black/70">คิวอื่นๆ ที่กำลังให้บริการ ({servingItems.length - 1})</span>
+                    <button 
+                      onClick={() => setIsOtherServingExpanded(!isOtherServingExpanded)}
+                      className="text-xs font-black uppercase tracking-[0.1em] text-[#FF00FF] hover:text-[#FF00FF]/70 underline decoration-1 underline-offset-2"
+                    >
+                      {isOtherServingExpanded ? '[ซ่อน]' : '[แสดงทั้งหมด]'}
+                    </button>
                   </div>
-                  {servingItems.slice(1).map((item) => (
-                    <RetroServingRow key={item.id} item={item} state={state} actions={actions} />
-                  ))}
-                </div>
+                  
+                  <div className={`space-y-2 sm:block ${isOtherServingExpanded ? 'block' : 'hidden'}`}>
+                    <div className="text-xs font-black uppercase tracking-widest text-[#FF00FF] bg-white border-2 border-black px-2 py-1 inline-block shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
+                      BUFFER.SERVING [{servingItems.length - 1}]
+                    </div>
+                    {servingItems.slice(1).map((item) => (
+                      <RetroServingRow key={item.id} item={item} state={state} actions={actions} />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           )}
         </div>
 
         {/* ═══ Right Zone: Controls ═══ */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-white p-4 sm:p-6 shrink-0 overflow-y-auto border-l-[4px] border-black">
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto bg-white border-l-[4px] border-black">
           
           {/* Next Up */}
-          <div className="bg-[#f0f0f0] p-5 border-[4px] border-black mb-4 relative shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+          <div className="bg-[#f0f0f0] p-3 sm:p-5 border-[4px] border-black mb-3 sm:mb-4 relative shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
             <div className="absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest">
               UP.NEXT
             </div>
             
-            <div className="bg-black w-full py-6 border-[3px] border-[#FF00FF] flex flex-col items-center relative overflow-hidden mb-4">
+            <div className="bg-black w-full py-4 sm:py-6 border-[3px] border-[#FF00FF] flex flex-col items-center relative overflow-hidden mb-3 sm:mb-4">
               <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
-              <div className="text-5xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_10px_#39FF14] relative z-20">
+              <div className="text-4xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_10px_#39FF14] relative z-20">
                 {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
               </div>
               {nextUpItem?.customerName && (
-                <div className="text-lg text-white font-black bg-[#FF00FF] px-3 py-0.5 mt-2 transform skew-x-12 relative z-20">{nextUpItem.customerName}</div>
+                <div className="text-sm sm:text-lg text-white font-black bg-[#FF00FF] px-2 sm:px-3 py-0.5 mt-1 sm:mt-2 transform skew-x-12 relative z-20">{nextUpItem.customerName}</div>
               )}
             </div>
 
-            <div className="flex justify-between items-center border-[3px] border-black p-3 bg-white shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#FF00FF]">WAIT.COUNT =</span>
-              <span className="text-2xl font-black text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
-                {waitingCount} <span className="text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
+            <div className="flex justify-between items-center border-[3px] border-black p-2 sm:p-3 bg-white shadow-[3px_3px_0_0_rgba(0,0,0,1)]">
+              <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-[#FF00FF]">WAIT.COUNT =</span>
+              <span className="text-xl sm:text-2xl font-black text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
+                {waitingCount} <span className="text-xs sm:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
               </span>
             </div>
           </div>
 
-          {/* Call Next */}
-          <button 
-            disabled={!nextUpItem || state.loading}
-            onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-            className="w-full py-6 sm:py-8 bg-[#FF00FF] hover:bg-[#00FFFF] disabled:opacity-50 transition-all text-white hover:text-black font-black text-2xl sm:text-3xl border-[4px] border-black shadow-[10px_10px_0_0_rgba(0,0,0,1)] flex flex-col items-center justify-center gap-1 hover:translate-x-2 hover:translate-y-2 hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] mb-4 active:translate-x-3 active:translate-y-3 active:shadow-none uppercase tracking-widest"
-          >
-            CALL.NEXT()
-          </button>
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+            {/* Call Next */}
+            <button 
+              disabled={!nextUpItem || state.loading}
+              onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
+              className="w-full py-1.5 sm:py-8 bg-[#FF00FF] hover:bg-[#00FFFF] disabled:opacity-50 transition-all text-white hover:text-black font-black text-xs sm:text-3xl border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[10px_10px_0_0_rgba(0,0,0,1)] flex flex-col items-center justify-center gap-0 sm:gap-1 hover:translate-x-1 sm:hover:translate-x-2 hover:translate-y-1 sm:hover:translate-y-2 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:mb-4 active:translate-x-2 sm:active:translate-x-3 active:translate-y-2 sm:active:translate-y-3 active:shadow-none uppercase tracking-widest text-center px-1 leading-tight min-h-[36px] sm:min-h-0"
+            >
+              CALL.NEXT()
+            </button>
 
-          {/* Walk-in */}
-          <button 
-            onClick={() => {
-              const dummyData = {
-                customerName: 'Walk-in',
-                serviceType: ServiceType.GENERAL,
-                note: 'Walk-in จาก จอปฏิบัติการ'
-              };
-              actions.createQueueItem(dummyData).catch(console.error);
-            }}
-            className="w-full py-4 bg-white hover:bg-[#39FF14] text-black border-[4px] border-black font-black uppercase tracking-widest text-base flex items-center justify-center gap-2 shadow-[5px_5px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none mb-4"
-          >
-            <Plus className="w-6 h-6 bg-black text-white p-0.5" strokeWidth={4} />
-            WALK_IN.ADD()
-          </button>
+            {/* Walk-in */}
+            <button 
+              onClick={() => {
+                const dummyData = {
+                  customerName: 'Walk-in',
+                  serviceType: ServiceType.GENERAL,
+                  note: 'Walk-in จาก จอปฏิบัติการ'
+                };
+                actions.createQueueItem(dummyData).catch(console.error);
+              }}
+              className="w-full py-1.5 sm:py-4 bg-white hover:bg-[#39FF14] text-black border-[3px] sm:border-[4px] border-black font-black uppercase tracking-widest text-[9px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[5px_5px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+            >
+              <Plus className="w-3 h-3 sm:w-6 sm:h-6 bg-black text-white p-0.5 shrink-0" strokeWidth={4} />
+              <span className="truncate">WALK_IN.ADD()</span>
+            </button>
+          </div>
 
           {/* Pending — Expandable */}
           <div className="mt-auto">
             <button
               onClick={() => setIsPendingExpanded(!isPendingExpanded)}
-              className="w-full flex items-center justify-between px-3 py-3 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+              className="w-full flex items-center justify-between px-3 py-2 sm:py-3 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
             >
               <div className="flex items-center gap-2">
                 <Bell className="w-4 h-4" strokeWidth={3} />
