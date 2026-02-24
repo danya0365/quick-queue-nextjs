@@ -2,7 +2,7 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Home, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Ticket, Volume2, VolumeX } from 'lucide-react';
 import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
@@ -28,6 +28,13 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
             title="กลับหน้าหลัก"
           >
             <Home className="w-5 h-5" />
+          </Link>
+          <Link
+            href="/display/request"
+            className="flex items-center gap-1.5 px-3 py-2 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors font-black text-xs uppercase tracking-widest font-sans"
+          >
+            <Ticket className="w-4 h-4" />
+            <span className="hidden sm:inline">QUEUE.TICKET</span>
           </Link>
           <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase">{shopName}</h1>
         </div>
