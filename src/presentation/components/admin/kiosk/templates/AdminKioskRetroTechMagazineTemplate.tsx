@@ -161,33 +161,33 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
         </div>
 
         {/* ═══ Right Zone: Controls ═══ */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto bg-white border-l-[4px] border-black">
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 lg:pt-6 px-3 lg:px-6 pb-4 lg:pb-6 shrink-0 overflow-y-auto bg-white border-l-[4px] border-black">
           
           {/* Next Up */}
-          <div className="bg-[#f0f0f0] p-3 sm:p-5 border-[3px] sm:border-[4px] border-black mb-2 sm:mb-4 relative shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-row sm:flex-col items-center justify-between sm:justify-start">
+          <div className="bg-[#f0f0f0] p-3 lg:p-5 border-[3px] lg:border-[4px] border-black mb-2 lg:mb-4 relative shadow-[3px_3px_0_0_rgba(0,0,0,1)] lg:shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-row lg:flex-col items-center justify-between lg:justify-start">
             
-            <div className="hidden sm:block absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest z-10">
+            <div className="hidden lg:block absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest z-10">
               UP.NEXT
             </div>
 
             {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
-            <div className="flex flex-col items-start sm:items-center bg-black sm:bg-black w-auto sm:w-full py-2 sm:py-6 px-3 sm:px-0 border-[3px] sm:border-[3px] border-[#FF00FF] sm:mb-4 relative overflow-hidden">
+            <div className="flex flex-col items-start lg:items-center bg-black lg:bg-black w-auto lg:w-full py-2 lg:py-6 px-3 lg:px-0 border-[3px] lg:border-[3px] border-[#FF00FF] lg:mb-4 relative overflow-hidden">
                {/* Grid scanlines overlay only for desktop to keep mobile clean */}
-              <div className="hidden sm:block absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
+              <div className="hidden lg:block absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
               
-              <div className="sm:hidden text-[9px] font-black uppercase text-[#FF00FF] mb-0.5">UP.NEXT</div>
+              <div className="lg:hidden text-[9px] font-black uppercase text-[#FF00FF] mb-0.5">UP.NEXT</div>
 
-              <div className="flex items-baseline gap-2 sm:block relative z-20">
-                <div className="text-4xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_5px_#39FF14] sm:drop-shadow-[0_0_10px_#39FF14] leading-none">
+              <div className="flex items-baseline gap-2 lg:block relative z-20">
+                <div className="text-4xl lg:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_5px_#39FF14] lg:drop-shadow-[0_0_10px_#39FF14] leading-none">
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
                 </div>
                 {nextUpItem?.customerName && (
-                  <div className="hidden sm:inline-block bg-[#FF00FF] text-white text-xs font-black px-3 py-1 mt-2 transform -rotate-2 border-2 border-black">
+                  <div className="hidden lg:inline-block bg-[#FF00FF] text-white text-xs font-black px-3 py-1 mt-2 transform -rotate-2 border-2 border-black">
                     {nextUpItem.customerName}
                   </div>
                 )}
                  {nextUpItem?.customerName && (
-                  <div className="sm:hidden text-[#FF00FF] text-[10px] font-black mt-0.5 tracking-wider">
+                  <div className="lg:hidden text-[#FF00FF] text-[10px] font-black mt-0.5 tracking-wider">
                     {nextUpItem.customerName}
                   </div>
                 )}
@@ -195,21 +195,21 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
             </div>
 
             {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
-            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end sm:justify-between border-[2px] sm:border-[3px] border-black p-1.5 sm:p-3 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:w-full">
-              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-[#FF00FF]">WAITING</span>
-              <span className="text-lg sm:text-2xl font-black leading-none mt-0.5 sm:mt-0 text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
-                {waitingCount} <span className="text-[9px] sm:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
+            <div className="flex flex-col lg:flex-row items-end lg:items-center justify-end lg:justify-between border-[2px] lg:border-[3px] border-black p-1.5 lg:p-3 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] lg:shadow-[3px_3px_0_0_rgba(0,0,0,1)] lg:w-full">
+              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-[#FF00FF]">WAITING</span>
+              <span className="text-lg lg:text-2xl font-black leading-none mt-0.5 lg:mt-0 text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
+                {waitingCount} <span className="text-[9px] lg:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
               </span>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 lg:gap-0 mb-3 lg:mb-4">
             {/* Call Next */}
             <button 
               disabled={!nextUpItem || state.loading}
               onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-              className="w-full py-1.5 sm:py-8 bg-[#FF00FF] hover:bg-[#00FFFF] disabled:opacity-50 transition-all text-white hover:text-black font-black text-xs sm:text-3xl border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:shadow-[10px_10px_0_0_rgba(0,0,0,1)] flex flex-col items-center justify-center gap-0 sm:gap-1 hover:translate-x-1 sm:hover:translate-x-2 hover:translate-y-1 sm:hover:translate-y-2 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] sm:hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] sm:mb-4 active:translate-x-2 sm:active:translate-x-3 active:translate-y-2 sm:active:translate-y-3 active:shadow-none uppercase tracking-widest text-center px-1 leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-8 bg-[#FF00FF] hover:bg-[#00FFFF] disabled:opacity-50 transition-all text-white hover:text-black font-black text-xs lg:text-3xl border-[3px] lg:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] lg:shadow-[10px_10px_0_0_rgba(0,0,0,1)] flex flex-col items-center justify-center gap-0 lg:gap-1 hover:translate-x-1 lg:hover:translate-x-2 hover:translate-y-1 lg:hover:translate-y-2 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] lg:hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] lg:mb-4 active:translate-x-2 lg:active:translate-x-3 active:translate-y-2 lg:active:translate-y-3 active:shadow-none uppercase tracking-widest text-center px-1 leading-tight min-h-[36px] lg:min-h-0"
             >
               CALL.NEXT()
             </button>
@@ -224,9 +224,9 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                 };
                 actions.createQueueItem(dummyData).catch(console.error);
               }}
-              className="w-full py-1.5 sm:py-4 bg-white hover:bg-[#39FF14] text-black border-[3px] sm:border-[4px] border-black font-black uppercase tracking-widest text-[9px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 shadow-[3px_3px_0_0_rgba(0,0,0,1)] sm:shadow-[5px_5px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-4 bg-white hover:bg-[#39FF14] text-black border-[3px] lg:border-[4px] border-black font-black uppercase tracking-widest text-[9px] lg:text-base flex items-center justify-center gap-1 lg:gap-2 shadow-[3px_3px_0_0_rgba(0,0,0,1)] lg:shadow-[5px_5px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
-              <Plus className="w-3 h-3 sm:w-6 sm:h-6 bg-black text-white p-0.5 shrink-0" strokeWidth={4} />
+              <Plus className="w-3 h-3 lg:w-6 lg:h-6 bg-black text-white p-0.5 shrink-0" strokeWidth={4} />
               <span className="truncate">WALK_IN.ADD()</span>
             </button>
           </div>

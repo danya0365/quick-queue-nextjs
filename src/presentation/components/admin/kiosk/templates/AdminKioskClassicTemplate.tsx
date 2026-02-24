@@ -193,50 +193,50 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
         </div>
 
         {/* ═══ Right Zone: Control Panel ═══ */}
-        {/* Changed pt-2 sm:pt-0 px-4 sm:px-6 to pt-2 sm:pt-0 px-3 sm:px-6 pb-4 sm:pb-6 */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-slate-950 pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto">
+        {/* Changed pt-2 sm:pt-0 px-4 sm:px-6 to pt-2 lg:pt-0 px-3 lg:px-6 pb-4 lg:pb-6 */}
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col bg-slate-950 pt-2 lg:pt-6 px-3 lg:px-6 pb-4 lg:pb-6 shrink-0 overflow-y-auto">
           
           {/* Next Up Card */}
-          <div className="bg-slate-900 rounded-2xl p-3 sm:p-6 border border-slate-800 mb-2 sm:mb-4 flex flex-row sm:flex-col items-center sm:items-center justify-between sm:justify-start">
+          <div className="bg-slate-900 rounded-2xl p-3 lg:p-6 border border-slate-800 mb-2 lg:mb-4 flex flex-row lg:flex-col items-center lg:items-center justify-between lg:justify-start">
             
             {/* Left Side (Mobile) / Top (Desktop): Queue Info */}
-            <div className="flex flex-col items-start sm:items-center">
-              <div className="text-slate-400 font-bold uppercase tracking-widest text-[10px] sm:text-xs mb-0.5 sm:mb-2">คิวถัดไป</div>
-              <div className="flex items-baseline gap-2 sm:block sm:text-center">
-                <div className="text-3xl sm:text-6xl font-black text-white tracking-tighter leading-none">
+            <div className="flex flex-col items-start lg:items-center">
+              <div className="text-slate-400 font-bold uppercase tracking-widest text-[10px] lg:text-xs mb-0.5 lg:mb-2">คิวถัดไป</div>
+              <div className="flex items-baseline gap-2 lg:block lg:text-center">
+                <div className="text-3xl lg:text-6xl font-black text-white tracking-tighter leading-none">
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
                 </div>
                 {nextUpItem?.customerName && (
-                  <div className="text-xs sm:text-lg text-slate-300 font-bold sm:mt-3 relative z-10">คุณ {nextUpItem.customerName}</div>
+                  <div className="text-xs lg:text-lg text-slate-300 font-bold lg:mt-3 relative z-10">คุณ {nextUpItem.customerName}</div>
                 )}
               </div>
             </div>
             
-            <div className="hidden sm:block w-full h-px bg-slate-800 my-4"></div>
+            <div className="hidden lg:block w-full h-px bg-slate-800 my-4"></div>
 
             {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
-            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-3 text-slate-300">
-              <div className="hidden sm:flex w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 items-center justify-center">
+            <div className="flex flex-col lg:flex-row items-end lg:items-center gap-1 lg:gap-3 text-slate-300">
+              <div className="hidden lg:flex w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 items-center justify-center">
                 <Users className="w-5 h-5" />
               </div>
-              <div className="text-right sm:text-left">
-                <div className="text-[9px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider">คิวรอทั้งหมด</div>
-                <div className="text-lg sm:text-2xl font-black text-white leading-none mt-0.5">{waitingCount} <span className="text-[10px] sm:text-sm font-medium text-slate-500">คิว</span></div>
+              <div className="text-right lg:text-left">
+                <div className="text-[9px] lg:text-xs text-slate-500 font-bold uppercase tracking-wider">คิวรอทั้งหมด</div>
+                <div className="text-lg lg:text-2xl font-black text-white leading-none mt-0.5">{waitingCount} <span className="text-[10px] lg:text-sm font-medium text-slate-500">คิว</span></div>
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 lg:gap-0 mb-3 lg:mb-4">
             {/* Call Next Button */}
             <button 
               disabled={!nextUpItem || state.loading}
               onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-              className="w-full py-1.5 sm:py-8 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all rounded-xl sm:rounded-2xl text-white font-black text-xs sm:text-3xl shadow-[0_0_20px_-5px_rgba(59,130,246,0.5)] sm:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] flex flex-col items-center justify-center gap-0 sm:gap-1 active:scale-95 sm:mb-4 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-8 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:hover:bg-blue-600 transition-all rounded-xl lg:rounded-2xl text-white font-black text-xs lg:text-3xl shadow-[0_0_20px_-5px_rgba(59,130,246,0.5)] lg:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] flex flex-col items-center justify-center gap-0 lg:gap-1 active:scale-95 lg:mb-4 px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
               <span className="uppercase tracking-wide">เรียกคิวถัดไป</span>
               {nextUpItem && (
-                <span className="text-blue-200 text-[10px] sm:text-sm font-bold">
+                <span className="text-blue-200 text-[10px] lg:text-sm font-bold">
                   ({formatQueueNumber(nextUpItem.queueNumber)})
                 </span>
               )}
@@ -252,9 +252,9 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: Ad
                 };
                 actions.createQueueItem(dummyData).catch(console.error);
               }}
-              className="w-full py-1.5 sm:py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors rounded-xl sm:rounded-2xl font-bold text-[10px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 border border-slate-700 active:scale-95 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors rounded-xl lg:rounded-2xl font-bold text-[10px] lg:text-base flex items-center justify-center gap-1 lg:gap-2 border border-slate-700 active:scale-95 px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 shrink-0" />
+              <Plus className="w-4 h-4 lg:w-5 lg:h-5 text-slate-300 shrink-0" />
               <span className="truncate">เพิ่มคิวหน้าร้าน</span>
             </button>
           </div>

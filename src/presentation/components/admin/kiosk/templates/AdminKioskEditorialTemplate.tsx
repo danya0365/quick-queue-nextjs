@@ -169,46 +169,46 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
         </div>
 
         {/* ═══ Right Zone: Controls ═══ */}
-        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 sm:pt-6 px-3 sm:px-6 pb-4 sm:pb-6 shrink-0 overflow-y-auto relative">
+        <div className="w-full lg:w-[400px] xl:w-[460px] flex flex-col pt-2 lg:pt-6 px-3 lg:px-6 pb-4 lg:pb-6 shrink-0 overflow-y-auto relative">
           
           {/* Next Up */}
-          <div className="bg-white p-3 sm:p-6 border-[3px] sm:border-[4px] border-black mb-2 sm:mb-4 relative flex flex-row sm:flex-col items-center justify-between sm:justify-start">
+          <div className="bg-white p-3 lg:p-6 border-[3px] lg:border-[4px] border-black mb-2 lg:mb-4 relative flex flex-row lg:flex-col items-center justify-between lg:justify-start">
             
-            <div className="hidden sm:block absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 sm:py-1">
+            <div className="hidden lg:block absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 lg:py-1">
               NEXT.IN.LINE
             </div>
             
             {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
-            <div className="flex flex-col items-start sm:items-center text-left sm:text-center">
-              <div className="sm:hidden text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">NEXT.IN.LINE</div>
-              <div className="flex items-baseline gap-2 sm:block">
-                <div className="text-4xl sm:text-7xl font-black tracking-tighter leading-none">
+            <div className="flex flex-col items-start lg:items-center text-left lg:text-center">
+              <div className="lg:hidden text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">NEXT.IN.LINE</div>
+              <div className="flex items-baseline gap-2 lg:block">
+                <div className="text-4xl lg:text-7xl font-black tracking-tighter leading-none">
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
                 </div>
                 {nextUpItem?.customerName && (
-                  <div className="text-xs sm:text-xl text-gray-500 font-bold sm:mt-1">คุณ {nextUpItem.customerName}</div>
+                  <div className="text-xs lg:text-xl text-gray-500 font-bold lg:mt-1">คุณ {nextUpItem.customerName}</div>
                 )}
               </div>
             </div>
             
             {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
-            <div className="flex flex-col sm:flex-row items-end sm:items-center sm:justify-between sm:border-2 sm:border-black sm:p-3 sm:bg-gray-50 sm:mt-4 sm:w-full">
-              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-gray-400 sm:text-gray-400">WAITING</span>
-              <span className="text-lg sm:text-2xl font-black leading-none mt-0.5 sm:mt-0">{waitingCount} <span className="text-[9px] sm:text-sm font-bold text-gray-400">PRS</span></span>
+            <div className="flex flex-col lg:flex-row items-end lg:items-center lg:justify-between lg:border-2 lg:border-black lg:p-3 lg:bg-gray-50 lg:mt-4 lg:w-full">
+              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-gray-400 lg:text-gray-400">WAITING</span>
+              <span className="text-lg lg:text-2xl font-black leading-none mt-0.5 lg:mt-0">{waitingCount} <span className="text-[9px] lg:text-sm font-bold text-gray-400">PRS</span></span>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:gap-0 mb-3 sm:mb-4">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 lg:gap-0 mb-3 lg:mb-4">
             {/* Call Next */}
             <button 
               disabled={!nextUpItem || state.loading}
               onClick={() => nextUpItem && actions.markInProgress(nextUpItem.id)}
-              className="w-full py-1.5 sm:py-8 bg-black hover:bg-gray-800 disabled:opacity-50 transition-all text-white font-black text-xs sm:text-3xl border-[3px] sm:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] sm:shadow-[8px_8px_0_0_rgba(0,0,0,0.1)] flex flex-col items-center justify-center gap-0 sm:gap-1 hover:translate-x-1 hover:translate-y-1 hover:shadow-none sm:mb-4 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-8 bg-black hover:bg-gray-800 disabled:opacity-50 transition-all text-white font-black text-xs lg:text-3xl border-[3px] lg:border-[4px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] lg:shadow-[8px_8px_0_0_rgba(0,0,0,0.1)] flex flex-col items-center justify-center gap-0 lg:gap-1 hover:translate-x-1 hover:translate-y-1 hover:shadow-none lg:mb-4 px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
-              <span className="uppercase tracking-[0.05em] sm:tracking-[0.1em]">เรียกคิวถัดไป</span>
+              <span className="uppercase tracking-[0.05em] lg:tracking-[0.1em]">เรียกคิวถัดไป</span>
               {nextUpItem && (
-                <span className="text-gray-400 text-[10px] sm:text-sm font-bold border-t sm:border-t-2 border-gray-700 pt-0.5 sm:pt-1 mt-0.5 sm:mt-1">
+                <span className="text-gray-400 text-[10px] lg:text-sm font-bold border-t lg:border-t-2 border-gray-700 pt-0.5 lg:pt-1 mt-0.5 lg:mt-1">
                   ({formatQueueNumber(nextUpItem.queueNumber)})
                 </span>
               )}
@@ -224,9 +224,9 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                 };
                 actions.createQueueItem(dummyData).catch(console.error);
               }}
-              className="w-full py-1.5 sm:py-4 bg-white hover:bg-gray-100 text-black border-[3px] border-black font-black uppercase tracking-widest text-[9px] sm:text-base flex items-center justify-center gap-1 sm:gap-2 active:translate-x-1 active:translate-y-1 px-1 text-center leading-tight min-h-[36px] sm:min-h-0"
+              className="w-full py-1.5 lg:py-4 bg-white hover:bg-gray-100 text-black border-[3px] border-black font-black uppercase tracking-widest text-[9px] lg:text-base flex items-center justify-center gap-1 lg:gap-2 active:translate-x-1 active:translate-y-1 px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" strokeWidth={3} />
+              <Plus className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" strokeWidth={3} />
               <span className="truncate">WALK-IN.ADD()</span>
             </button>
           </div>
