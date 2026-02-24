@@ -1,22 +1,19 @@
 import { DisplayView } from '@/src/presentation/components/display/DisplayView';
-import { createServerQueuePresenter } from '@/src/presentation/presenters/queue/QueuePresenterServerFactory';
+import { createServerDisplayPresenter } from '@/src/presentation/presenters/display/DisplayPresenterServerFactory';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
-import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: `Display Board | ${DEFAULT_SHOP_CONFIG.shopName}`,
-    description: 'หน้าจอแสดงสถานะคิวสำหรับลูกค้า',
-  };
+  const presenter = createServerDisplayPresenter();
+  return presenter.generateMetadata();
 }
 
 export default async function DisplayPage() {
-  const presenter = createServerQueuePresenter();
+  const presenter = createServerDisplayPresenter();
 
   try {
     const viewModel = await presenter.getViewModel();
