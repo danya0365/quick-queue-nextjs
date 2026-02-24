@@ -49,12 +49,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Also check DB-level rate limit
+    // Also check DB-level rate limit: max 10 requests per 60 minutes
     const repository = getQueueRequestRepository();
-    const recentCount = await repository.countByIpRecent(ip, 10);
-    if (recentCount >= 5) {
+    const recentCount = await repository.countByIpRecent(ip, 60);
+    if (recentCount >= 10) {
       return NextResponse.json(
-        { error: 'คุณส่งคำขอมากเกินไป กรุณารอสักครู่แล้วลองใหม่' },
+        { error: 'คุณขอบัตรคิวเกินจำนวนที่กำหนด (สูงสุด 10 คิวต่อชั่วโมง) กรุณาลองใหม่อีกครั้งในภายหลัง' },
         { status: 429 }
       );
     }
