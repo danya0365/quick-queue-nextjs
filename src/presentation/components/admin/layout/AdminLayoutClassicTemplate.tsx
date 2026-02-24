@@ -11,6 +11,7 @@ export function AdminLayoutClassicTemplate({ children }: { children: React.React
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests', icon: '⏳' },
     { label: 'จัดการคิว', href: '/admin/queues', icon: '📋' },
     { label: 'จอปฏิบัติการ', href: '/admin/kiosk', icon: '📺' },
+    { label: 'จอแสดงคิว (Display)', href: '/display', icon: '🖥️' },
   ];
 
   return (
@@ -52,17 +53,18 @@ export function AdminLayoutClassicTemplate({ children }: { children: React.React
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
-              <Link 
-                key={item.href} 
-                href={item.href}
-                className={`
-                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                  ${isActive 
-                    ? 'bg-primary/10 text-primary font-bold shadow-sm' 
-                    : 'text-muted hover:bg-surface-alt hover:text-foreground'}
-                `}
-                onClick={() => setIsSidebarOpen(false)}
-              >
+                <Link 
+                  key={item.href} 
+                  href={item.href}
+                  target={item.href === '/display' ? '_blank' : '_self'}
+                  className={`
+                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+                    ${isActive 
+                      ? 'bg-primary/10 text-primary font-bold shadow-sm' 
+                      : 'text-muted hover:bg-surface-alt hover:text-foreground'}
+                  `}
+                  onClick={() => setIsSidebarOpen(false)}
+                >
                 <span className="text-lg">{item.icon}</span>
                 {item.label}
               </Link>
