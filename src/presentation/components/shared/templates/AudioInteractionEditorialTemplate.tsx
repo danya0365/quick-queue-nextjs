@@ -8,7 +8,7 @@ export function AudioInteractionEditorialTemplate() {
   });
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[200] pointer-events-none flex justify-center p-4 sm:p-8 font-serif selection:bg-white selection:text-black">
+    <div className="fixed inset-x-0 bottom-0 z-[1000] pointer-events-none flex justify-center p-4 sm:p-8 font-serif selection:bg-white selection:text-black">
       <animated.div
         style={spring}
         className="pointer-events-auto w-full max-w-[1400px] bg-black text-white border-[4px] sm:border-[6px] border-black shadow-[8px_8px_0_0_rgba(255,255,255,1)] ring-[4px] ring-black flex flex-col lg:flex-row items-center justify-between p-4 sm:p-6 lg:p-8 cursor-pointer hover:bg-gray-900 transition-colors active:scale-[0.99] group gap-4 lg:gap-8"

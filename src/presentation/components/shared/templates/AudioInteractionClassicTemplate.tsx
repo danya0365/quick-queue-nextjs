@@ -7,7 +7,7 @@ export function AudioInteractionClassicTemplate() {
   });
 
   return (
-    <div className="fixed inset-0 z-[200] pointer-events-none flex items-start justify-center pt-24 sm:pt-28 px-4">
+    <div className="fixed inset-0 z-[1000] pointer-events-none flex items-start justify-center pt-24 sm:pt-28 px-4">
       <animated.div
         style={spring}
         className="bg-primary text-white pointer-events-auto px-6 py-4 rounded-2xl shadow-[0_20px_40px_rgba(var(--primary),0.3)] flex items-center gap-4 max-w-md w-full ring-4 ring-primary/20 cursor-pointer transition-transform hover:scale-[1.02] active:scale-95"
