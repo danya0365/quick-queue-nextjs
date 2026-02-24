@@ -2,7 +2,8 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Volume2, VolumeX } from 'lucide-react';
+import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -21,6 +22,13 @@ export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEna
       {/* ─── Info Bar ─── */}
       <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-slate-950 border-b border-slate-800 shrink-0">
         <div className="flex items-center gap-3">
+          <Link 
+            href="/"
+            className="p-2 mr-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
+            title="กลับหน้าหลัก"
+          >
+            <Home className="w-5 h-5" />
+          </Link>
           <h1 className="text-xl sm:text-2xl font-black tracking-tight">{shopName}</h1>
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

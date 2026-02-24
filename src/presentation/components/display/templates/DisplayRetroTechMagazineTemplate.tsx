@@ -2,7 +2,8 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Volume2, VolumeX } from 'lucide-react';
+import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -21,7 +22,16 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
 
       {/* ─── Info Bar ─── */}
       <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-[#00FFFF] border-b-[4px] border-black shadow-[0_4px_0_0_rgba(0,0,0,1)] z-10 shrink-0">
-        <h1 className="text-xl sm:text-3xl font-black tracking-widest uppercase" style={{ WebkitTextStroke: '1px black', color: 'white' }}>{shopName}</h1>
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/"
+            className="p-2 border-[3px] border-black bg-white hover:bg-[#FF00FF] text-black hover:text-white transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+            title="กลับหน้าหลัก"
+          >
+            <Home className="w-5 h-5" strokeWidth={3} />
+          </Link>
+          <h1 className="text-xl sm:text-3xl font-black tracking-widest uppercase" style={{ WebkitTextStroke: '1px black', color: 'white' }}>{shopName}</h1>
+        </div>
 
         <div className="flex items-center gap-0">
           {/* Stats */}

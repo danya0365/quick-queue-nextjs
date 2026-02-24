@@ -2,7 +2,8 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Volume2, VolumeX } from 'lucide-react';
+import Link from 'next/link';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -20,7 +21,16 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
 
       {/* ─── Info Bar ─── */}
       <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-white border-b-4 border-black shrink-0">
-        <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase">{shopName}</h1>
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/"
+            className="p-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors"
+            title="กลับหน้าหลัก"
+          >
+            <Home className="w-5 h-5" />
+          </Link>
+          <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase">{shopName}</h1>
+        </div>
 
         <div className="flex items-center gap-0 sm:gap-0">
           {/* Stats in connected badges */}
