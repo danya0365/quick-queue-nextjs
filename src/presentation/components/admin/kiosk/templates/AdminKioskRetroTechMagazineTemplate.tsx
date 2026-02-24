@@ -12,10 +12,9 @@ interface AdminKioskTemplateProps {
   kioskViewModel: KioskViewModel;
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  onRefreshPending: () => Promise<void>;
 }
 
-export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, actions, onRefreshPending }: AdminKioskTemplateProps) {
+export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
 
@@ -194,57 +193,55 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
           </button>
 
           {/* Pending — Expandable */}
-          {pendingCount > 0 && (
-            <div className="mt-auto">
-              <button
-                onClick={() => setIsPendingExpanded(!isPendingExpanded)}
-                className="w-full flex items-center justify-between px-3 py-3 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
-              >
-                <div className="flex items-center gap-2">
-                  <Bell className="w-4 h-4" strokeWidth={3} />
-                  <span className="font-black text-xs uppercase tracking-widest">PENDING.REQ_</span>
-                  <span className="bg-[#39FF14] text-black text-xs font-black px-2 py-0.5 border-2 border-black">{pendingCount}</span>
-                </div>
-                {isPendingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              
-              {isPendingExpanded && (
-                <div className="border-x-[3px] border-b-[3px] border-black space-y-0 max-h-[300px] overflow-y-auto bg-white">
-                  {pendingRequests.map(req => (
-                    <div key={req.id} className="border-b-2 border-black last:border-b-0 p-3 flex items-center justify-between gap-2">
-                      <div className="min-w-0">
-                        <div className="font-black text-sm uppercase truncate">{req.customerName}</div>
-                        <div className="text-[10px] text-[#FF00FF] font-bold uppercase flex items-center gap-1.5">
-                          <span>{SERVICE_TYPE_CONFIG[req.serviceType]?.label}</span>
-                          <span className="font-mono bg-black text-[#00FFFF] px-1">{req.trackingCode}</span>
-                        </div>
-                      </div>
-                      <div className="flex gap-1 shrink-0">
-                        <button 
-                          onClick={async () => { await actions.approveRequest(req.id); onRefreshPending(); }}
-                          className="px-2 py-1.5 bg-[#39FF14] hover:bg-[#00FFFF] text-black text-[10px] font-black uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
-                        >
-                          APPROVE
-                        </button>
-                        <button 
-                          onClick={() => actions.openRejectModal(req.id)}
-                          className="px-2 py-1.5 bg-red-500 text-white text-[10px] font-black uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
-                        >
-                          REJECT
-                        </button>
+          <div className="mt-auto">
+            <button
+              onClick={() => setIsPendingExpanded(!isPendingExpanded)}
+              className="w-full flex items-center justify-between px-3 py-3 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+            >
+              <div className="flex items-center gap-2">
+                <Bell className="w-4 h-4" strokeWidth={3} />
+                <span className="font-black text-xs uppercase tracking-widest">PENDING.REQ_</span>
+                <span className="bg-[#39FF14] text-black text-xs font-black px-2 py-0.5 border-2 border-black">{pendingCount}</span>
+              </div>
+              {isPendingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            
+            {isPendingExpanded && (
+              <div className="border-x-[3px] border-b-[3px] border-black space-y-0 max-h-[300px] overflow-y-auto bg-white">
+                {pendingRequests.map(req => (
+                  <div key={req.id} className="border-b-2 border-black last:border-b-0 p-3 flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="font-black text-sm uppercase truncate">{req.customerName}</div>
+                      <div className="text-[10px] text-[#FF00FF] font-bold uppercase flex items-center gap-1.5">
+                        <span>{SERVICE_TYPE_CONFIG[req.serviceType]?.label}</span>
+                        <span className="font-mono bg-black text-[#00FFFF] px-1">{req.trackingCode}</span>
                       </div>
                     </div>
-                  ))}
-                  <Link
-                    href="/admin/pending-requests"
-                    className="block text-center text-[10px] font-black uppercase tracking-widest text-[#FF00FF] hover:text-black py-2 transition-colors bg-[#f0f0f0] border-t-2 border-black"
-                  >
-                    VIEW.ALL_ →
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
+                    <div className="flex gap-1 shrink-0">
+                      <button 
+                        onClick={async () => { await actions.approveRequest(req.id); }}
+                        className="px-2 py-1.5 bg-[#39FF14] hover:bg-[#00FFFF] text-black text-[10px] font-black uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                      >
+                        APPROVE
+                      </button>
+                      <button 
+                        onClick={() => actions.openRejectModal(req.id)}
+                        className="px-2 py-1.5 bg-red-500 text-white text-[10px] font-black uppercase border-2 border-black shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all"
+                      >
+                        REJECT
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <Link
+                  href="/admin/pending-requests"
+                  className="block text-center text-[10px] font-black uppercase tracking-widest text-[#FF00FF] hover:text-black py-2 transition-colors bg-[#f0f0f0] border-t-2 border-black"
+                >
+                  VIEW.ALL_ →
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>

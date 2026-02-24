@@ -2,8 +2,9 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Home, Search, Ticket, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Search, Ticket, Volume2, VolumeX, X } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -16,76 +17,81 @@ interface DisplayTemplateProps {
 
 export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled, onOpenTrackModal }: DisplayTemplateProps) {
   const { currentServingItem, nextUpItem, waitingItems, recentCompleted, stats, estimatedWaitMinutes, shopName, operatingHours } = displayViewModel;
+  const [isMobileListOpen, setIsMobileListOpen] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col bg-slate-900 text-white font-sans selection:bg-blue-500 selection:text-white">
 
       {/* ─── Info Bar ─── */}
-      <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-slate-950 border-b border-slate-800 shrink-0">
-        <div className="flex items-center gap-3">
-          <Link 
-            href="/"
-            className="p-2 mr-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
-            title="กลับหน้าหลัก"
-          >
-            <Home className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/display/request"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs sm:text-sm font-bold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40"
-          >
-            <Ticket className="w-4 h-4" />
-            <span className="hidden sm:inline">ขอบัตรคิว</span>
-          </Link>
-          <button
-            onClick={onOpenTrackModal}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs sm:text-sm font-bold transition-all border border-slate-700 hover:border-slate-600"
-          >
-            <Search className="w-4 h-4" />
-            <span className="hidden sm:inline">ตรวจสอบคิว</span>
-          </button>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight ml-2">{shopName}</h1>
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4 sm:gap-6">
-          {/* Stats */}
-          <div className="hidden sm:flex items-center gap-2 text-xs">
-            <span className="bg-amber-500/20 px-2.5 py-1.5 rounded-lg text-amber-300 font-bold">รอ {stats.waiting}</span>
-            <span className="bg-blue-500/20 px-2.5 py-1.5 rounded-lg text-blue-300 font-bold">บริการ {stats.serving}</span>
-            <span className="bg-emerald-500/20 px-2.5 py-1.5 rounded-lg text-emerald-300 font-bold">เสร็จ {stats.completed}</span>
+      <header className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between px-4 sm:px-8 py-3 bg-slate-950 border-b border-slate-800 shrink-0 gap-3 sm:gap-0">
+        
+        {/* Title row on mobile, Left segment on Desktop */}
+        <div className="flex items-center justify-between w-full sm:w-auto">
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight truncate max-w-[200px] sm:max-w-none">{shopName}</h1>
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
           </div>
-
-          {/* Sound Toggle */}
-          <button
-            onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
-            title={soundEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}
-          >
-            {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-          </button>
-
-          {/* Operating Hours */}
-          <div className="hidden sm:block text-xs text-slate-400">
-            เปิดให้บริการ {operatingHours.open} - {operatingHours.close}
-          </div>
-
-          {/* Live Clock */}
-          <div className="flex items-center gap-1.5 text-white font-mono font-bold text-lg sm:text-xl bg-slate-800 px-3 py-1.5 rounded-lg">
+          <div className="sm:hidden flex items-center gap-1.5 text-white font-mono font-bold text-sm bg-slate-800 px-2 py-1 rounded-lg shrink-0">
             <Clock className="w-4 h-4 text-slate-400" />
             {currentTime}
+          </div>
+        </div>
+
+        {/* Actions row on mobile, Right segment on Desktop */}
+        <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <Link 
+              href="/"
+              className="p-2 sm:p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white shrink-0"
+              title="กลับหน้าหลัก"
+            >
+              <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+            <Link
+              href="/display/request"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-[10px] sm:text-sm font-bold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 shrink-0 whitespace-nowrap"
+            >
+              <Ticket className="w-4 h-4" />
+              <span className="hidden lg:inline">ขอบัตรคิว</span>
+            </Link>
+            <button
+              onClick={onOpenTrackModal}
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[10px] sm:text-sm font-bold transition-all border border-slate-700 hover:border-slate-600 shrink-0 whitespace-nowrap"
+            >
+              <Search className="w-4 h-4" />
+              <span className="hidden lg:inline">ตรวจสอบคิว</span>
+            </button>
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="p-2 sm:p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white shrink-0 ml-auto sm:ml-0"
+              title={soundEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" /> : <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />}
+            </button>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-4 sm:gap-6 ml-3 pl-3 border-l border-slate-800/50">
+            {/* Operating Hours */}
+            <div className="hidden md:block text-xs text-slate-400 whitespace-nowrap">
+              {operatingHours.open} - {operatingHours.close}
+            </div>
+            {/* Live Clock */}
+            <div className="flex items-center gap-1.5 text-white font-mono font-bold text-lg sm:text-xl bg-slate-800 px-3 py-1.5 rounded-lg shrink-0">
+              <Clock className="w-4 h-4 text-slate-400" />
+              {currentTime}
+            </div>
           </div>
         </div>
       </header>
 
       {/* ─── Main Content ─── */}
-      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
 
         {/* ═══ Left: Current Serving (Hero) ═══ */}
-        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b lg:border-b-0 lg:border-r border-slate-800/50 relative overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b lg:border-b-0 lg:border-r border-slate-800/50 relative overflow-y-auto lg:overflow-hidden">
           {/* Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 blur-[150px] pointer-events-none rounded-full"></div>
 
@@ -136,10 +142,30 @@ export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEna
               <div className="text-sm text-slate-500 mt-1">≈ {estimatedWaitMinutes} นาที</div>
             </div>
           </div>
+
+          <button 
+            onClick={() => setIsMobileListOpen(true)}
+            className="lg:hidden mt-8 px-6 py-3 rounded-xl bg-slate-800 text-white font-bold text-sm shadow-lg flex items-center gap-2 border border-slate-700/50"
+          >
+            ดูคิวรอทั้งหมด ({waitingItems.length})
+          </button>
         </div>
 
         {/* ═══ Right: Queue Lists ═══ */}
-        <div className="w-full lg:w-[420px] xl:w-[480px] flex flex-col bg-slate-950 shrink-0 overflow-hidden">
+        <div className={`
+          absolute lg:static top-0 left-0 w-full h-full lg:w-[420px] xl:w-[480px] 
+          flex flex-col bg-slate-950 shrink-0 overflow-hidden border-l-0 lg:border-l border-slate-800
+          transition-transform duration-300 z-[1000] lg:z-auto lg:translate-y-0
+          ${isMobileListOpen ? 'translate-y-0' : 'translate-y-full'}
+        `}>
+
+          {/* Mobile Close Header */}
+          <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800 shrink-0">
+            <span className="font-bold text-slate-300 text-base">รายการคิว</span>
+            <button onClick={() => setIsMobileListOpen(false)} className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
           {/* Waiting Queue */}
           <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-800">

@@ -3,7 +3,6 @@
 import { QueueItem, QueueRequest } from '@/src/domain/types/queue';
 import { useAdminLayoutPresenter } from '@/src/presentation/presenters/admin/useAdminLayoutPresenter';
 import { useAdminPresenter } from '@/src/presentation/presenters/admin/useAdminPresenter';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { AdminKioskClassicTemplate } from './templates/AdminKioskClassicTemplate';
 import { AdminKioskEditorialTemplate } from './templates/AdminKioskEditorialTemplate';
 import { AdminKioskRetroTechMagazineTemplate } from './templates/AdminKioskRetroTechMagazineTemplate';
@@ -34,35 +33,6 @@ export function AdminKioskView() {
   const [state, actions] = useAdminPresenter(undefined, 'queues');
   const [layoutState] = useAdminLayoutPresenter();
 
-  // Pending requests loaded separately
-  const [pendingRequests, setPendingRequests] = useState<QueueRequest[]>([]);
-  const [pendingCount, setPendingCount] = useState(0);
-  const isMountedRef = useRef(true);
-
-  const fetchPendingRequests = useCallback(async () => {
-    try {
-      const res = await fetch('/api/queue-requests');
-      if (res.ok) {
-        const data = await res.json();
-        if (isMountedRef.current) {
-          setPendingRequests(data.requests || data || []);
-          setPendingCount(data.total || (data.requests || data || []).length);
-        }
-      }
-    } catch {
-      // Silently fail — pending requests are not critical for kiosk
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPendingRequests();
-    const interval = setInterval(fetchPendingRequests, 5000);
-    return () => {
-      clearInterval(interval);
-      isMountedRef.current = false;
-    };
-  }, [fetchPendingRequests]);
-
   const viewModel = state.viewModel;
 
   if (state.loading && !viewModel) {
@@ -85,8 +55,8 @@ export function AdminKioskView() {
     latestServingItem: inProgressItems.length > 0 ? inProgressItems[0] : null,
     nextUpItem: waitingItems.length > 0 ? waitingItems[0] : null,
     waitingCount: viewModel.stats?.waitingItems || waitingItems.length,
-    pendingRequests,
-    pendingCount,
+    pendingRequests: viewModel.pendingRequests || [],
+    pendingCount: viewModel.pendingCount || 0,
     stats: {
       total: viewModel.stats?.totalItems || 0,
       waiting: viewModel.stats?.waitingItems || 0,
@@ -100,7 +70,6 @@ export function AdminKioskView() {
     kioskViewModel,
     state,
     actions,
-    onRefreshPending: fetchPendingRequests,
   };
 
   switch (layoutState.template) {

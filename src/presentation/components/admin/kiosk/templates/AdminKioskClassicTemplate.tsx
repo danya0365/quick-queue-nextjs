@@ -3,7 +3,7 @@
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
-import { ArrowLeft, BarChart2, Bell, Check, ChevronDown, ChevronUp, FastForward, Inbox, Plus, Users } from 'lucide-react';
+import { ArrowLeft, BarChart2, Bell, Check, ChevronDown, ChevronUp, FastForward, Plus, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { KioskViewModel } from '../AdminKioskView';
@@ -12,10 +12,9 @@ interface AdminKioskTemplateProps {
   kioskViewModel: KioskViewModel;
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  onRefreshPending: () => Promise<void>;
 }
 
-export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRefreshPending }: AdminKioskTemplateProps) {
+export function AdminKioskClassicTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
 
@@ -79,14 +78,8 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
             กำลังให้บริการ ({servingItems.length})
           </div>
 
-          {servingItems.length === 0 ? (
-            /* Empty state */
-            <div className="flex-1 flex flex-col items-center justify-center opacity-40">
-              <Inbox className="w-24 h-24 mb-4 text-slate-600" />
-              <p className="text-2xl font-bold text-slate-500">ยังไม่มีคิวที่กำลังให้บริการ</p>
-              <p className="text-slate-600 mt-2">กดปุ่ม &quot;เรียกคิวถัดไป&quot; เพื่อเริ่ม</p>
-            </div>
-          ) : (
+          {/* ── Other Serving Items ── */}
+          {servingItems.length > 0 && (
             <div className="flex flex-col gap-4">
               {/* ★ Hero Card — Latest Serving Item */}
               {latestServingItem && (
@@ -244,7 +237,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
                       </div>
                       <div className="flex gap-1.5 shrink-0">
                         <button 
-                          onClick={async () => { await actions.approveRequest(req.id); onRefreshPending(); }}
+                          onClick={async () => { await actions.approveRequest(req.id); }}
                           className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-colors"
                         >
                           อนุมัติ

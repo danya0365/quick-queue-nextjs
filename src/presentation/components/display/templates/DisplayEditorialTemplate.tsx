@@ -2,8 +2,9 @@
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
-import { Clock, Home, Search, Ticket, Volume2, VolumeX } from 'lucide-react';
+import { Clock, Home, Search, Ticket, Volume2, VolumeX, X } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { DisplayViewModel } from '../DisplayView';
 
 interface DisplayTemplateProps {
@@ -16,72 +17,73 @@ interface DisplayTemplateProps {
 
 export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled, onOpenTrackModal }: DisplayTemplateProps) {
   const { currentServingItem, nextUpItem, waitingItems, recentCompleted, stats, estimatedWaitMinutes, shopName, operatingHours } = displayViewModel;
+  const [isMobileListOpen, setIsMobileListOpen] = useState(false);
 
   return (
     <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col bg-white text-black font-serif selection:bg-black selection:text-white">
 
       {/* ─── Info Bar ─── */}
-      <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-white border-b-4 border-black shrink-0">
-        <div className="flex items-center gap-3">
-          <Link 
-            href="/"
-            className="p-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors"
-            title="กลับหน้าหลัก"
-          >
-            <Home className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/display/request"
-            className="flex items-center gap-1.5 px-3 py-2 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors font-black text-xs uppercase tracking-widest font-sans"
-          >
-            <Ticket className="w-4 h-4" />
-            <span className="hidden sm:inline">QUEUE.TICKET</span>
-          </Link>
-          <button
-            onClick={onOpenTrackModal}
-            className="flex items-center gap-1.5 px-3 py-2 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors font-black text-xs uppercase tracking-widest font-sans"
-          >
-            <Search className="w-4 h-4" />
-            <span className="hidden sm:inline">TRACK.QUEUE</span>
-          </button>
-          <h1 className="text-xl sm:text-3xl font-black tracking-tighter uppercase ml-3">{shopName}</h1>
-        </div>
-
-        <div className="flex items-center gap-0 sm:gap-0">
-          {/* Stats in connected badges */}
-          <div className="hidden sm:flex items-center text-[10px] font-black uppercase tracking-wider">
-            <span className="border-2 border-black px-2 py-1.5 bg-amber-50 text-amber-800">WAIT: {stats.waiting}</span>
-            <span className="border-2 border-l-0 border-black px-2 py-1.5 bg-blue-50 text-blue-800">SRV: {stats.serving}</span>
-            <span className="border-2 border-l-0 border-black px-2 py-1.5 bg-emerald-50 text-emerald-800">DONE: {stats.completed}</span>
-          </div>
-
-          {/* Sound */}
-          <button
-            onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2 border-2 border-black bg-white hover:bg-black hover:text-white transition-colors ml-3"
-            title={soundEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}
-          >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          </button>
-
-          {/* Hours */}
-          <div className="hidden sm:block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-3">
-            OPEN {operatingHours.open}–{operatingHours.close}
-          </div>
-
-          {/* Clock */}
-          <div className="flex items-center gap-1.5 font-mono font-black text-lg sm:text-xl border-2 border-black px-3 py-1.5 ml-3">
+      <header className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between px-4 sm:px-8 py-3 sm:py-4 bg-white border-b-4 border-black shrink-0 gap-3 sm:gap-0">
+        
+        {/* Title row on mobile, Left segment on Desktop */}
+        <div className="flex items-center justify-between w-full sm:w-auto">
+          <h1 className="text-xl pl-1 sm:pl-0 sm:text-3xl font-black tracking-tighter uppercase truncate mr-4">{shopName}</h1>
+          <div className="sm:hidden flex items-center gap-1.5 font-mono font-black text-sm border-2 border-black px-2 py-1 shrink-0">
             <Clock className="w-4 h-4" />
             {currentTime}
+          </div>
+        </div>
+
+        {/* Actions row on mobile, Right segment on Desktop */}
+        <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <Link 
+              href="/"
+              className="p-2 sm:p-2.5 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors shrink-0"
+              title="กลับหน้าหลัก"
+            >
+              <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+            <Link
+              href="/display/request"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors font-black text-[10px] sm:text-xs uppercase tracking-widest font-sans shrink-0 whitespace-nowrap"
+            >
+              <Ticket className="w-4 h-4" />
+              <span className="hidden lg:inline">QUEUE.TICKET</span>
+            </Link>
+            <button
+              onClick={onOpenTrackModal}
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors font-black text-[10px] sm:text-xs uppercase tracking-widest font-sans shrink-0 whitespace-nowrap"
+            >
+              <Search className="w-4 h-4" />
+              <span className="hidden lg:inline">TRACK.QUEUE</span>
+            </button>
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="p-2 sm:p-2.5 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors shrink-0 ml-auto sm:ml-0"
+              title={soundEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" /> : <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />}
+            </button>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-3 ml-3 border-l-2 border-gray-200 pl-3">
+            <div className="hidden md:block text-[10px] font-black uppercase tracking-widest text-gray-400">
+              OPEN {operatingHours.open}–{operatingHours.close}
+            </div>
+            <div className="flex items-center gap-1.5 font-mono font-black text-lg sm:text-xl border-2 border-black px-3 py-1.5 shrink-0">
+              <Clock className="w-5 h-5" />
+              {currentTime}
+            </div>
           </div>
         </div>
       </header>
 
       {/* ─── Main Content ─── */}
-      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
 
         {/* ═══ Left: Hero ═══ */}
-        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-gray-50 relative">
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-gray-50 relative overflow-y-auto lg:overflow-hidden">
 
           <div className="text-black font-black uppercase tracking-[0.2em] text-sm sm:text-base border-b-2 border-black pb-2 mb-8">CURRENTLY SERVING</div>
 
@@ -129,10 +131,30 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
               <div className="text-sm text-gray-400 font-bold mt-1">≈ {estimatedWaitMinutes} MIN</div>
             </div>
           </div>
+
+          <button 
+            onClick={() => setIsMobileListOpen(true)}
+            className="lg:hidden mt-8 px-8 py-4 border-4 border-black bg-black text-white font-black uppercase tracking-widest text-xs shadow-[4px_4px_0_0_rgba(0,0,0,0.15)] flex items-center gap-2"
+          >
+            VIEW FULL QUEUE LIST ({waitingItems.length})
+          </button>
         </div>
 
-        {/* ═══ Right: Queue Lists ═══ */}
-        <div className="w-full lg:w-[420px] xl:w-[480px] flex flex-col bg-white shrink-0 overflow-hidden">
+        {/* ═══ Right: Queue Lists (Desktop Sidebar / Mobile Drawer) ═══ */}
+        <div className={`
+          absolute lg:static top-0 left-0 w-full h-full lg:w-[420px] xl:w-[480px] 
+          flex flex-col bg-white shrink-0 overflow-hidden border-l-0 lg:border-l-4 border-black
+          transition-transform duration-300 z-[1000] lg:z-auto lg:translate-y-0
+          ${isMobileListOpen ? 'translate-y-0' : 'translate-y-full'}
+        `}>
+
+          {/* Mobile Close Header */}
+          <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b-4 border-black shrink-0">
+            <span className="font-black uppercase tracking-widest text-base">QUEUE.LIST</span>
+            <button onClick={() => setIsMobileListOpen(false)} className="p-2 border-2 border-black hover:bg-black hover:text-white transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
           {/* Waiting Queue */}
           <div className="flex-1 flex flex-col overflow-hidden border-b-4 border-black">

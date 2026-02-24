@@ -12,10 +12,9 @@ interface AdminKioskTemplateProps {
   kioskViewModel: KioskViewModel;
   state: AdminPresenterState;
   actions: AdminPresenterActions;
-  onRefreshPending: () => Promise<void>;
 }
 
-export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, onRefreshPending }: AdminKioskTemplateProps) {
+export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: AdminKioskTemplateProps) {
   const { servingItems, latestServingItem, nextUpItem, waitingCount, pendingRequests, pendingCount, stats } = kioskViewModel;
   const [isPendingExpanded, setIsPendingExpanded] = useState(false);
 
@@ -191,57 +190,55 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
           </button>
 
           {/* Pending — Expandable */}
-          {pendingCount > 0 && (
-            <div className="mt-auto">
-              <button
-                onClick={() => setIsPendingExpanded(!isPendingExpanded)}
-                className="w-full flex items-center justify-between px-4 py-3 border-3 border-black bg-amber-50 hover:bg-amber-100 transition-colors border-[3px]"
-              >
-                <div className="flex items-center gap-2">
-                  <Bell className="w-4 h-4" />
-                  <span className="font-black text-sm uppercase tracking-widest">PENDING.REQ</span>
-                  <span className="bg-black text-white text-xs font-black px-2 py-0.5">{pendingCount}</span>
-                </div>
-                {isPendingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              
-              {isPendingExpanded && (
-                <div className="border-x-[3px] border-b-[3px] border-black space-y-0 max-h-[300px] overflow-y-auto">
-                  {pendingRequests.map(req => (
-                    <div key={req.id} className="border-b border-gray-200 last:border-b-0 p-3 flex items-center justify-between gap-2 bg-white">
-                      <div className="min-w-0">
-                        <div className="font-black text-sm uppercase truncate">{req.customerName}</div>
-                        <div className="text-[10px] text-gray-400 font-bold uppercase flex items-center gap-1.5">
-                          <span>{SERVICE_TYPE_CONFIG[req.serviceType]?.label}</span>
-                          <span className="font-mono">{req.trackingCode}</span>
-                        </div>
-                      </div>
-                      <div className="flex gap-1 shrink-0">
-                        <button 
-                          onClick={async () => { await actions.approveRequest(req.id); onRefreshPending(); }}
-                          className="px-2.5 py-1.5 bg-black hover:bg-gray-800 text-white text-[10px] font-black uppercase transition-colors"
-                        >
-                          APPROVE
-                        </button>
-                        <button 
-                          onClick={() => actions.openRejectModal(req.id)}
-                          className="px-2.5 py-1.5 bg-white border-2 border-black hover:bg-gray-100 text-black text-[10px] font-black uppercase transition-colors"
-                        >
-                          REJECT
-                        </button>
+          <div className="mt-auto">
+            <button
+              onClick={() => setIsPendingExpanded(!isPendingExpanded)}
+              className="w-full flex items-center justify-between px-4 py-3 border-3 border-black bg-amber-50 hover:bg-amber-100 transition-colors border-[3px]"
+            >
+              <div className="flex items-center gap-2">
+                <Bell className="w-4 h-4" />
+                <span className="font-black text-sm uppercase tracking-widest">PENDING.REQ</span>
+                <span className="bg-black text-white text-xs font-black px-2 py-0.5">{pendingCount}</span>
+              </div>
+              {isPendingExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            
+            {isPendingExpanded && (
+              <div className="border-x-[3px] border-b-[3px] border-black space-y-0 max-h-[300px] overflow-y-auto">
+                {pendingRequests.map(req => (
+                  <div key={req.id} className="border-b border-gray-200 last:border-b-0 p-3 flex items-center justify-between gap-2 bg-white">
+                    <div className="min-w-0">
+                      <div className="font-black text-sm uppercase truncate">{req.customerName}</div>
+                      <div className="text-[10px] text-gray-400 font-bold uppercase flex items-center gap-1.5">
+                        <span>{SERVICE_TYPE_CONFIG[req.serviceType]?.label}</span>
+                        <span className="font-mono">{req.trackingCode}</span>
                       </div>
                     </div>
-                  ))}
-                  <Link
-                    href="/admin/pending-requests"
-                    className="block text-center text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black py-2 transition-colors bg-gray-50 border-t border-gray-200"
-                  >
-                    VIEW.ALL →
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
+                    <div className="flex gap-1 shrink-0">
+                      <button 
+                        onClick={async () => { await actions.approveRequest(req.id); }}
+                        className="px-2.5 py-1.5 bg-black hover:bg-gray-800 text-white text-[10px] font-black uppercase transition-colors"
+                      >
+                        APPROVE
+                      </button>
+                      <button 
+                        onClick={() => actions.openRejectModal(req.id)}
+                        className="px-2.5 py-1.5 bg-white border-2 border-black hover:bg-gray-100 text-black text-[10px] font-black uppercase transition-colors"
+                      >
+                        REJECT
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <Link
+                  href="/admin/pending-requests"
+                  className="block text-center text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black py-2 transition-colors bg-gray-50 border-t border-gray-200"
+                >
+                  VIEW.ALL →
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
