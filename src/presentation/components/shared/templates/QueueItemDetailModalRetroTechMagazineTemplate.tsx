@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { animated } from 'react-spring';
 
@@ -34,7 +35,7 @@ export function QueueItemDetailModalRetroTechMagazineTemplate({ onClose, item, m
           </h2>
           <div className="text-right">
              <div className="text-[10px] font-bold uppercase tracking-widest text-white mb-1">QUEUE_ID</div>
-             <div className="text-3xl font-mono text-[#39FF14]">{item.queueNumber.toString().padStart(2, '0')}</div>
+             <div className="text-3xl font-mono text-[#39FF14]">{formatQueueNumber(item.queueNumber)}</div>
           </div>
         </div>
 

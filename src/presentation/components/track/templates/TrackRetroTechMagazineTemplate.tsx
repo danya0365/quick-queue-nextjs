@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueRequest, REQUEST_STATUS_CONFIG, RequestStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { Hourglass } from 'lucide-react';
 import { FormEvent } from 'react';
@@ -88,7 +89,7 @@ export function TrackRetroTechMagazineTemplate({
         {result.status === RequestStatus.APPROVED && result.queueNumber && (
           <div className="bg-[#39FF14] border-4 border-black p-6 text-center mt-4 shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all">
             <div className="text-sm font-bold uppercase tracking-widest mb-2">หมายเลขคิว</div>
-            <div className="text-7xl font-black tabular-nums tracking-tighter text-black">{result.queueNumber.toString().padStart(2, '0')}</div>
+            <div className="text-7xl font-black tabular-nums tracking-tighter text-black">{formatQueueNumber(result.queueNumber)}</div>
           </div>
         )}
         {result.status === RequestStatus.REJECTED && result.rejectReason && (

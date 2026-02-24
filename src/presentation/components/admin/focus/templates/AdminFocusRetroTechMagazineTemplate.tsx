@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueStatus, ServiceType } from '@/src/domain/types/queue';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
@@ -61,7 +62,7 @@ export function AdminFocusRetroTechMagazineTemplate({ viewModel, state, actions 
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'linear-gradient(#00FFFF 1px, transparent 1px), linear-gradient(90deg, #00FFFF 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
             
             <div className="text-[120px] sm:text-[180px] lg:text-[240px] font-black leading-none tracking-tighter text-[#00FFFF] z-10 relative drop-shadow-[0_0_15px_#00FFFF]">
-              {currentServingItem ? `A${currentServingItem.queueNumber.toString().padStart(3, '0')}` : '---'}
+              {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '---'}
               {currentServingItem && (
                  <div className="absolute -right-12 -top-12 text-[#FF00FF] text-6xl opacity-50 blur-sm">A</div>
               )}
@@ -106,7 +107,7 @@ export function AdminFocusRetroTechMagazineTemplate({ viewModel, state, actions 
               <div className="bg-black w-full py-8 border-[4px] border-[#FF00FF] flex flex-col items-center relative overflow-hidden group">
                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] z-10 pointer-events-none"></div>
                 <div className="text-7xl sm:text-8xl font-black text-[#39FF14] mb-2 tracking-tighter drop-shadow-[0_0_10px_#39FF14] relative z-20">
-                  {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '---'}
+                  {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
                 </div>
                 {nextUpItem && nextUpItem.customerName && (
                    <div className="text-xl text-white font-black bg-[#FF00FF] px-4 py-1 mt-2 transform skew-x-12 relative z-20">{nextUpItem.customerName}</div>

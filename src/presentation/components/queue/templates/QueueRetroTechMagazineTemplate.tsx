@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { animated, SpringValue } from 'react-spring';
@@ -88,7 +89,7 @@ export function QueueRetroTechMagazineTemplate({
             {/* Left: Giant Number */}
             <animated.div style={pulseSpring} className="relative z-10 flex-shrink-0 text-center mx-auto md:mx-0">
                <div className="text-9xl sm:text-[14rem] font-black tabular-nums leading-none tracking-tighter text-black drop-shadow-[6px_6px_0_rgba(0,255,255,1)]">
-                 {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
+                 {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
                </div>
             </animated.div>
 
@@ -187,7 +188,7 @@ function RetroQueueItemRow({ item, highlightColor, onClick }: { item: QueueItem;
       <div className="absolute left-0 top-0 bottom-0 w-2 border-r-4 border-black" style={{ backgroundColor: highlightColor }}></div>
       
       <div className="pl-2 flex flex-col justify-center min-w-[3rem]">
-        <div className="font-black text-3xl tabular-nums leading-none mb-1">{item.queueNumber.toString().padStart(2, '0')}</div>
+        <div className="font-black text-3xl tabular-nums leading-none mb-1">{formatQueueNumber(item.queueNumber)}</div>
       </div>
       
       <div className="flex-1 min-w-0 flex flex-col justify-center">

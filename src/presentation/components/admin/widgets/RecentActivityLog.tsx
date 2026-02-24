@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem } from '@/src/domain/types/queue';
 import { WidgetVariant } from './ServiceTypeBreakdown';
 
@@ -49,7 +50,7 @@ export function RecentActivityLog({ recentActivity = [], variant = 'classic' }: 
               <div className="text-xl sm:text-2xl flex-shrink-0">{statusConfig.icon}</div>
               <div className="flex flex-col flex-1 min-w-0">
                 <div className={`text-sm sm:text-base font-bold truncate ${variant === 'editorial' ? 'font-black' : ''}`}>
-                  คิว {item.queueNumber.toString().padStart(3, '0')} - {item.customerName}
+                  คิว {formatQueueNumber(item.queueNumber)} - {item.customerName}
                 </div>
                 <div className={`text-xs ${variant === 'editorial' ? 'uppercase tracking-widest font-bold opacity-60 group-hover:opacity-100' : 'opacity-60 font-bold'}`}>
                   สถานะ: {statusConfig.label}

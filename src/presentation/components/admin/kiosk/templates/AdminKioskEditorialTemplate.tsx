@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, Bell, Check, ChevronDown, ChevronUp, FastForward, Inbox, Plus } from 'lucide-react';
@@ -79,7 +80,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
 
                   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
                     <div className="text-[80px] sm:text-[120px] lg:text-[160px] font-black leading-none tracking-tighter">
-                      A{latestServingItem.queueNumber.toString().padStart(3, '0')}
+                      {formatQueueNumber(latestServingItem.queueNumber)}
                     </div>
                     <div className="flex-1 text-center sm:text-left">
                       {latestServingItem.customerName && (
@@ -139,7 +140,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
             </div>
             <div className="text-center">
               <div className="text-6xl sm:text-7xl font-black tracking-tighter">
-                {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
               {nextUpItem?.customerName && (
                 <div className="text-xl text-gray-500 font-bold mt-1">คุณ {nextUpItem.customerName}</div>
@@ -163,7 +164,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions, on
             <span className="uppercase tracking-[0.1em]">เรียกคิวถัดไป</span>
             {nextUpItem && (
               <span className="text-gray-400 text-sm font-bold border-t-2 border-gray-700 pt-1 mt-1">
-                (A{nextUpItem.queueNumber.toString().padStart(3, '0')})
+                ({formatQueueNumber(nextUpItem.queueNumber)})
               </span>
             )}
           </button>
@@ -246,7 +247,7 @@ function EditorialServingRow({ item, state, actions }: { item: QueueItem; state:
   return (
     <div className="flex items-center gap-3 border-[3px] border-black p-3 bg-white">
       <div className="text-2xl font-black tracking-tighter min-w-[80px]">
-        A{item.queueNumber.toString().padStart(3, '0')}
+        {formatQueueNumber(item.queueNumber)}
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-black uppercase truncate">{item.customerName || '-'}</div>

@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
@@ -174,7 +175,7 @@ export function QueuesRetroTechMagazineTemplate({
                   return (
                     <tr key={item.id} className={`border-b-[4px] border-black hover:bg-[#00FFFF]/20 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-100'} group`}>
                       <td className="p-2 sm:p-4 border-r-[4px] border-black font-black text-3xl sm:text-5xl tabular-nums text-center align-middle">
-                        {item.queueNumber.toString().padStart(2, '0')}
+                        {formatQueueNumber(item.queueNumber)}
                       </td>
                       <td className="p-0 align-top">
                           {/* Data wrapper */}

@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, Bell, Check, ChevronDown, ChevronUp, FastForward, Inbox, Plus } from 'lucide-react';
@@ -84,7 +85,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
 
                     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
                       <div className="text-[80px] sm:text-[120px] lg:text-[160px] font-black leading-none tracking-tighter text-[#00FFFF] drop-shadow-[0_0_15px_#00FFFF]">
-                        A{latestServingItem.queueNumber.toString().padStart(3, '0')}
+                        {formatQueueNumber(latestServingItem.queueNumber)}
                       </div>
                       <div className="flex-1 text-center sm:text-left">
                         {latestServingItem.customerName && (
@@ -147,7 +148,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
             <div className="bg-black w-full py-6 border-[3px] border-[#FF00FF] flex flex-col items-center relative overflow-hidden mb-4">
               <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
               <div className="text-5xl sm:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_10px_#39FF14] relative z-20">
-                {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '---'}
+                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
               </div>
               {nextUpItem?.customerName && (
                 <div className="text-lg text-white font-black bg-[#FF00FF] px-3 py-0.5 mt-2 transform skew-x-12 relative z-20">{nextUpItem.customerName}</div>
@@ -249,7 +250,7 @@ function RetroServingRow({ item, state, actions }: { item: QueueItem; state: Adm
   return (
     <div className="flex items-center gap-3 border-[3px] border-black p-3 bg-white shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_rgba(0,0,0,1)] transition-all">
       <div className="text-2xl font-black tracking-tighter min-w-[80px] text-[#FF00FF]" style={{ WebkitTextStroke: '0.5px black' }}>
-        A{item.queueNumber.toString().padStart(3, '0')}
+        {formatQueueNumber(item.queueNumber)}
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-black uppercase truncate">{item.customerName || '-'}</div>

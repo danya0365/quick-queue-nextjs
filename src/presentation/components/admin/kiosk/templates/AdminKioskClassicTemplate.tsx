@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, BarChart2, Bell, Check, ChevronDown, ChevronUp, FastForward, Inbox, Plus, Users } from 'lucide-react';
@@ -102,7 +103,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
 
                   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 relative z-10">
                     <div className="text-[80px] sm:text-[120px] lg:text-[160px] font-black leading-none tracking-tighter text-white drop-shadow-lg">
-                      A{latestServingItem.queueNumber.toString().padStart(3, '0')}
+                      {formatQueueNumber(latestServingItem.queueNumber)}
                     </div>
                     <div className="flex-1 text-center sm:text-left">
                       {latestServingItem.customerName && (
@@ -160,7 +161,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
           <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800 mb-4 flex flex-col items-center">
             <div className="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">คิวถัดไป</div>
             <div className="text-5xl sm:text-6xl font-black text-white tracking-tighter mb-1">
-              {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+              {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
             </div>
             {nextUpItem?.customerName && (
               <div className="text-lg text-slate-400 font-medium">คุณ {nextUpItem.customerName}</div>
@@ -188,7 +189,7 @@ export function AdminKioskClassicTemplate({ kioskViewModel, state, actions, onRe
             <span className="uppercase tracking-wide">เรียกคิวถัดไป</span>
             {nextUpItem && (
               <span className="text-blue-200 text-sm font-bold">
-                (A{nextUpItem.queueNumber.toString().padStart(3, '0')})
+                ({formatQueueNumber(nextUpItem.queueNumber)})
               </span>
             )}
           </button>
@@ -273,7 +274,7 @@ function ServingItemCompact({ item, state, actions, variant }: { item: QueueItem
   return (
     <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-800 rounded-xl p-3">
       <div className="text-2xl font-black text-white tracking-tighter min-w-[80px]">
-        A{item.queueNumber.toString().padStart(3, '0')}
+        {formatQueueNumber(item.queueNumber)}
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-slate-300 truncate">{item.customerName || '-'}</div>

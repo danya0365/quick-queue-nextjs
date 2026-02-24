@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { animated } from 'react-spring';
 
@@ -32,7 +33,7 @@ export function QueueItemDetailModalEditorialTemplate({ onClose, item, modalSpri
           </h2>
           <div className="text-right">
              <div className="text-[10px] font-bold uppercase tracking-widest text-black/60">TICKET NO.</div>
-             <div className="text-4xl font-black tabular-nums">{item.queueNumber.toString().padStart(2, '0')}</div>
+             <div className="text-4xl font-black tabular-nums">{formatQueueNumber(item.queueNumber)}</div>
           </div>
         </div>
 

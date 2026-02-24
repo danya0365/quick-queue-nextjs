@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { Edit3 } from 'lucide-react';
@@ -101,7 +102,7 @@ export function HomeEditorialTemplate({
               </div>
               
               <div className="text-[7rem] sm:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black tabular-nums leading-[0.75] tracking-tighter mix-blend-difference mb-6 sm:mb-12">
-                {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
+                {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </div>
 
               <div className="mt-auto border-t-[2px] sm:border-t-[6px] border-white pt-4 sm:pt-8 w-full flex justify-between items-end">
@@ -147,7 +148,7 @@ export function HomeEditorialTemplate({
                   return (
                     <div key={item.id} onClick={() => onItemClick(item)} className={`border-[2px] sm:border-[6px] border-black p-2 sm:p-5 flex gap-2 sm:gap-5 transition-all cursor-pointer font-sans ${isServing ? 'bg-black text-white hover:bg-white hover:text-black hover:border-black' : 'bg-white text-black hover:bg-black hover:text-white'}`}>
                       <div className="flex flex-col justify-center border-r-[2px] sm:border-r-[4px] border-inherit pr-2 sm:pr-5 min-w-[50px] sm:min-w-[80px]">
-                        <div className="font-black text-3xl sm:text-5xl tabular-nums leading-none tracking-tighter text-center">{item.queueNumber.toString().padStart(2, '0')}</div>
+                        <div className="font-black text-3xl sm:text-5xl tabular-nums leading-none tracking-tighter text-center">{formatQueueNumber(item.queueNumber)}</div>
                       </div>
                       
                       <div className="flex-1 flex flex-col justify-center overflow-hidden">

@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueItem, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { HomeViewModel } from '@/src/presentation/presenters/home/HomePresenter';
 import { Edit3 } from 'lucide-react';
@@ -111,7 +112,7 @@ export function HomeRetroTechMagazineTemplate({
               </div>
               
               <div className="text-8xl sm:text-[10rem] font-black tabular-nums leading-none tracking-tighter text-black drop-shadow-[4px_4px_0_rgba(57,255,20,1)]">
-                {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
+                {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </div>
 
               <div className="mt-8 border-t-4 border-black pt-6 w-full text-center">
@@ -161,7 +162,7 @@ export function HomeRetroTechMagazineTemplate({
                       <div className={`absolute left-0 top-0 bottom-0 w-2 ${item.status === 'in_progress' ? 'bg-[#39FF14]' : 'bg-black'}`}></div>
                       
                       <div className="pl-2">
-                        <div className="font-black text-2xl">{item.queueNumber.toString().padStart(2, '0')}</div>
+                        <div className="font-black text-2xl">{formatQueueNumber(item.queueNumber)}</div>
                         <div className="text-xs font-bold uppercase px-2 py-1 bg-black text-white inline-block mt-1">
                           {statusConfig.label}
                         </div>

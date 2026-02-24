@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueStatus, ServiceType } from '@/src/domain/types/queue';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
@@ -69,7 +70,7 @@ export function AdminFocusClassicTemplate({ viewModel, state, actions }: AdminFo
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/10 blur-[100px] pointer-events-none rounded-full"></div>
             
             <div className="text-[120px] sm:text-[180px] lg:text-[240px] font-black leading-none tracking-tighter text-white drop-shadow-lg z-10">
-              {currentServingItem ? `A${currentServingItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+              {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '--'}
             </div>
             
             {currentServingItem && currentServingItem.customerName && (
@@ -105,7 +106,7 @@ export function AdminFocusClassicTemplate({ viewModel, state, actions }: AdminFo
             <div className="bg-slate-900 rounded-3xl p-8 border border-slate-800 mb-6 flex flex-col items-center justify-center flex-1 lg:flex-none">
               <div className="text-slate-400 font-bold uppercase tracking-widest text-sm mb-2 text-center">คิวถัดไป</div>
               <div className="text-6xl sm:text-7xl font-black text-white mb-2 tracking-tighter">
-                {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
               {nextUpItem && nextUpItem.customerName && (
                  <div className="text-xl text-slate-400 font-medium">คุณ {nextUpItem.customerName}</div>
@@ -132,7 +133,7 @@ export function AdminFocusClassicTemplate({ viewModel, state, actions }: AdminFo
               <span className="uppercase tracking-wide">เรียกคิวถัดไป</span>
               {nextUpItem && (
                 <span className="text-blue-200 text-lg font-bold">
-                  (A{nextUpItem.queueNumber.toString().padStart(3, '0')})
+                  ({formatQueueNumber(nextUpItem.queueNumber)})
                 </span>
               )}
             </button>

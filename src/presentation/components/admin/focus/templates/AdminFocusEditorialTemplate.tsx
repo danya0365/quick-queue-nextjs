@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueStatus, ServiceType } from '@/src/domain/types/queue';
 import { AdminViewModel } from '@/src/presentation/presenters/admin/AdminPresenter';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
@@ -55,7 +56,7 @@ export function AdminFocusEditorialTemplate({ viewModel, state, actions }: { vie
           
           <div className="w-full max-w-3xl aspect-[16/9] bg-white border-[8px] border-black flex flex-col items-center justify-center shadow-[12px_12px_0_0_rgba(0,0,0,1)] relative overflow-hidden">
             <div className="text-[120px] sm:text-[180px] lg:text-[240px] font-black leading-none tracking-tighter text-black">
-              {currentServingItem ? `A${currentServingItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+              {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '--'}
             </div>
             
             {currentServingItem && currentServingItem.customerName && (
@@ -96,7 +97,7 @@ export function AdminFocusEditorialTemplate({ viewModel, state, actions }: { vie
 
               <div className="text-black font-black uppercase tracking-[0.2em] text-sm mb-4 border-b-2 border-black pb-2 text-center w-full">NEXT.IN.LINE</div>
               <div className="text-7xl sm:text-8xl font-black text-black mb-4 tracking-tighter">
-                {nextUpItem ? `A${nextUpItem.queueNumber.toString().padStart(3, '0')}` : '--'}
+                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
               {nextUpItem && nextUpItem.customerName && (
                  <div className="text-2xl text-gray-600 font-bold">คุณ {nextUpItem.customerName}</div>
@@ -120,7 +121,7 @@ export function AdminFocusEditorialTemplate({ viewModel, state, actions }: { vie
               <span className="uppercase tracking-[0.1em]">เรียกคิวถัดไป</span>
               {nextUpItem && (
                 <span className="text-gray-400 text-lg font-bold border-t-2 border-gray-700 pt-2 w-1/2 text-center">
-                  (A{nextUpItem.queueNumber.toString().padStart(3, '0')})
+                  ({formatQueueNumber(nextUpItem.queueNumber)})
                 </span>
               )}
             </button>

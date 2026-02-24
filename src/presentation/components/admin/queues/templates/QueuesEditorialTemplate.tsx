@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, QueueStatus, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { ClearConfirmModal } from '@/src/presentation/components/admin/ClearConfirmModal';
 import { CreateQueueModal } from '@/src/presentation/components/admin/CreateQueueModal';
@@ -231,7 +232,7 @@ export function QueuesEditorialTemplate({
                  return (
                   <tr key={item.id} className="border-b-[2px] sm:border-b-[4px] border-black hover:bg-gray-100 transition-colors last:border-b-0 group">
                     <td className="p-2 sm:p-4 font-black text-2xl sm:text-4xl tabular-nums tracking-tighter">
-                      {item.queueNumber.toString().padStart(2, '0')}
+                      {formatQueueNumber(item.queueNumber)}
                     </td>
                     <td className="p-0 border-l-[2px] sm:border-l-[4px] border-black align-top">
                       <div className="relative w-full h-full overflow-hidden flex min-h-[50px] sm:min-h-[85px] group-hover:bg-gray-50 transition-colors">
