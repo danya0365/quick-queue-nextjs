@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QUEUE_STATUS_CONFIG, QueueStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { AnimatedCounter } from '@/src/presentation/components/shared/AnimatedCounter';
 import { FadeInSection } from '@/src/presentation/components/shared/FadeInSection';
@@ -88,7 +89,7 @@ export function QueueClassicTemplate({
               shadow-xl
             ">
               <span className="text-white text-4xl sm:text-7xl font-black tabular-nums">
-                {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
+                {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </span>
             </div>
           </animated.div>

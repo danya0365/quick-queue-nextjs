@@ -1,4 +1,5 @@
-import { DEFAULT_SHOP_CONFIG } from '@/src/domain/types/queue';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+import { ShopInfoBanner } from '@/src/presentation/components/shop/ShopInfoBanner';
 import { useAppVersion } from '@/src/presentation/hooks/useAppVersion';
 import Link from 'next/link';
 
@@ -41,8 +42,11 @@ export function MainEditorialTemplate({ children }: MainEditorialTemplateProps) 
       </nav>
 
       {/* ─── Content Area ─── */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden relative" id="main-content">
-        {children}
+      <main className="flex-1 overflow-y-auto overflow-x-hidden relative flex flex-col" id="main-content">
+        <div className="flex-1 relative w-full flex flex-col">
+          {children}
+        </div>
+        <ShopInfoBanner />
       </main>
 
       {/* ─── Editorial Footer ─── */}

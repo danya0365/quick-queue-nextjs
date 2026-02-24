@@ -91,10 +91,26 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
     };
   }
 
-  async getByStatusLimited(status: string, limit: number): Promise<QueueItem[]> {
+  async getWaitingItems(limit: number): Promise<QueueItem[]> {
     const result = await this.db.execute({
       sql: 'SELECT * FROM queue_items WHERE status = ? ORDER BY queue_number ASC LIMIT ?',
-      args: [status, limit]
+      args: ['waiting', limit]
+    });
+    return result.rows.map(mapRowToQueueItem);
+  }
+
+  async getInProgressItems(limit: number): Promise<QueueItem[]> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM queue_items WHERE status = ? ORDER BY updated_at DESC LIMIT ?',
+      args: ['in_progress', limit]
+    });
+    return result.rows.map(mapRowToQueueItem);
+  }
+
+  async getCompletedItems(limit: number): Promise<QueueItem[]> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM queue_items WHERE status = ? ORDER BY updated_at DESC LIMIT ?',
+      args: ['completed', limit]
     });
     return result.rows.map(mapRowToQueueItem);
   }
@@ -231,10 +247,10 @@ export class TursoQueueItemRepository implements IQueueItemRepository {
 
   async getCurrentServingNumber(): Promise<number> {
     const result = await this.db.execute({
-      sql: 'SELECT MIN(queue_number) as minNum FROM queue_items WHERE status = ?',
+      sql: 'SELECT queue_number FROM queue_items WHERE status = ? ORDER BY updated_at DESC LIMIT 1',
       args: ['in_progress']
     });
-    const minNum = result.rows[0].minNum as number | null;
-    return minNum || 0;
+    const currentNum = result.rows[0]?.queue_number as number | null;
+    return currentNum || 0;
   }
 }

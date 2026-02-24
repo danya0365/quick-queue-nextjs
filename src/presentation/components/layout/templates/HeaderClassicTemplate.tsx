@@ -1,6 +1,7 @@
 'use client';
 
-import { DEFAULT_SHOP_CONFIG, NAV_ITEMS } from '@/src/domain/types/queue';
+import { DEFAULT_SHOP_CONFIG } from '@/src/config/shop.config';
+import { NAV_ITEMS } from '@/src/domain/types/queue';
 import { ColorModeToggle } from '@/src/presentation/components/shared/ColorModeToggle';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

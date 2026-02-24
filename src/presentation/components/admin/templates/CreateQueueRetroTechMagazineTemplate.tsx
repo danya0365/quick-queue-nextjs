@@ -1,3 +1,4 @@
+import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { ServiceType } from '@/src/domain/types/queue';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
@@ -84,7 +85,7 @@ export function CreateQueueRetroTechMagazineTemplate({
           </div>
           {/* Quick Presets */}
           <div className="flex flex-wrap gap-2 mt-3">
-            {['คุณพี่', 'Grab', 'Lineman', 'Foodpanda', 'Lalamove'].map((preset) => (
+            {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
               <button
                 key={preset}
                 type="button"
@@ -149,7 +150,7 @@ export function CreateQueueRetroTechMagazineTemplate({
           </div>
           {/* Quick Presets */}
           <div className="flex flex-wrap gap-2 mt-3">
-            {['1 ชิ้น', '2 ชิ้น', 'เนื้อ', 'ไก่', 'ธรรมดา', 'พิเศษ'].map((preset) => (
+            {QUEUE_FORM_PRESETS.notes.map((preset) => (
               <button
                 key={preset}
                 type="button"

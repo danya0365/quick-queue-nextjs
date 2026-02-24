@@ -10,6 +10,8 @@ export function AdminLayoutEditorialTemplate({ children }: { children: React.Rea
     { label: 'แผงควบคุม', href: '/admin' },
     { label: 'คำขอบัตรคิว', href: '/admin/pending-requests' },
     { label: 'จัดการคิว', href: '/admin/queues' },
+    { label: 'จอปฏิบัติการ', href: '/admin/kiosk' },
+    { label: 'จอแสดงคิว (DISPLAY)', href: '/display' },
   ];
 
   return (
@@ -60,6 +62,7 @@ export function AdminLayoutEditorialTemplate({ children }: { children: React.Rea
               <Link 
                 key={item.href} 
                 href={item.href}
+                target={item.href === '/display' ? '_blank' : '_self'}
                 className={`
                   block w-full text-left px-4 py-3 border-[3px] font-black uppercase tracking-widest text-sm transition-all
                   ${isActive 

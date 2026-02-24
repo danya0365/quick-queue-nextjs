@@ -1,0 +1,182 @@
+'use client';
+
+import { formatQueueNumber } from '@/src/config/queue-display.config';
+import { SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
+import { Clock, Volume2, VolumeX } from 'lucide-react';
+import { DisplayViewModel } from '../DisplayView';
+
+interface DisplayTemplateProps {
+  displayViewModel: DisplayViewModel;
+  currentTime: string;
+  soundEnabled: boolean;
+  setSoundEnabled: (val: boolean | ((prev: boolean) => boolean)) => void;
+}
+
+export function DisplayClassicTemplate({ displayViewModel, currentTime, soundEnabled, setSoundEnabled }: DisplayTemplateProps) {
+  const { currentServingItem, nextUpItem, waitingItems, recentCompleted, stats, estimatedWaitMinutes, shopName, operatingHours } = displayViewModel;
+
+  return (
+    <div className="fixed inset-0 z-[999] w-full h-full overflow-hidden flex flex-col bg-slate-900 text-white font-sans selection:bg-blue-500 selection:text-white">
+
+      {/* ─── Info Bar ─── */}
+      <header className="flex items-center justify-between px-4 sm:px-8 py-3 bg-slate-950 border-b border-slate-800 shrink-0">
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight">{shopName}</h1>
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </span>
+        </div>
+
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* Stats */}
+          <div className="hidden sm:flex items-center gap-2 text-xs">
+            <span className="bg-amber-500/20 px-2.5 py-1.5 rounded-lg text-amber-300 font-bold">รอ {stats.waiting}</span>
+            <span className="bg-blue-500/20 px-2.5 py-1.5 rounded-lg text-blue-300 font-bold">บริการ {stats.serving}</span>
+            <span className="bg-emerald-500/20 px-2.5 py-1.5 rounded-lg text-emerald-300 font-bold">เสร็จ {stats.completed}</span>
+          </div>
+
+          {/* Sound Toggle */}
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
+            title={soundEnabled ? 'ปิดเสียง' : 'เปิดเสียง'}
+          >
+            {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+          </button>
+
+          {/* Operating Hours */}
+          <div className="hidden sm:block text-xs text-slate-400">
+            เปิดให้บริการ {operatingHours.open} - {operatingHours.close}
+          </div>
+
+          {/* Live Clock */}
+          <div className="flex items-center gap-1.5 text-white font-mono font-bold text-lg sm:text-xl bg-slate-800 px-3 py-1.5 rounded-lg">
+            <Clock className="w-4 h-4 text-slate-400" />
+            {currentTime}
+          </div>
+        </div>
+      </header>
+
+      {/* ─── Main Content ─── */}
+      <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+        {/* ═══ Left: Current Serving (Hero) ═══ */}
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b lg:border-b-0 lg:border-r border-slate-800/50 relative overflow-hidden">
+          {/* Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 blur-[150px] pointer-events-none rounded-full"></div>
+
+          <div className="text-slate-400 font-bold uppercase tracking-widest text-base sm:text-lg mb-4">กำลังเรียกคิว</div>
+
+          <div className="w-full max-w-2xl bg-slate-950 rounded-3xl border-4 border-slate-800 flex flex-col items-center justify-center p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+            <div className="text-[100px] sm:text-[160px] lg:text-[200px] font-black leading-none tracking-tighter text-white drop-shadow-lg z-10">
+              {currentServingItem ? formatQueueNumber(currentServingItem.queueNumber) : '--'}
+            </div>
+            {currentServingItem && (currentServingItem.customerName || currentServingItem.note) && (
+              <div className="flex flex-col items-center mt-4 z-10">
+                {currentServingItem.customerName && (
+                  <div className="text-2xl sm:text-4xl text-slate-300 font-bold">
+                    คุณ {currentServingItem.customerName}
+                  </div>
+                )}
+                {currentServingItem.note && (
+                  <div className="text-sm sm:text-base text-slate-500 mt-2 font-medium max-w-sm text-center">
+                    {currentServingItem.note}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Next Up + Wait Info */}
+          <div className="flex items-center gap-6 sm:gap-10 mt-8">
+            <div className="text-center">
+              <div className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">คิวถัดไป</div>
+              <div className="text-4xl sm:text-5xl font-black text-blue-400 tracking-tighter">
+                {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
+              </div>
+              {nextUpItem && (nextUpItem.customerName || nextUpItem.note) && (
+                <div className="mt-1 flex flex-col items-center">
+                  {nextUpItem.customerName && (
+                    <div className="text-sm text-slate-400">คุณ {nextUpItem.customerName}</div>
+                  )}
+                  {nextUpItem.note && (
+                    <div className="text-xs text-slate-500 max-w-[120px] truncate">{nextUpItem.note}</div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="w-px h-16 bg-slate-800"></div>
+            <div className="text-center">
+              <div className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">คิวรอ</div>
+              <div className="text-4xl sm:text-5xl font-black text-amber-400">{stats.waiting}</div>
+              <div className="text-sm text-slate-500 mt-1">≈ {estimatedWaitMinutes} นาที</div>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ Right: Queue Lists ═══ */}
+        <div className="w-full lg:w-[420px] xl:w-[480px] flex flex-col bg-slate-950 shrink-0 overflow-hidden">
+
+          {/* Waiting Queue */}
+          <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-800">
+            <div className="px-4 sm:px-6 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between shrink-0">
+              <span className="text-sm font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                รอคิว ({waitingItems.length})
+              </span>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              {waitingItems.length === 0 ? (
+                <div className="p-6 text-center text-slate-600 text-sm">ไม่มีคิวรอ</div>
+              ) : (
+                waitingItems.map((item, idx) => (
+                  <div key={item.id} className={`flex items-center gap-3 px-4 sm:px-6 py-3 border-b border-slate-800/50 ${idx === 0 ? 'bg-amber-500/5' : ''}`}>
+                    <div className="text-xl sm:text-2xl font-black text-white tracking-tighter min-w-[70px]">
+                      {formatQueueNumber(item.queueNumber)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-slate-300 truncate">{item.customerName || '-'}</div>
+                      {item.note && (
+                        <div className="text-xs text-slate-500 truncate mt-0.5">{item.note}</div>
+                      )}
+                    </div>
+                    <div className="text-xs text-slate-600 shrink-0">
+                      {SERVICE_TYPE_CONFIG[item.serviceType]?.label}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Completed — Recent */}
+          <div className="shrink-0">
+            <div className="px-4 sm:px-6 py-3 bg-slate-900 border-b border-slate-800">
+              <span className="text-sm font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                เสร็จแล้ว (ล่าสุด)
+              </span>
+            </div>
+            {recentCompleted.length === 0 ? (
+              <div className="p-4 text-center text-slate-600 text-sm">ยังไม่มี</div>
+            ) : (
+              recentCompleted.slice(0, 3).map((item) => (
+                <div key={item.id} className="flex items-center gap-3 px-4 sm:px-6 py-2.5 border-b border-slate-800/50 opacity-60">
+                  <div className="text-lg font-bold text-emerald-400/60 tracking-tighter min-w-[70px] line-through">
+                    {formatQueueNumber(item.queueNumber)}
+                  </div>
+                  <div className="text-sm text-slate-500 truncate flex-1">{item.customerName}</div>
+                  <div className="text-xs text-slate-600">
+                    {new Date(item.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,3 +1,4 @@
+import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { ServiceType } from '@/src/domain/types/queue';
 import { FormEvent } from 'react';
 import { animated } from 'react-spring';
@@ -92,9 +93,8 @@ export function CreateQueueClassicTemplate({
               </button>
             )}
           </div>
-          {/* Quick Presets for Lazy Input */}
           <div className="flex flex-wrap gap-2 mt-2">
-            {['คุณพี่', 'Grab', 'Lineman', 'Foodpanda', 'Lalamove'].map((preset) => (
+            {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
               <button
                 key={preset}
                 type="button"
@@ -168,9 +168,8 @@ export function CreateQueueClassicTemplate({
               </button>
             )}
           </div>
-          {/* Quick Presets for Food Orders (Ramadan Murtabak Use Case) */}
           <div className="flex flex-wrap gap-2 mt-2">
-            {['1 ชิ้น', '2 ชิ้น', '3 ชิ้น', '4 ชิ้น', '5 ชิ้น', 'เนื้อ', 'ไก่', 'กล้วย', 'ธรรมดา', 'พิเศษ'].map((preset) => (
+            {QUEUE_FORM_PRESETS.notes.map((preset) => (
               <button
                 key={preset}
                 type="button"

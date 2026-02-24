@@ -1,3 +1,4 @@
+import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { ServiceType } from '@/src/domain/types/queue';
 import { CheckCircle2, ClipboardList, Crown, Edit3, Lock, Send, Zap } from 'lucide-react';
 import { FormEvent } from 'react';
@@ -136,6 +137,18 @@ export function RequestQueueClassicTemplate({
               </button>
             )}
           </div>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setCustomerName(preset)}
+                className="px-2.5 py-1.5 text-xs rounded-lg bg-surface border border-border text-muted hover:text-foreground hover:bg-surface-alt hover:border-primary/30 transition-all"
+              >
+                + {preset}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -197,6 +210,18 @@ export function RequestQueueClassicTemplate({
                 ✕
               </button>
             )}
+          </div>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {QUEUE_FORM_PRESETS.notes.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                className="px-2.5 py-1.5 text-xs rounded-lg bg-surface border border-border text-muted hover:text-foreground hover:bg-surface-alt hover:border-primary/30 transition-all"
+              >
+                + {preset}
+              </button>
+            ))}
           </div>
         </div>
 

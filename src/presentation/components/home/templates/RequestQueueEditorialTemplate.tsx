@@ -1,3 +1,4 @@
+import { QUEUE_FORM_PRESETS } from '@/src/config/queue-form.config';
 import { ServiceType } from '@/src/domain/types/queue';
 import { CheckCircle2, Lock } from 'lucide-react';
 import { FormEvent } from 'react';
@@ -127,6 +128,18 @@ export function RequestQueueEditorialTemplate({
               </button>
             )}
           </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setCustomerName(preset)}
+                className="px-3 py-1 text-[10px] font-black uppercase tracking-widest border-[2px] border-black text-black hover:bg-black hover:text-white transition-all"
+              >
+                + {preset}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -186,6 +199,18 @@ export function RequestQueueEditorialTemplate({
                 ✕
               </button>
             )}
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {QUEUE_FORM_PRESETS.notes.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                className="px-3 py-1 text-[10px] font-black uppercase tracking-widest border-[2px] border-black text-black hover:bg-black hover:text-white transition-all"
+              >
+                + {preset}
+              </button>
+            ))}
           </div>
         </div>
 

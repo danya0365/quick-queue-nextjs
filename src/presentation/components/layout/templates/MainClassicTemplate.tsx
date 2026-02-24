@@ -1,3 +1,4 @@
+import { ShopInfoBanner } from '../../shop/ShopInfoBanner';
 import { FooterClassicTemplate } from './FooterClassicTemplate';
 import { HeaderClassicTemplate } from './HeaderClassicTemplate';
 import { MobileBottomNavClassicTemplate } from './MobileBottomNavClassicTemplate';
@@ -20,8 +21,11 @@ export function MainClassicTemplate({ children }: MainClassicTemplateProps) {
       <HeaderClassicTemplate />
 
       {/* Content Area - scrolls internally */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden relative" id="main-content">
-        {children}
+      <main className="flex-1 overflow-y-auto overflow-x-hidden relative flex flex-col" id="main-content">
+        <div className="flex-1 relative w-full flex flex-col">
+          {children}
+        </div>
+        <ShopInfoBanner />
       </main>
 
       <FooterClassicTemplate />

@@ -10,6 +10,8 @@ export function AdminLayoutRetroTechMagazineTemplate({ children }: { children: R
     { label: 'CONTROL.PANEL', href: '/admin', icon: '⚡' },
     { label: 'REQ.QUEUE', href: '/admin/pending-requests', icon: '⏳' },
     { label: 'MNG.QUEUE', href: '/admin/queues', icon: '📋' },
+    { label: 'จอปฏิบัติการ', href: '/admin/kiosk', icon: '📺' },
+    { label: 'DISPLAY.SYS', href: '/display', icon: '🖥️' },
   ];
 
   return (
@@ -60,6 +62,7 @@ export function AdminLayoutRetroTechMagazineTemplate({ children }: { children: R
               <Link 
                 key={item.href} 
                 href={item.href}
+                target={item.href === '/display' ? '_blank' : '_self'}
                 className={`
                   flex items-center gap-3 px-4 py-3 border-[3px] border-black text-sm font-black uppercase tracking-widest transition-all
                   ${isActive 

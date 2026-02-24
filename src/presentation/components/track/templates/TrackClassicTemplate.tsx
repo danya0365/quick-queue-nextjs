@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueRequest, REQUEST_STATUS_CONFIG, RequestStatus, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { ClipboardList, Hourglass, Search } from 'lucide-react';
 import { FormEvent } from 'react';
@@ -61,7 +62,7 @@ export function TrackClassicTemplate({
         {result.status === RequestStatus.APPROVED && result.queueNumber && (
           <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 sm:p-6 text-center mt-4">
             <div className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">หมายเลขคิวของคุณ</div>
-            <div className="text-5xl sm:text-7xl font-black tabular-nums tracking-tighter text-emerald-600 dark:text-emerald-400">{result.queueNumber.toString().padStart(2, '0')}</div>
+            <div className="text-5xl sm:text-7xl font-black tabular-nums tracking-tighter text-emerald-600 dark:text-emerald-400">{formatQueueNumber(result.queueNumber)}</div>
             <p className="text-xs text-muted mt-3">ไปที่หน้าแรกเพื่อดูสถานะคิวของคุณ</p>
           </div>
         )}

@@ -1,3 +1,4 @@
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
 import { QueueViewModel } from '@/src/presentation/presenters/queue/QueuePresenter';
 import { animated, SpringValue } from 'react-spring';
@@ -94,7 +95,7 @@ export function QueueEditorialTemplate({
             <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tighter mb-2 sm:mb-4 opacity-50">คิวปัจจุบัน</h2>
             <animated.div style={pulseSpring} className="relative w-full text-center lg:text-left">
               <div className="text-[10rem] sm:text-[18rem] md:text-[22rem] font-black tabular-nums leading-[0.8] tracking-tighter text-black">
-                {currentQ > 0 ? currentQ.toString().padStart(2, '0') : '—'}
+                {currentQ > 0 ? formatQueueNumber(currentQ) : '—'}
               </div>
             </animated.div>
           </div>
@@ -214,7 +215,7 @@ function EditorialRow({ item, isServing, onClick }: { item: QueueItem; isServing
       <div className={`w-2 sm:w-3 flex-shrink-0 self-stretch border-[2px] sm:border-[3px] ${getStripeStyle(item.serviceType)}`}></div>
       
       <div className="flex flex-col justify-center min-w-[3rem] sm:min-w-[3.5rem] border-r-[2px] sm:border-r-[4px] border-inherit pr-2 sm:pr-4">
-        <div className="font-black text-2xl sm:text-4xl tabular-nums leading-none tracking-tighter">{item.queueNumber.toString().padStart(2, '0')}</div>
+        <div className="font-black text-2xl sm:text-4xl tabular-nums leading-none tracking-tighter">{formatQueueNumber(item.queueNumber)}</div>
       </div>
       
       <div className="flex-1 min-w-0 flex flex-col justify-center pl-2">

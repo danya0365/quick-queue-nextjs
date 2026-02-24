@@ -1,5 +1,6 @@
 'use client';
 
+import { formatQueueNumber } from '@/src/config/queue-display.config';
 import { WidgetVariant } from './ServiceTypeBreakdown';
 
 interface CurrentQueueWidgetProps {
@@ -8,7 +9,7 @@ interface CurrentQueueWidgetProps {
 }
 
 export function CurrentQueueWidget({ currentQueueNumber, variant = 'classic' }: CurrentQueueWidgetProps) {
-  const displayValue = currentQueueNumber > 0 ? `A${currentQueueNumber.toString().padStart(3, '0')}` : '-';
+  const displayValue = currentQueueNumber > 0 ? formatQueueNumber(currentQueueNumber) : '-';
 
   const getContainerStyles = () => {
     if (variant === 'editorial') {
