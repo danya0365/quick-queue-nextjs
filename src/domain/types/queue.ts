@@ -2,7 +2,7 @@
  * Queue Domain Types
  * Master Data & Static Data definitions for Quick Queue
  */
-import { CheckCircle2, ClipboardList, Crown, Home, Hourglass, ListTodo, RefreshCw, Search, Settings, XCircle, Zap } from 'lucide-react';
+import { CheckCircle2, ClipboardList, Crown, Hourglass, ListTodo, RefreshCw, Search, Settings, XCircle, Zap } from 'lucide-react';
 import * as React from 'react';
 
 
@@ -183,12 +183,6 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  {
-    label: 'หน้าแรก',
-    href: '/',
-    icon: React.createElement(Home, { className: 'w-full h-full' }),
-    requiresAuth: false,
-  },
   {
     label: 'จอแสดงคิว',
     href: '/display',
