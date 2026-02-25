@@ -1,12 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { formatQueueNumber } from '@/src/config/queue-display.config';
+import { useCallback, useEffect } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface SoundStore {
   soundEnabled: boolean;
   setSoundEnabled: (val: boolean | ((prev: boolean) => boolean)) => void;
+  announcedQueues: number[];
+  addAnnouncedQueue: (qNum: number) => void;
 }
 
 export const useSoundStore = create<SoundStore>()(
@@ -17,6 +20,13 @@ export const useSoundStore = create<SoundStore>()(
         set((state) => ({
           soundEnabled: typeof val === 'function' ? val(state.soundEnabled) : val,
         })),
+      announcedQueues: [],
+      addAnnouncedQueue: (qNum) =>
+        set((state) => {
+          // เก็บประวัติแค่ 100 คิวล่าสุด เพื่อไม่ให้ localStorage บวมเกินไป
+          if (state.announcedQueues.includes(qNum)) return state;
+          return { announcedQueues: [...state.announcedQueues, qNum].slice(-100) };
+        }),
     }),
     {
       name: 'queue-sound-storage', // บันทึกสถานะการเปิดเสียงลง localStorage
@@ -30,8 +40,7 @@ export const useSoundStore = create<SoundStore>()(
  * Uses Zustand to persist the soundEnabled setting globally.
  */
 export function useQueueSoundAlert(currentQueueNumber: number) {
-  const { soundEnabled, setSoundEnabled } = useSoundStore();
-  const prevQRef = useRef<number | null>(null);
+  const { soundEnabled, setSoundEnabled, announcedQueues, addAnnouncedQueue } = useSoundStore();
 
   const playAlert = useCallback((qNum: number) => {
     try {
@@ -59,7 +68,32 @@ export function useQueueSoundAlert(currentQueueNumber: number) {
       osc.stop(ctx.currentTime + 1);
       
       setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(`ขอเชิญคิวหมายเลข ${qNum} ค่ะ`);
+        const formattedQ = formatQueueNumber(qNum);
+        
+        // Map English characters and numbers to their Thai pronunciation for TTS
+        const charToThaiPhonetic: Record<string, string> = {
+          'A': 'เอ', 'B': 'บี', 'C': 'ซี', 'D': 'ดี', 'E': 'อี', 
+          'F': 'เอฟ', 'G': 'จี', 'H': 'เอช', 'I': 'ไอ', 'J': 'เจ',
+          'K': 'เค', 'L': 'แอล', 'M': 'เอ็ม', 'N': 'เอ็น', 'O': 'โอ',
+          'P': 'พี', 'Q': 'คิว', 'R': 'อาร์', 'S': 'เอส', 'T': 'ที',
+          'U': 'ยู', 'V': 'วี', 'W': 'ดับเบิลยู', 'X': 'เอ็กซ์', 'Y': 'วาย', 'Z': 'แซด',
+          '0': 'ศูนย์', '1': 'หนึ่ง', '2': 'สอง', '3': 'สาม', '4': 'สี่',
+          '5': 'ห้า', '6': 'หก', '7': 'เจ็ด', '8': 'แปด', '9': 'เก้า'
+        };
+
+        // Split into characters, map to phonetic Thai, and join with a space and a hyphen (to force a distinct pause)
+        const spokenQ = formattedQ
+          .split('')
+          .map(char => charToThaiPhonetic[char.toUpperCase()] || char)
+          .join(' ');
+        
+        // Add additional text to force spacing between the letter (first char) and numbers
+        const parts = spokenQ.split(' ');
+        const finalSpokenQ = parts.length > 1 ? `${parts[0]} ... ${parts.slice(1).join(' ... ')}` : spokenQ;
+
+        console.log('finalSpokenQ', finalSpokenQ);
+        
+        const utterance = new SpeechSynthesisUtterance(`ขอเชิญคิวหมายเลข ${finalSpokenQ} ค่ะ`);
         utterance.lang = 'th-TH';
         utterance.rate = 0.9;
         window.speechSynthesis.speak(utterance);
@@ -70,13 +104,11 @@ export function useQueueSoundAlert(currentQueueNumber: number) {
   }, []);
 
   useEffect(() => {
-    if (currentQueueNumber > 0 && currentQueueNumber !== prevQRef.current) {
-      if (soundEnabled) {
-        playAlert(currentQueueNumber);
-      }
-      prevQRef.current = currentQueueNumber;
+    if (currentQueueNumber > 0 && soundEnabled && !announcedQueues.includes(currentQueueNumber)) {
+      playAlert(currentQueueNumber);
+      addAnnouncedQueue(currentQueueNumber);
     }
-  }, [currentQueueNumber, soundEnabled, playAlert]);
+  }, [currentQueueNumber, soundEnabled, playAlert, announcedQueues, addAnnouncedQueue]);
 
   return { soundEnabled, setSoundEnabled };
 }

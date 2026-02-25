@@ -12,7 +12,7 @@ interface AppTemplateState {
 export const useTemplate = create<AppTemplateState>()(
   persist(
     (set) => ({
-      template: 'editorial', // โทนค่าเริ่มต้น
+      template: 'retroTechMagazine', // โทนค่าเริ่มต้น
       setTemplate: (template) => set({ template }),
       toggleTemplate: () =>
         set((state) => {

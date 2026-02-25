@@ -94,7 +94,7 @@ export class AdminPresenter {
   ): Promise<AdminViewModel> {
     try {
       const SORTED_LIMIT = 20;
-      const [paginated, waitingItems, inProgressItems, completedItems, stats, nextQueueNumber, currentQueueNumber] = await Promise.all([
+      const [paginated, waitingItems, inProgressItems, completedItems, stats, nextQueueNumber, currentQueueNumber, pendingRequests, pendingCount] = await Promise.all([
         this.repository.getPaginated(page, perPage, status),
         this.repository.getWaitingItems(SORTED_LIMIT),
         this.repository.getInProgressItems(SORTED_LIMIT),
@@ -102,6 +102,8 @@ export class AdminPresenter {
         this.repository.getStats(),
         this.repository.getNextQueueNumber(),
         this.repository.getCurrentServingNumber(),
+        this.requestRepository ? this.requestRepository.getPending(5) : Promise.resolve([]),
+        this.requestRepository ? this.requestRepository.getPendingCount() : Promise.resolve(0),
       ]);
 
       return {
@@ -118,8 +120,8 @@ export class AdminPresenter {
         shopConfig: this.getDefaultShopConfig(),
         isLoading: false,
         error: null,
-        pendingRequests: [], // Not needed on queues list page
-        pendingCount: 0,
+        pendingRequests,
+        pendingCount,
         currentQueueNumber,
       };
     } catch (error) {
