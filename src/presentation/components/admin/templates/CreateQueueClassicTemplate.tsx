@@ -11,7 +11,10 @@ export interface CreateQueueClassicTemplateProps {
   serviceType: ServiceType;
   setServiceType: (service: ServiceType) => void;
   note: string;
-  setNote: (note: string | ((prev: string) => string)) => void;
+  setNote: (note: string) => void;
+  appendNote: (note: string) => void;
+  clearNote: () => void;
+  clearCustomerName: () => void;
   isSubmitting: boolean;
   handleSubmit: (e: FormEvent) => void;
   modalSpring: any;
@@ -26,6 +29,9 @@ export function CreateQueueClassicTemplate({
   setServiceType,
   note,
   setNote,
+  appendNote,
+  clearNote,
+  clearCustomerName,
   isSubmitting,
   handleSubmit,
   modalSpring,
@@ -85,7 +91,7 @@ export function CreateQueueClassicTemplate({
             {customerName && (
               <button
                 type="button"
-                onClick={() => setCustomerName('')}
+                onClick={clearCustomerName}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-light hover:text-muted bg-transparent border-none p-1"
                 title="เคลียร์"
               >
@@ -160,7 +166,7 @@ export function CreateQueueClassicTemplate({
             {note && (
               <button
                 type="button"
-                onClick={() => setNote('')}
+                onClick={clearNote}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-light hover:text-muted bg-transparent border-none p-1"
                 title="เคลียร์"
               >
@@ -173,7 +179,7 @@ export function CreateQueueClassicTemplate({
               <button
                 key={preset}
                 type="button"
-                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                onClick={() => appendNote(preset)}
                 className="px-2.5 py-1.5 text-xs rounded-lg bg-surface border border-border text-muted hover:text-foreground hover:bg-surface-alt hover:border-primary/30 transition-all"
               >
                 + {preset}

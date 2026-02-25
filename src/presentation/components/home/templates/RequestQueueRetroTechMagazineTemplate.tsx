@@ -11,7 +11,10 @@ export interface RequestQueueRetroTechMagazineTemplateProps {
   serviceType: ServiceType;
   setServiceType: (service: ServiceType) => void;
   note: string;
-  setNote: (note: string | ((prev: string) => string)) => void;
+  setNote: (note: string) => void;
+  appendNote: (note: string) => void;
+  clearNote: () => void;
+  clearCustomerName: () => void;
   challengeAnswer: string;
   setChallengeAnswer: (answer: string) => void;
   challenge: { question: string } | null;
@@ -30,6 +33,9 @@ export function RequestQueueRetroTechMagazineTemplate({
   setServiceType,
   note,
   setNote,
+  appendNote,
+  clearNote,
+  clearCustomerName,
   challengeAnswer,
   setChallengeAnswer,
   challenge,
@@ -119,6 +125,16 @@ export function RequestQueueRetroTechMagazineTemplate({
               placeholder="กรอกชื่อของคุณ..."
               autoFocus
             />
+            {customerName && (
+              <button
+                type="button"
+                onClick={clearCustomerName}
+                className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-[10px] font-black uppercase tracking-widest text-black bg-[#FF00FF] border-2 border-black hover:bg-white hover:text-black transition-colors"
+                title="เคลียร์"
+              >
+                CLEAR()
+              </button>
+            )}
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {QUEUE_FORM_PRESETS.customerNames.map((preset) => (
@@ -182,13 +198,23 @@ export function RequestQueueRetroTechMagazineTemplate({
               "
               placeholder="..."
             />
+            {note && (
+              <button
+                type="button"
+                onClick={clearNote}
+                className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 text-[10px] font-black uppercase tracking-widest text-black bg-[#FF00FF] border-2 border-black hover:bg-white hover:text-black transition-colors"
+                title="เคลียร์"
+              >
+                CLEAR()
+              </button>
+            )}
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {QUEUE_FORM_PRESETS.notes.map((preset) => (
               <button
                 key={preset}
                 type="button"
-                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                onClick={() => appendNote(preset)}
                 className="px-3 py-1 font-bold text-xs uppercase bg-white text-black border-2 border-black hover:bg-black hover:text-white transition-all shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
               >
                 + {preset}

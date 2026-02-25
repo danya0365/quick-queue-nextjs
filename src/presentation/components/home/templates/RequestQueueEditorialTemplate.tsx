@@ -11,7 +11,10 @@ export interface RequestQueueEditorialTemplateProps {
   serviceType: ServiceType;
   setServiceType: (service: ServiceType) => void;
   note: string;
-  setNote: (note: string | ((prev: string) => string)) => void;
+  setNote: (note: string) => void;
+  appendNote: (note: string) => void;
+  clearNote: () => void;
+  clearCustomerName: () => void;
   challengeAnswer: string;
   setChallengeAnswer: (answer: string) => void;
   challenge: { question: string } | null;
@@ -30,6 +33,9 @@ export function RequestQueueEditorialTemplate({
   setServiceType,
   note,
   setNote,
+  appendNote,
+  clearNote,
+  clearCustomerName,
   challengeAnswer,
   setChallengeAnswer,
   challenge,
@@ -120,7 +126,7 @@ export function RequestQueueEditorialTemplate({
             {customerName && (
               <button
                 type="button"
-                onClick={() => setCustomerName('')}
+                onClick={clearCustomerName}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-black bg-transparent border-none p-1 font-black"
                 title="เคลียร์"
               >
@@ -192,7 +198,7 @@ export function RequestQueueEditorialTemplate({
             {note && (
               <button
                 type="button"
-                onClick={() => setNote('')}
+                onClick={clearNote}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-black font-black bg-transparent border-none p-1"
                 title="เคลียร์"
               >
@@ -205,7 +211,7 @@ export function RequestQueueEditorialTemplate({
               <button
                 key={preset}
                 type="button"
-                onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                onClick={() => appendNote(preset)}
                 className="px-3 py-1 text-[10px] font-black uppercase tracking-widest border-[2px] border-black text-black hover:bg-black hover:text-white transition-all"
               >
                 + {preset}
