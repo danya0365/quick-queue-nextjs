@@ -1,7 +1,7 @@
 'use client';
 
 import { formatQueueNumber } from '@/src/config/queue-display.config';
-import { QueueItem, SERVICE_TYPE_CONFIG, ServiceType } from '@/src/domain/types/queue';
+import { QueueItem, SERVICE_TYPE_CONFIG } from '@/src/domain/types/queue';
 import { AdminPresenterActions, AdminPresenterState } from '@/src/presentation/presenters/admin/useAdminPresenter';
 import { ArrowLeft, Bell, Check, ChevronDown, ChevronUp, FastForward, Inbox, Plus } from 'lucide-react';
 import Link from 'next/link';
@@ -214,21 +214,14 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
               )}
             </button>
 
-            {/* Walk-in */}
-            <button 
-              onClick={() => {
-                const dummyData = {
-                  customerName: 'Walk-in',
-                  serviceType: ServiceType.GENERAL,
-                  note: 'Walk-in จาก จอปฏิบัติการ'
-                };
-                actions.createQueueItem(dummyData).catch(console.error);
-              }}
+            {/* Add Queue */}
+            <Link
+              href="/admin/kiosk/new-queue"
               className="w-full py-1.5 lg:py-4 bg-white hover:bg-gray-100 text-black border-[3px] border-black font-black uppercase tracking-widest text-[9px] lg:text-base flex items-center justify-center gap-1 lg:gap-2 active:translate-x-1 active:translate-y-1 px-1 text-center leading-tight min-h-[36px] lg:min-h-0"
             >
               <Plus className="w-4 h-4 lg:w-5 lg:h-5 shrink-0" strokeWidth={3} />
-              <span className="truncate">WALK-IN.ADD()</span>
-            </button>
+              <span className="truncate">NEW.QUEUE()</span>
+            </Link>
           </div>
 
           {/* Pending — Expandable */}
