@@ -43,10 +43,10 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
 
         {/* Compact Stats */}
         <div className="hidden sm:flex items-center gap-0 text-[10px] font-black uppercase tracking-widest">
-          <span className="border-[3px] border-black px-2 py-1.5 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)]">TOT={stats.total}</span>
-          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#FF00FF] text-white">WAIT={stats.waiting}</span>
-          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#00FFFF]">SRV={stats.serving}</span>
-          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#39FF14]">DONE={stats.completed}</span>
+          <span className="border-[3px] border-black px-2 py-1.5 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)]">ทั้งหมด={stats.total}</span>
+          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#FF00FF] text-white">รอ={stats.waiting}</span>
+          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#00FFFF]">บริการ={stats.serving}</span>
+          <span className="border-[3px] border-l-0 border-black px-2 py-1.5 bg-[#39FF14]">เสร็จ={stats.completed}</span>
         </div>
       </header>
 
@@ -56,14 +56,14 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
         {/* ═══ Left Zone: Serving Status ═══ */}
         <div className="flex-1 flex flex-col overflow-y-auto p-3 sm:p-6 lg:p-8 border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black relative pb-20 sm:pb-6">
           <div className="absolute top-3 left-3 text-black font-black uppercase tracking-widest text-xs bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0_0_rgba(0,0,0,1)] z-10">
-            VIEW.SERVING [{servingItems.length}]
+            กำลังให้บริการ [{servingItems.length}]
           </div>
 
           {servingItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center opacity-30 mt-8">
               <Inbox className="w-24 h-24 mb-4" strokeWidth={1.5} />
-              <p className="text-2xl font-black uppercase tracking-widest">NULL.ACTIVE.QUEUE</p>
-              <p className="text-sm mt-2 font-bold uppercase tracking-wider">EXEC CALL.NEXT() TO START_</p>
+              <p className="text-2xl font-black uppercase tracking-widest">ไม่มีคิวที่กำลังให้บริการ</p>
+              <p className="text-sm mt-2 font-bold uppercase tracking-wider">กด CALL.NEXT() เพื่อเริ่มเรียกคิว_</p>
             </div>
           ) : (
             <div className="flex flex-col gap-6 mt-8">
@@ -82,7 +82,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
 
                   <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="bg-[#FF00FF] text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 border-2 border-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,0.5)]">★ LATEST_</span>
+                      <span className="bg-[#FF00FF] text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 border-2 border-[#00FFFF] shadow-[2px_2px_0_0_rgba(0,255,255,0.5)]">★ คิวล่าสุด_</span>
                       <span className="text-xs font-mono font-bold text-[#39FF14]">
                         @{new Date(latestServingItem.updatedAt).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
                       </span>
@@ -136,7 +136,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                     className="w-full flex sm:hidden items-center justify-between mt-4 p-2.5 bg-[#00FFFF] border-[3px] border-black hover:bg-white text-black transition-colors shadow-[3px_3px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-black uppercase tracking-widest">OTHER.SERVING</span>
+                      <span className="text-[11px] font-black uppercase tracking-widest">คิวอื่นๆ</span>
                       <span className="text-[11px] font-black bg-[#FF00FF] border-2 border-black text-white px-1.5 py-0.5">{servingItems.length - 1}</span>
                     </div>
                     {isOtherServingExpanded ? (
@@ -148,7 +148,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                   
                   <div className={`space-y-2 sm:block ${isOtherServingExpanded ? 'block' : 'hidden'}`}>
                     <div className="text-xs font-black uppercase tracking-widest text-[#FF00FF] bg-white border-2 border-black px-2 py-1 inline-block shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-                      BUFFER.SERVING [{servingItems.length - 1}]
+                      คิวรอในระบบ [{servingItems.length - 1}]
                     </div>
                     {servingItems.slice(1).map((item) => (
                       <RetroServingRow key={item.id} item={item} state={state} actions={actions} />
@@ -167,7 +167,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
           <div className="bg-[#f0f0f0] p-3 lg:p-5 border-[3px] lg:border-[4px] border-black mb-2 lg:mb-4 relative shadow-[3px_3px_0_0_rgba(0,0,0,1)] lg:shadow-[8px_8px_0_0_rgba(0,0,0,1)] flex flex-row lg:flex-col items-center justify-between lg:justify-start">
             
             <div className="hidden lg:block absolute -top-4 -right-4 bg-[#00FFFF] border-[3px] border-black p-2 font-black shadow-[3px_3px_0_0_rgba(0,0,0,1)] transform rotate-12 text-[10px] tracking-widest z-10">
-              UP.NEXT
+              คิวถัดไป
             </div>
 
             {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
@@ -175,7 +175,7 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
                {/* Grid scanlines overlay only for desktop to keep mobile clean */}
               <div className="hidden lg:block absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px] pointer-events-none z-10"></div>
               
-              <div className="lg:hidden text-[9px] font-black uppercase text-[#FF00FF] mb-0.5">UP.NEXT</div>
+              <div className="lg:hidden text-[9px] font-black uppercase text-[#FF00FF] mb-0.5">คิวถัดไป</div>
 
               <div className="flex items-baseline gap-2 lg:block relative z-20">
                 <div className="text-4xl lg:text-6xl font-black text-[#39FF14] tracking-tighter drop-shadow-[0_0_5px_#39FF14] lg:drop-shadow-[0_0_10px_#39FF14] leading-none">
@@ -196,9 +196,9 @@ export function AdminKioskRetroTechMagazineTemplate({ kioskViewModel, state, act
 
             {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
             <div className="flex flex-col lg:flex-row items-end lg:items-center justify-end lg:justify-between border-[2px] lg:border-[3px] border-black p-1.5 lg:p-3 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] lg:shadow-[3px_3px_0_0_rgba(0,0,0,1)] lg:w-full">
-              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-[#FF00FF]">WAITING</span>
+              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-[#FF00FF]">คิวรอทั้งหมด</span>
               <span className="text-lg lg:text-2xl font-black leading-none mt-0.5 lg:mt-0 text-[#00FFFF]" style={{ WebkitTextStroke: '1px black' }}>
-                {waitingCount} <span className="text-[9px] lg:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>USR</span>
+                {waitingCount} <span className="text-[9px] lg:text-sm font-black text-black" style={{ WebkitTextStroke: '0px' }}>คิว</span>
               </span>
             </div>
           </div>

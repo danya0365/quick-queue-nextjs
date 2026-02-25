@@ -35,17 +35,17 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
             <h1 className="text-xl sm:text-2xl font-black tracking-tighter uppercase">จอปฏิบัติการ</h1>
             <p className="text-black text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></span>
-              SYSTEM.READY
+              ระบบพร้อมใช้งาน
             </p>
           </div>
         </div>
 
         {/* Compact Stats */}
         <div className="hidden sm:flex items-center gap-0 text-xs font-black uppercase tracking-wider">
-          <span className="border-2 border-black px-2.5 py-1.5 bg-gray-100">ALL: {stats.total}</span>
-          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-amber-50 text-amber-800">WAIT: {stats.waiting}</span>
-          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-blue-50 text-blue-800">SRV: {stats.serving}</span>
-          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-emerald-50 text-emerald-800">DONE: {stats.completed}</span>
+          <span className="border-2 border-black px-2.5 py-1.5 bg-gray-100">ทั้งหมด: {stats.total}</span>
+          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-amber-50 text-amber-800">รอ: {stats.waiting}</span>
+          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-blue-50 text-blue-800">บริการ: {stats.serving}</span>
+          <span className="border-2 border-l-0 border-black px-2.5 py-1.5 bg-emerald-50 text-emerald-800">เสร็จ: {stats.completed}</span>
         </div>
       </header>
 
@@ -56,13 +56,13 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
         <div className="flex-1 flex flex-col p-3 sm:p-6 lg:p-8 bg-zinc-100 overflow-y-auto border-b lg:border-b-0 lg:border-r-2 border-black pb-20 sm:pb-6 space-y-4 sm:space-y-8 custom-scrollbar">
           
           <div className="text-black font-black uppercase tracking-[0.15em] text-sm border-b-2 border-black pb-2 mb-6 flex items-center justify-between">
-            <span>SERVING.STATUS ({servingItems.length})</span>
+            <span>กำลังให้บริการ ({servingItems.length})</span>
           </div>
 
           {servingItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center opacity-30">
               <Inbox className="w-24 h-24 mb-4" strokeWidth={1} />
-              <p className="text-2xl font-black uppercase tracking-widest">NO.ACTIVE.QUEUE</p>
+              <p className="text-2xl font-black uppercase tracking-widest">ไม่มีคิวที่กำลังให้บริการ</p>
               <p className="text-sm mt-2 font-bold uppercase tracking-wider">กด CALL.NEXT เพื่อเริ่ม</p>
             </div>
           ) : (
@@ -72,7 +72,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                 <div className="w-full bg-white border-[6px] border-black p-6 sm:p-8 shadow-[12px_12px_0_0_rgba(0,0,0,1)] relative">
                   {/* Corner tag */}
                   <div className="absolute -top-4 -left-1 bg-black text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 border-2 border-black">
-                    LATEST
+                    คิวล่าสุด
                   </div>
                   
                   {/* Floating Service Type Badge */}
@@ -96,7 +96,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                       )}
                       {latestServingItem.note && (
                         <div className="mt-3 text-sm font-bold text-black border-l-4 border-black pl-3 py-1 uppercase max-w-full break-words">
-                          NOTE: {latestServingItem.note}
+                          ข้อความ: {latestServingItem.note}
                         </div>
                       )}
                     </div>
@@ -131,7 +131,7 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
                     className="w-full flex sm:hidden items-center justify-between mt-4 p-3 border-[3px] border-black bg-gray-50 hover:bg-gray-100 transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-black">OTHER.SERVING</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-black">คิวอื่นๆ</span>
                       <span className="text-[10px] font-black bg-black text-white px-1.5 py-0.5">{servingItems.length - 1}</span>
                     </div>
                     {isOtherServingExpanded ? (
@@ -175,12 +175,12 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
           <div className="bg-white p-3 lg:p-6 border-[3px] lg:border-[4px] border-black mb-2 lg:mb-4 relative flex flex-row lg:flex-col items-center justify-between lg:justify-start">
             
             <div className="hidden lg:block absolute -top-3 right-4 bg-black text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 lg:py-1">
-              NEXT.IN.LINE
+              คิวถัดไป
             </div>
             
             {/* Left Side (Mobile) / Center (Desktop): Queue Info */}
             <div className="flex flex-col items-start lg:items-center text-left lg:text-center">
-              <div className="lg:hidden text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">NEXT.IN.LINE</div>
+              <div className="lg:hidden text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">คิวถัดไป</div>
               <div className="flex items-baseline gap-2 lg:block">
                 <div className="text-4xl lg:text-7xl font-black tracking-tighter leading-none">
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
@@ -193,8 +193,8 @@ export function AdminKioskEditorialTemplate({ kioskViewModel, state, actions }: 
             
             {/* Right Side (Mobile) / Bottom (Desktop): Waiting Count */}
             <div className="flex flex-col lg:flex-row items-end lg:items-center lg:justify-between lg:border-2 lg:border-black lg:p-3 lg:bg-gray-50 lg:mt-4 lg:w-full">
-              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-gray-400 lg:text-gray-400">WAITING</span>
-              <span className="text-lg lg:text-2xl font-black leading-none mt-0.5 lg:mt-0">{waitingCount} <span className="text-[9px] lg:text-sm font-bold text-gray-400">PRS</span></span>
+              <span className="text-[8px] lg:text-xs font-black uppercase tracking-widest text-gray-400 lg:text-gray-400">คิวรอทั้งหมด</span>
+              <span className="text-lg lg:text-2xl font-black leading-none mt-0.5 lg:mt-0">{waitingCount} <span className="text-[9px] lg:text-sm font-bold text-gray-400">คิว</span></span>
             </div>
           </div>
 

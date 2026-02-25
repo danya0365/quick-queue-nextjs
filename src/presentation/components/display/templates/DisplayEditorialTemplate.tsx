@@ -49,14 +49,14 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
               className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors font-black text-[10px] sm:text-xs uppercase tracking-widest font-sans shrink-0 whitespace-nowrap"
             >
               <Ticket className="w-4 h-4" />
-              <span className="hidden lg:inline">QUEUE.TICKET</span>
+              <span className="hidden lg:inline">รับคิว</span>
             </Link>
             <button
               onClick={onOpenTrackModal}
               className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 border-2 border-black bg-white hover:bg-black text-black hover:text-white transition-colors font-black text-[10px] sm:text-xs uppercase tracking-widest font-sans shrink-0 whitespace-nowrap"
             >
               <Search className="w-4 h-4" />
-              <span className="hidden lg:inline">TRACK.QUEUE</span>
+              <span className="hidden lg:inline">เช็คคิว</span>
             </button>
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
@@ -69,7 +69,7 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
 
           <div className="hidden sm:flex items-center gap-3 ml-3 border-l-2 border-gray-200 pl-3">
             <div className="hidden md:block text-[10px] font-black uppercase tracking-widest text-gray-400">
-              OPEN {operatingHours.open}–{operatingHours.close}
+              เปิด {operatingHours.open}–{operatingHours.close}
             </div>
             <div className="flex items-center gap-1.5 font-mono font-black text-lg sm:text-xl border-2 border-black px-3 py-1.5 shrink-0">
               <Clock className="w-5 h-5" />
@@ -85,7 +85,7 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
         {/* ═══ Left: Hero ═══ */}
         <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-gray-50 relative overflow-y-auto lg:overflow-hidden">
 
-          <div className="text-black font-black uppercase tracking-[0.2em] text-sm sm:text-base border-b-2 border-black pb-2 mb-8">CURRENTLY SERVING</div>
+          <div className="text-black font-black uppercase tracking-[0.2em] text-sm sm:text-base border-b-2 border-black pb-2 mb-8">กำลังให้บริการ</div>
 
           <div className="w-full max-w-2xl bg-white border-[8px] border-black flex flex-col items-center justify-center p-8 sm:p-12 shadow-[12px_12px_0_0_rgba(0,0,0,1)] relative">
             <div className="text-[100px] sm:text-[160px] lg:text-[200px] font-black leading-none tracking-tighter">
@@ -110,7 +110,7 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
           {/* Next Up + Wait Info */}
           <div className="flex items-center gap-8 sm:gap-12 mt-10">
             <div className="text-center border-4 border-black p-4 sm:p-6 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,0.1)]">
-              <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">NEXT.IN.LINE</div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">คิวถัดไป</div>
               <div className="text-4xl sm:text-5xl font-black tracking-tighter">
                 {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '--'}
               </div>
@@ -126,9 +126,9 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
               )}
             </div>
             <div className="text-center border-4 border-black p-4 sm:p-6 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,0.1)]">
-              <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WAITING.COUNT</div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">รอทั้งหมด</div>
               <div className="text-4xl sm:text-5xl font-black">{stats.waiting}</div>
-              <div className="text-sm text-gray-400 font-bold mt-1">≈ {estimatedWaitMinutes} MIN</div>
+              <div className="text-sm text-gray-400 font-bold mt-1">≈ {estimatedWaitMinutes} นาที</div>
             </div>
           </div>
 
@@ -136,7 +136,7 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
             onClick={() => setIsMobileListOpen(true)}
             className="lg:hidden mt-8 px-8 py-4 border-4 border-black bg-black text-white font-black uppercase tracking-widest text-xs shadow-[4px_4px_0_0_rgba(0,0,0,0.15)] flex items-center gap-2"
           >
-            VIEW FULL QUEUE LIST ({waitingItems.length})
+            ดูคิวทั้งหมด ({waitingItems.length})
           </button>
         </div>
 
@@ -150,7 +150,7 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
 
           {/* Mobile Close Header */}
           <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b-4 border-black shrink-0">
-            <span className="font-black uppercase tracking-widest text-base">QUEUE.LIST</span>
+            <span className="font-black uppercase tracking-widest text-base">รายการคิว</span>
             <button onClick={() => setIsMobileListOpen(false)} className="p-2 border-2 border-black hover:bg-black hover:text-white transition-colors">
               <X className="w-5 h-5" />
             </button>
@@ -161,12 +161,12 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
             <div className="px-4 sm:px-6 py-3 bg-gray-50 border-b-2 border-black shrink-0">
               <span className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
                 <span className="w-2 h-2 bg-black animate-pulse"></span>
-                QUEUE.WAITING ({waitingItems.length})
+                คิวรอในระบบ ({waitingItems.length})
               </span>
             </div>
             <div className="flex-1 overflow-y-auto">
               {waitingItems.length === 0 ? (
-                <div className="p-6 text-center text-gray-300 text-sm font-bold uppercase">EMPTY</div>
+                <div className="p-6 text-center text-gray-300 text-sm font-bold uppercase">ไม่มีคิว</div>
               ) : (
                 waitingItems.map((item, idx) => (
                   <div key={item.id} className={`flex items-center gap-3 px-4 sm:px-6 py-3 border-b border-gray-200 ${idx === 0 ? 'bg-amber-50/50' : ''}`}>
@@ -192,11 +192,11 @@ export function DisplayEditorialTemplate({ displayViewModel, currentTime, soundE
           <div className="shrink-0">
             <div className="px-4 sm:px-6 py-3 bg-gray-50 border-b-2 border-black">
               <span className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                COMPLETED (RECENT)
+                คิวที่เรียกแล้ว
               </span>
             </div>
             {recentCompleted.length === 0 ? (
-              <div className="p-4 text-center text-gray-300 text-sm font-bold uppercase">NONE</div>
+              <div className="p-4 text-center text-gray-300 text-sm font-bold uppercase">ไม่มีคิว</div>
             ) : (
               recentCompleted.slice(0, 3).map((item) => (
                 <div key={item.id} className="flex items-center gap-3 px-4 sm:px-6 py-2.5 border-b border-gray-100 opacity-50">

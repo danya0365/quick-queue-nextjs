@@ -50,14 +50,14 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
               className="flex items-center gap-1.5 px-3 sm:px-4 py-2 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#39FF14] hover:text-black transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none font-black text-[10px] sm:text-xs uppercase tracking-widest shrink-0 whitespace-nowrap"
             >
               <Ticket className="w-4 h-4" strokeWidth={3} />
-              <span className="hidden lg:inline">GET.TICKET_</span>
+              <span className="hidden lg:inline">รับคิว_</span>
             </Link>
             <button
               onClick={onOpenTrackModal}
               className="flex items-center gap-1.5 px-3 sm:px-4 py-2 border-[3px] border-black bg-[#FF00FF] text-white hover:bg-[#00FFFF] hover:text-black transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none font-black text-[10px] sm:text-xs uppercase tracking-widest shrink-0 whitespace-nowrap"
             >
               <Search className="w-4 h-4" strokeWidth={3} />
-              <span className="hidden lg:inline">TRACK.QUEUE_</span>
+              <span className="hidden lg:inline">เช็คคิว_</span>
             </button>
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
@@ -70,7 +70,7 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
           <div className="hidden sm:flex items-center gap-3 ml-3 pl-3 border-[3px] border-y-0 border-r-0 border-black border-dashed">
             {/* Hours */}
             <div className="hidden md:block text-[10px] font-black uppercase tracking-widest border-[2px] border-black px-2 py-1.5 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)] whitespace-nowrap">
-              OPEN {operatingHours.open}–{operatingHours.close}
+              เปิด {operatingHours.open}–{operatingHours.close}
             </div>
             {/* Clock */}
             <div className="flex items-center gap-1.5 font-mono font-black text-lg sm:text-xl border-[3px] border-black px-3 py-1.5 bg-black text-[#39FF14] shadow-[4px_4px_0_0_rgba(0,0,0,1)] shrink-0">
@@ -88,7 +88,7 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
         <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-16 border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black relative overflow-y-auto lg:overflow-hidden">
           {/* Label */}
           <div className="absolute top-4 left-4 bg-white border-2 border-black px-3 py-1 font-black text-xs uppercase tracking-widest shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
-            VIEW.CURRENT
+            กำลังให้บริการ
           </div>
 
           <div className="w-full max-w-2xl bg-black border-[6px] border-[#FF00FF] flex flex-col items-center justify-center p-8 sm:p-12 shadow-[16px_16px_0_0_rgba(0,0,0,1)] relative overflow-hidden group">
@@ -119,7 +119,7 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
           {/* Next Up + Wait Info */}
           <div className="flex items-center gap-6 sm:gap-10 mt-10">
             <div className="text-center border-[4px] border-black p-4 sm:p-5 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] relative">
-              <div className="absolute -top-3 -right-3 bg-[#00FFFF] border-[2px] border-black px-2 py-0.5 font-black text-[10px] tracking-widest shadow-[2px_2px_0_0_rgba(0,0,0,1)] rotate-6">NEXT</div>
+              <div className="absolute -top-3 -right-3 bg-[#00FFFF] border-[2px] border-black px-2 py-0.5 font-black text-[10px] tracking-widest shadow-[2px_2px_0_0_rgba(0,0,0,1)] rotate-6">คิวถัดไป</div>
               <div className="bg-black px-4 py-2 border-2 border-[#FF00FF] mb-2">
                 <div className="text-4xl sm:text-5xl font-black tracking-tighter text-[#39FF14] drop-shadow-[0_0_8px_#39FF14]">
                   {nextUpItem ? formatQueueNumber(nextUpItem.queueNumber) : '---'}
@@ -137,11 +137,11 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
               )}
             </div>
             <div className="text-center border-[4px] border-black p-4 sm:p-5 bg-white shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
-              <div className="text-[10px] font-black uppercase tracking-widest text-[#FF00FF] mb-1">WAIT.COUNT =</div>
+              <div className="text-[10px] font-black uppercase tracking-widest text-[#FF00FF] mb-1">รอทั้งหมด =</div>
               <div className="text-4xl sm:text-5xl font-black text-[#00FFFF]" style={{ WebkitTextStroke: '1.5px black' }}>
                 {stats.waiting}
               </div>
-              <div className="text-sm font-black text-gray-500 mt-1">≈ {estimatedWaitMinutes} MIN_</div>
+              <div className="text-sm font-black text-gray-500 mt-1">≈ {estimatedWaitMinutes} นาที_</div>
             </div>
           </div>
 
@@ -149,7 +149,7 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
             onClick={() => setIsMobileListOpen(true)}
             className="lg:hidden mt-10 px-6 py-4 border-[4px] border-black bg-[#FF00FF] text-white hover:bg-[#39FF14] hover:text-black transition-colors font-black text-xs uppercase tracking-widest shadow-[6px_6px_0_0_rgba(0,0,0,1)] flex items-center gap-2 active:translate-x-1 active:translate-y-1 active:shadow-none"
           >
-            VIEW FULL QUEUE LIST [{waitingItems.length}]
+            ดูคิวทั้งหมด [{waitingItems.length}]
           </button>
         </div>
 
@@ -163,7 +163,7 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
 
           {/* Mobile Close Header */}
           <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-[#00FFFF] border-b-[4px] border-black shrink-0">
-            <span className="font-black uppercase tracking-widest text-base shadow-text-white" style={{ WebkitTextStroke: '0.5px black' }}>QUEUE.LIST</span>
+            <span className="font-black uppercase tracking-widest text-base shadow-text-white" style={{ WebkitTextStroke: '0.5px black' }}>รายการคิว</span>
             <button onClick={() => setIsMobileListOpen(false)} className="p-2 border-[3px] border-black bg-white hover:bg-[#FF00FF] text-black hover:text-white transition-colors shadow-[2px_2px_0_0_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
               <X className="w-5 h-5" strokeWidth={3} />
             </button>
@@ -174,12 +174,12 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
             <div className="px-4 sm:px-6 py-3 bg-[#FF00FF] border-b-2 border-black shrink-0">
               <span className="text-sm font-black uppercase tracking-widest text-white flex items-center gap-2">
                 <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
-                QUEUE.BUFFER [{waitingItems.length}]
+                คิวรอในระบบ [{waitingItems.length}]
               </span>
             </div>
             <div className="flex-1 overflow-y-auto">
               {waitingItems.length === 0 ? (
-                <div className="p-6 text-center text-gray-300 text-sm font-black uppercase">NULL_</div>
+                <div className="p-6 text-center text-gray-300 text-sm font-black uppercase">ไม่มีคิว_</div>
               ) : (
                 waitingItems.map((item, idx) => (
                   <div key={item.id} className={`flex items-center gap-3 px-4 sm:px-6 py-3 border-b-2 border-black ${idx === 0 ? 'bg-[#00FFFF]/10' : ''}`}>
@@ -205,11 +205,11 @@ export function DisplayRetroTechMagazineTemplate({ displayViewModel, currentTime
           <div className="shrink-0">
             <div className="px-4 sm:px-6 py-3 bg-[#39FF14] border-b-2 border-black">
               <span className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                DONE.LOG_
+                คิวที่เรียกแล้ว_
               </span>
             </div>
             {recentCompleted.length === 0 ? (
-              <div className="p-4 text-center text-gray-300 text-sm font-black uppercase">NULL_</div>
+              <div className="p-4 text-center text-gray-300 text-sm font-black uppercase">ไม่มีคิว_</div>
             ) : (
               recentCompleted.slice(0, 3).map((item) => (
                 <div key={item.id} className="flex items-center gap-3 px-4 sm:px-6 py-2.5 border-b-2 border-black opacity-40">
