@@ -21,6 +21,9 @@ export function DisplayRequestClassicTemplate({
   setServiceType,
   note,
   setNote,
+  appendNote,
+  clearNote,
+  clearCustomerName,
   challenge,
   challengeAnswer,
   setChallengeAnswer,
@@ -184,7 +187,7 @@ export function DisplayRequestClassicTemplate({
                     {customerName && (
                       <button
                         type="button"
-                        onClick={() => setCustomerName('')}
+                        onClick={clearCustomerName}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1"
                       >
                         ✕
@@ -247,7 +250,7 @@ export function DisplayRequestClassicTemplate({
                     {note && (
                       <button
                         type="button"
-                        onClick={() => setNote('')}
+                        onClick={clearNote}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1"
                       >
                         ✕
@@ -259,7 +262,7 @@ export function DisplayRequestClassicTemplate({
                       <button
                         key={preset}
                         type="button"
-                        onClick={() => setNote((prev) => (prev ? prev + ' ' + preset : preset))}
+                        onClick={() => appendNote(preset)}
                         className="px-3 py-1.5 text-xs rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:border-blue-500/30 transition-all"
                       >
                         + {preset}

@@ -24,10 +24,13 @@ export interface DisplayRequestTemplateProps {
   // Form data
   customerName: string;
   setCustomerName: (name: string) => void;
+  clearCustomerName: () => void;
   serviceType: ServiceType;
   setServiceType: (type: ServiceType) => void;
   note: string;
-  setNote: (note: string | ((prev: string) => string)) => void;
+  setNote: (note: string) => void;
+  appendNote: (note: string) => void;
+  clearNote: () => void;
   // Challenge
   challenge: MathChallenge | null;
   challengeAnswer: string;
@@ -158,15 +161,32 @@ export function DisplayRequestView() {
     router.push('/display');
   };
 
+  const appendNote = (noteChip: string) => {
+    setNote((prev) => {
+      if (!prev) return noteChip;
+      const stripped = prev.trim();
+      if (stripped.endsWith(',')) {
+        return `${stripped} ${noteChip}`;
+      }
+      return `${stripped}, ${noteChip}`;
+    });
+  };
+
+  const clearNote = () => setNote('');
+  const clearCustomerName = () => setCustomerName('');
+
   const templateProps: DisplayRequestTemplateProps = {
     currentStep,
     setCurrentStep,
     customerName,
     setCustomerName,
+    clearCustomerName,
     serviceType,
     setServiceType,
     note,
     setNote,
+    appendNote,
+    clearNote,
     challenge,
     challengeAnswer,
     setChallengeAnswer,

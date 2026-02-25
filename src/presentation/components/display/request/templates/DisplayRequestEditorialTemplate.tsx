@@ -13,8 +13,8 @@ const STEPS: { key: RequestStep; label: string }[] = [
 ];
 
 export function DisplayRequestEditorialTemplate({
-  currentStep, setCurrentStep, customerName, setCustomerName, serviceType, setServiceType,
-  note, setNote, challenge, challengeAnswer, setChallengeAnswer, isSubmitting, error,
+  currentStep, setCurrentStep, customerName, setCustomerName, clearCustomerName, serviceType, setServiceType,
+  note, setNote, appendNote, clearNote, challenge, challengeAnswer, setChallengeAnswer, isSubmitting, error,
   successCode, qrCodeUrl, countdown, handleDone, handleSubmit, canGoNext, presets,
 }: DisplayRequestTemplateProps) {
   const stepIndex = STEPS.findIndex((s) => s.key === currentStep);
@@ -94,8 +94,13 @@ export function DisplayRequestEditorialTemplate({
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest mb-2">ชื่อของคุณ <span className="text-red-500">*</span></label>
-                  <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} autoFocus
-                    className="w-full px-4 py-3.5 border-2 border-black bg-white placeholder:text-gray-300 focus:outline-none focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all text-base font-bold" placeholder="กรอกชื่อของคุณ" />
+                  <div className="relative">
+                    <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} autoFocus
+                      className="w-full px-4 py-3.5 pr-10 border-2 border-black bg-white placeholder:text-gray-300 focus:outline-none focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all text-base font-bold" placeholder="กรอกชื่อของคุณ" />
+                    {customerName && (
+                      <button type="button" onClick={clearCustomerName} className="absolute right-3 top-1/2 -translate-y-1/2 text-black font-black bg-transparent border-none p-1" title="เคลียร์">✕</button>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {presets.customerNames.map((p) => <button key={p} type="button" onClick={() => setCustomerName(p)} className="px-3 py-1.5 text-xs border border-black text-gray-500 hover:bg-black hover:text-white transition-all font-bold uppercase">+ {p}</button>)}
                   </div>
@@ -113,10 +118,15 @@ export function DisplayRequestEditorialTemplate({
                 </div>
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest mb-2">ข้อความเพิ่มเติม <span className="text-gray-300 font-normal">(ไม่บังคับ)</span></label>
-                  <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
-                    className="w-full px-4 py-3.5 border-2 border-black bg-white placeholder:text-gray-300 focus:outline-none focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all text-base font-bold" placeholder="ข้อมูลเพิ่มเติม..." />
+                  <div className="relative">
+                    <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
+                      className="w-full px-4 py-3.5 pr-10 border-2 border-black bg-white placeholder:text-gray-300 focus:outline-none focus:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all text-base font-bold" placeholder="ข้อมูลเพิ่มเติม..." />
+                    {note && (
+                      <button type="button" onClick={clearNote} className="absolute right-3 top-1/2 -translate-y-1/2 text-black font-black bg-transparent border-none p-1" title="เคลียร์">✕</button>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {presets.notes.map((p) => <button key={p} type="button" onClick={() => setNote((prev) => (prev ? prev + ' ' + p : p))} className="px-3 py-1.5 text-xs border border-black text-gray-500 hover:bg-black hover:text-white transition-all font-bold uppercase">+ {p}</button>)}
+                    {presets.notes.map((p) => <button key={p} type="button" onClick={() => appendNote(p)} className="px-3 py-1.5 text-xs border border-black text-gray-500 hover:bg-black hover:text-white transition-all font-bold uppercase">+ {p}</button>)}
                   </div>
                 </div>
                 <button type="button" disabled={!canGoNext} onClick={() => setCurrentStep('verify')}
