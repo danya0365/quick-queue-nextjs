@@ -50,6 +50,20 @@ export function CreateQueueModal({
 
   if (!isOpen) return null;
 
+  const appendNote = (noteChip: string) => {
+    setNote((prev) => {
+      if (!prev) return noteChip;
+      const stripped = prev.trim();
+      if (stripped.endsWith(',')) {
+        return `${stripped} ${noteChip}`;
+      }
+      return `${stripped}, ${noteChip}`;
+    });
+  };
+
+  const clearNote = () => setNote('');
+  const clearCustomerName = () => setCustomerName('');
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -64,6 +78,23 @@ export function CreateQueueModal({
     }
   };
 
+  const templateProps = {
+    onClose,
+    nextQueueNumber,
+    customerName,
+    setCustomerName,
+    clearCustomerName,
+    serviceType,
+    setServiceType,
+    note,
+    setNote,
+    appendNote,
+    clearNote,
+    isSubmitting,
+    handleSubmit,
+    modalSpring,
+  };
+
   return (
     <animated.div
       style={overlaySpring}
@@ -73,47 +104,11 @@ export function CreateQueueModal({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
       {template === 'retroTechMagazine' ? (
-        <CreateQueueRetroTechMagazineTemplate
-          onClose={onClose}
-          nextQueueNumber={nextQueueNumber}
-          customerName={customerName}
-          setCustomerName={setCustomerName}
-          serviceType={serviceType}
-          setServiceType={setServiceType}
-          note={note}
-          setNote={setNote}
-          isSubmitting={isSubmitting}
-          handleSubmit={handleSubmit}
-          modalSpring={modalSpring}
-        />
+        <CreateQueueRetroTechMagazineTemplate {...templateProps} />
       ) : template === 'editorial' ? (
-        <CreateQueueEditorialTemplate
-          onClose={onClose}
-          nextQueueNumber={nextQueueNumber}
-          customerName={customerName}
-          setCustomerName={setCustomerName}
-          serviceType={serviceType}
-          setServiceType={setServiceType}
-          note={note}
-          setNote={setNote}
-          isSubmitting={isSubmitting}
-          handleSubmit={handleSubmit}
-          modalSpring={modalSpring}
-        />
+        <CreateQueueEditorialTemplate {...templateProps} />
       ) : (
-        <CreateQueueClassicTemplate
-          onClose={onClose}
-          nextQueueNumber={nextQueueNumber}
-          customerName={customerName}
-          setCustomerName={setCustomerName}
-          serviceType={serviceType}
-          setServiceType={setServiceType}
-          note={note}
-          setNote={setNote}
-          isSubmitting={isSubmitting}
-          handleSubmit={handleSubmit}
-          modalSpring={modalSpring}
-        />
+        <CreateQueueClassicTemplate {...templateProps} />
       )}
     </animated.div>
   );
