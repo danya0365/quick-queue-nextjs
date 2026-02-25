@@ -112,6 +112,20 @@ export function RequestQueueModal({ isOpen, onClose }: RequestQueueModalProps) {
     }
   };
 
+  const appendNote = (noteChip: string) => {
+    setNote((prev) => {
+      if (!prev) return noteChip;
+      const stripped = prev.trim();
+      if (stripped.endsWith(',')) {
+        return `${stripped} ${noteChip}`;
+      }
+      return `${stripped}, ${noteChip}`;
+    });
+  };
+
+  const clearNote = () => setNote('');
+  const clearCustomerName = () => setCustomerName('');
+
   const handleClose = () => {
     if (successCode) {
       // Force refresh on close if success (optional, or just onClose if you prefer)
@@ -119,6 +133,27 @@ export function RequestQueueModal({ isOpen, onClose }: RequestQueueModalProps) {
     } else {
       onClose();
     }
+  };
+
+  const templateProps = {
+    onClose: handleClose,
+    customerName,
+    setCustomerName,
+    clearCustomerName,
+    serviceType,
+    setServiceType,
+    note,
+    setNote,
+    appendNote,
+    clearNote,
+    challengeAnswer,
+    setChallengeAnswer,
+    challenge,
+    isSubmitting,
+    error,
+    successCode,
+    handleSubmit,
+    modalSpring,
   };
 
   return (
@@ -129,59 +164,11 @@ export function RequestQueueModal({ isOpen, onClose }: RequestQueueModalProps) {
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       {template === 'retroTechMagazine' ? (
-        <RequestQueueRetroTechMagazineTemplate
-          onClose={handleClose}
-          customerName={customerName}
-          setCustomerName={setCustomerName}
-          serviceType={serviceType}
-          setServiceType={setServiceType}
-          note={note}
-          setNote={setNote}
-          challengeAnswer={challengeAnswer}
-          setChallengeAnswer={setChallengeAnswer}
-          challenge={challenge}
-          isSubmitting={isSubmitting}
-          error={error}
-          successCode={successCode}
-          handleSubmit={handleSubmit}
-          modalSpring={modalSpring}
-        />
+        <RequestQueueRetroTechMagazineTemplate {...templateProps} />
       ) : template === 'editorial' ? (
-        <RequestQueueEditorialTemplate
-           onClose={handleClose}
-           customerName={customerName}
-           setCustomerName={setCustomerName}
-           serviceType={serviceType}
-           setServiceType={setServiceType}
-           note={note}
-           setNote={setNote}
-           challengeAnswer={challengeAnswer}
-           setChallengeAnswer={setChallengeAnswer}
-           challenge={challenge}
-           isSubmitting={isSubmitting}
-           error={error}
-           successCode={successCode}
-           handleSubmit={handleSubmit}
-           modalSpring={modalSpring}
-        />
+        <RequestQueueEditorialTemplate {...templateProps} />
       ) : (
-        <RequestQueueClassicTemplate
-           onClose={handleClose}
-           customerName={customerName}
-           setCustomerName={setCustomerName}
-           serviceType={serviceType}
-           setServiceType={setServiceType}
-           note={note}
-           setNote={setNote}
-           challengeAnswer={challengeAnswer}
-           setChallengeAnswer={setChallengeAnswer}
-           challenge={challenge}
-           isSubmitting={isSubmitting}
-           error={error}
-           successCode={successCode}
-           handleSubmit={handleSubmit}
-           modalSpring={modalSpring}
-        />
+        <RequestQueueClassicTemplate {...templateProps} />
       )}
     </animated.div>
   );
