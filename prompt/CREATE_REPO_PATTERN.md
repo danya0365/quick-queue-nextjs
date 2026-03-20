@@ -658,18 +658,22 @@ export class Supabase[Entity]Repository implements I[Entity]Repository {
 - ✅ **Error Handling** - จัดการ errors อย่างเหมาะสม
 - ✅ **RPC Support** - รองรับ stored procedures
 
-### การใช้งานใน API Routes
+### การใช้งานใน API Routes (Server-side)
+
+**⚠️ สำคัญ:** ห้ามเรียกใช้ `Supabase[Entity]Repository` โดยตรงใน API Routes เพื่อป้องกันรหัสซ้ำซ้อนและละเมิด Single Source of Truth! **ต้องเรียกผ่าน `[Entity]PresenterServerFactory` เสมอ** 
 
 ```typescript
 // app/api/[entities]/route.ts
-import { createServerSupabaseClient } from '@/src/infrastructure/supabase/server';
-import { Supabase[Entity]Repository } from '@/src/infrastructure/repositories/supabase/Supabase[Entity]Repository';
+import { createServer[Entity]Presenter } from '@/src/presentation/presenters/[entity]/[Entity]PresenterServerFactory';
 
 export async function GET() {
-  const supabase = await createServerSupabaseClient();
-  const repository = new Supabase[Entity]Repository(supabase);
+  // 1. เรียกใช้งานผ่าน Factory ฝั่ง Server
+  const presenter = await createServer[Entity]Presenter();
   
-  const entities = await repository.getAll();
+  // 2. ดึงข้อมูลผ่าน Presenter เท่านั้น 
+  // (ห้ามลัดไปเรียก Repository โดยตรงเด็ดขาด)
+  const entities = await presenter.getAll[Entities]();
+  
   return Response.json(entities);
 }
 ```
